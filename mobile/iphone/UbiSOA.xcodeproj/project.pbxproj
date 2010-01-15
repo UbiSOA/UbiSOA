@@ -206,6 +206,34 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		E840451210FFEA10004F6922 /* ASIHTTPRequest */ = {
+			isa = PBXGroup;
+			children = (
+				E8D4E21510DF054A00C7B8C5 /* Reachability.h */,
+				E8D4E21610DF054A00C7B8C5 /* Reachability.m */,
+				E8D4E1CA10DF03F600C7B8C5 /* ASIAuthenticationDialog.h */,
+				E8D4E1CB10DF03F600C7B8C5 /* ASIAuthenticationDialog.m */,
+				E8D4E1CC10DF03F600C7B8C5 /* ASIFormDataRequest.h */,
+				E8D4E1CD10DF03F600C7B8C5 /* ASIFormDataRequest.m */,
+				E8D4E1CE10DF03F600C7B8C5 /* ASIHTTPRequest.h */,
+				E8D4E1CF10DF03F600C7B8C5 /* ASIHTTPRequest.m */,
+				E8D4E1D010DF03F600C7B8C5 /* ASIHTTPRequestConfig.h */,
+				E8D4E1D110DF03F600C7B8C5 /* ASIInputStream.h */,
+				E8D4E1D210DF03F600C7B8C5 /* ASIInputStream.m */,
+				E8D4E1D310DF03F600C7B8C5 /* ASINetworkQueue.h */,
+				E8D4E1D410DF03F600C7B8C5 /* ASINetworkQueue.m */,
+				E8D4E1D510DF03F600C7B8C5 /* ASINSStringAdditions.h */,
+				E8D4E1D610DF03F600C7B8C5 /* ASINSStringAdditions.m */,
+				E8D4E1D710DF03F600C7B8C5 /* ASIS3BucketObject.h */,
+				E8D4E1D810DF03F600C7B8C5 /* ASIS3BucketObject.m */,
+				E8D4E1D910DF03F600C7B8C5 /* ASIS3ListRequest.h */,
+				E8D4E1DA10DF03F600C7B8C5 /* ASIS3ListRequest.m */,
+				E8D4E1DB10DF03F600C7B8C5 /* ASIS3Request.h */,
+				E8D4E1DC10DF03F600C7B8C5 /* ASIS3Request.m */,
+			);
+			name = ASIHTTPRequest;
+			sourceTree = "<group>";
+		};
 		E85A2AAA10DC3BDB00C9D8B9 /* Geolocation */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,34 +264,15 @@
 				E8A5690410F81FC20083AB00 /* SBJsonWriter.h */,
 				E8A5690510F81FC20083AB00 /* SBJsonWriter.m */,
 			);
-			path = JSON;
+			name = JSON;
+			path = ../External/JSON;
 			sourceTree = "<group>";
 		};
 		E8D4E1C510DF03E200C7B8C5 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				E840451210FFEA10004F6922 /* ASIHTTPRequest */,
 				E8A568F810F81FC20083AB00 /* JSON */,
-				E8D4E21510DF054A00C7B8C5 /* Reachability.h */,
-				E8D4E21610DF054A00C7B8C5 /* Reachability.m */,
-				E8D4E1CA10DF03F600C7B8C5 /* ASIAuthenticationDialog.h */,
-				E8D4E1CB10DF03F600C7B8C5 /* ASIAuthenticationDialog.m */,
-				E8D4E1CC10DF03F600C7B8C5 /* ASIFormDataRequest.h */,
-				E8D4E1CD10DF03F600C7B8C5 /* ASIFormDataRequest.m */,
-				E8D4E1CE10DF03F600C7B8C5 /* ASIHTTPRequest.h */,
-				E8D4E1CF10DF03F600C7B8C5 /* ASIHTTPRequest.m */,
-				E8D4E1D010DF03F600C7B8C5 /* ASIHTTPRequestConfig.h */,
-				E8D4E1D110DF03F600C7B8C5 /* ASIInputStream.h */,
-				E8D4E1D210DF03F600C7B8C5 /* ASIInputStream.m */,
-				E8D4E1D310DF03F600C7B8C5 /* ASINetworkQueue.h */,
-				E8D4E1D410DF03F600C7B8C5 /* ASINetworkQueue.m */,
-				E8D4E1D510DF03F600C7B8C5 /* ASINSStringAdditions.h */,
-				E8D4E1D610DF03F600C7B8C5 /* ASINSStringAdditions.m */,
-				E8D4E1D710DF03F600C7B8C5 /* ASIS3BucketObject.h */,
-				E8D4E1D810DF03F600C7B8C5 /* ASIS3BucketObject.m */,
-				E8D4E1D910DF03F600C7B8C5 /* ASIS3ListRequest.h */,
-				E8D4E1DA10DF03F600C7B8C5 /* ASIS3ListRequest.m */,
-				E8D4E1DB10DF03F600C7B8C5 /* ASIS3Request.h */,
-				E8D4E1DC10DF03F600C7B8C5 /* ASIS3Request.m */,
 			);
 			name = External;
 			sourceTree = "<group>";
