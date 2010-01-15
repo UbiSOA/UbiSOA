@@ -115,7 +115,7 @@
 		[request setPostValue:[NSString stringWithFormat:@"%f", lastPoint.x / imageView.frame.size.width] forKey:@"latitude"];
 		[request setPostValue:[NSString stringWithFormat:@"%f", lastPoint.y / imageView.frame.size.height] forKey:@"longitude"];
 		[request setPostValue:[signalData substringToIndex:([signalData length] - 1)] forKey:@"signalData"];
-		[request setPostValue:@"iPhone" forKey:@"platform"];
+		[request setPostValue:[[UIDevice currentDevice] model] forKey:@"platform"];
 		[request start];
 	
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -123,7 +123,7 @@
 	}
 	
 	if (mode == UBTrackingGeolocationMode) {
-		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", @"http://158.97.88.156:8310/", [signalData substringToIndex:([signalData length] - 1)], @"/iPhone?json"]];
+		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@", @"http://158.97.88.156:8310/", [signalData substringToIndex:([signalData length] - 1)], @"/", [[UIDevice currentDevice] model]]];
 		ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
 		[request start];
 		
