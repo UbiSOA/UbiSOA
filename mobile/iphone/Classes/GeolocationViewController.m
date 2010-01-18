@@ -147,8 +147,8 @@
 			CGPoint offset = CGPointMake(point.x - scrollView.frame.size.width / 2.0, point.y - scrollView.frame.size.height / 2.0);
 			
 			[UIView beginAnimations:@"Move" context:nil];
-			[UIView setAnimationDelay:1.0];
-			[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+			[UIView setAnimationDelay:0.5];
+			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 			[scrollView setContentOffset:offset];
 			[imageTrainDot setCenter:point];
 			[imageTrainDot setAlpha:1.0];

@@ -271,7 +271,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>8</integer>
+									<integer>10</integer>
 									<integer>4</integer>
 									<integer>1</integer>
 									<integer>0</integer>
@@ -297,7 +297,7 @@
 							<real>259</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>138 59 1114 819 0 0 1440 878 </string>
+						<string>67 59 1114 819 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -315,7 +315,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>GeolocationViewController.m</string>
+								<string>GeolocationWiFiSpotter.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -323,11 +323,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>GeolocationViewController.m</string>
+										<string>GeolocationWiFiSpotter.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E844EC2210FFF08100BB8705</string>
+										<string>E8FDFA4C110143D300F35F3B</string>
 										<key>history</key>
 										<array>
 											<string>E80C14B510D9E98300FE425A</string>
@@ -343,10 +343,8 @@
 											<string>E8CD6CB910E06915006BFC2B</string>
 											<string>E8CD6CDC10E06C2A006BFC2B</string>
 											<string>E81D8A9510F7F2C5003543B9</string>
-											<string>E875734610FBC35700274D89</string>
 											<string>E875734910FBC35700274D89</string>
 											<string>E875734A10FBC35700274D89</string>
-											<string>E875739C10FBED7C00274D89</string>
 											<string>E87573B610FBF30300274D89</string>
 											<string>E80E779010FC093000F5B003</string>
 											<string>E80E779110FC093000F5B003</string>
@@ -354,7 +352,9 @@
 											<string>E844EC1E10FFF08100BB8705</string>
 											<string>E844EC1F10FFF08100BB8705</string>
 											<string>E844EC2010FFF08100BB8705</string>
-											<string>E844EC2110FFF08100BB8705</string>
+											<string>E8FDFA49110143D300F35F3B</string>
+											<string>E8FDFA4A110143D300F35F3B</string>
+											<string>E8FDFA4B110143D300F35F3B</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -368,7 +368,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {833, 773}}</string>
 								<key>RubberWindowFrame</key>
-								<string>138 59 1114 819 0 0 1440 878 </string>
+								<string>67 59 1114 819 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -388,7 +388,7 @@
 								<key>Frame</key>
 								<string>{{0, 778}, {833, 0}}</string>
 								<key>RubberWindowFrame</key>
-								<string>138 59 1114 819 0 0 1440 878 </string>
+								<string>67 59 1114 819 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -412,9 +412,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E844EBFF10FFEEB800BB8705</string>
+				<string>E8FDFA4311013D8500F35F3B</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>E844EC0010FFEEB800BB8705</string>
+				<string>E8FDFA4411013D8500F35F3B</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -556,15 +556,11 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E844EC2310FFF08100BB8705</string>
-		<string>E844EC2410FFF08100BB8705</string>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>E82791FD10D8610B00DBBBAC</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/Edgardo/CICESE/Implementación/Doctorado/UbiSOA/mobile/iphone/UbiSOA.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>138 59 1114 819 0 0 1440 878 </string>
+	<string>67 59 1114 819 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -641,7 +637,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>E82791FD10D8610B00DBBBAC</string>
-				<string>E844EC0110FFEEB800BB8705</string>
+				<string>E8FDFA4511013D8500F35F3B</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

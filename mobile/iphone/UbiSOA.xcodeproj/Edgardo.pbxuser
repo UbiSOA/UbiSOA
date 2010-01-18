@@ -128,8 +128,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 285208242;
-			PBXWorkspaceStateSaveDate = 285208242;
+			PBXPerProjectTemplateStateSaveDate = 285293955;
+			PBXWorkspaceStateSaveDate = 285293955;
 		};
 		perUserProjectItems = {
 			E80C14B510D9E98300FE425A /* PBXTextBookmark */ = E80C14B510D9E98300FE425A /* PBXTextBookmark */;
@@ -143,13 +143,9 @@
 			E844EC1E10FFF08100BB8705 /* PBXTextBookmark */ = E844EC1E10FFF08100BB8705 /* PBXTextBookmark */;
 			E844EC1F10FFF08100BB8705 /* PlistBookmark */ = E844EC1F10FFF08100BB8705 /* PlistBookmark */;
 			E844EC2010FFF08100BB8705 /* PBXTextBookmark */ = E844EC2010FFF08100BB8705 /* PBXTextBookmark */;
-			E844EC2110FFF08100BB8705 /* PBXTextBookmark */ = E844EC2110FFF08100BB8705 /* PBXTextBookmark */;
-			E844EC2210FFF08100BB8705 /* PBXTextBookmark */ = E844EC2210FFF08100BB8705 /* PBXTextBookmark */;
 			E85A2A7210DC09C500C9D8B9 /* PBXBookmark */ = E85A2A7210DC09C500C9D8B9 /* PBXBookmark */;
-			E875734610FBC35700274D89 /* PBXTextBookmark */ = E875734610FBC35700274D89 /* PBXTextBookmark */;
 			E875734910FBC35700274D89 /* PBXTextBookmark */ = E875734910FBC35700274D89 /* PBXTextBookmark */;
 			E875734A10FBC35700274D89 /* PBXTextBookmark */ = E875734A10FBC35700274D89 /* PBXTextBookmark */;
-			E875739C10FBED7C00274D89 /* PBXTextBookmark */ = E875739C10FBED7C00274D89 /* PBXTextBookmark */;
 			E87573B610FBF30300274D89 /* PBXBookmark */ = E87573B610FBF30300274D89 /* PBXBookmark */;
 			E8CD6CB910E06915006BFC2B /* PBXBookmark */ = E8CD6CB910E06915006BFC2B /* PBXBookmark */;
 			E8CD6CDC10E06C2A006BFC2B /* PBXTextBookmark */ = E8CD6CDC10E06C2A006BFC2B /* PBXTextBookmark */;
@@ -158,6 +154,10 @@
 			E8D1481010DF0A15007F1E7A /* PBXTextBookmark */ = E8D1481010DF0A15007F1E7A /* PBXTextBookmark */;
 			E8D1481210DF0A15007F1E7A /* PBXTextBookmark */ = E8D1481210DF0A15007F1E7A /* PBXTextBookmark */;
 			E8D4E24B10DF060200C7B8C5 /* PBXTextBookmark */ = E8D4E24B10DF060200C7B8C5 /* PBXTextBookmark */;
+			E8FDFA49110143D300F35F3B /* PBXTextBookmark */ = E8FDFA49110143D300F35F3B /* PBXTextBookmark */;
+			E8FDFA4A110143D300F35F3B /* PBXTextBookmark */ = E8FDFA4A110143D300F35F3B /* PBXTextBookmark */;
+			E8FDFA4B110143D300F35F3B /* PBXTextBookmark */ = E8FDFA4B110143D300F35F3B /* PBXTextBookmark */;
+			E8FDFA4C110143D300F35F3B /* PBXTextBookmark */ = E8FDFA4C110143D300F35F3B /* PBXTextBookmark */;
 		};
 		sourceControlManager = E82791FF10D8610C00DBBBAC /* Source Control */;
 		userBuildSettings = {
@@ -318,9 +318,9 @@
 	};
 	E827921410D8624B00DBBBAC /* GeolocationViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {772, 2800}}";
-			sepNavSelRange = "{4567, 0}";
-			sepNavVisRange = "{1846, 1546}";
+			sepNavIntBoundsRect = "{{0, 0}, {772, 2928}}";
+			sepNavSelRange = "{267, 0}";
+			sepNavVisRange = "{0, 1648}";
 			sepNavWindowFrame = "{{-1265, 369}, {821, 827}}";
 		};
 	};
@@ -355,7 +355,7 @@
 		);
 		name = "/Users/Edgardo/CICESE/Implementación/Doctorado/UbiSOA/mobile/iphone/UbiSOA-Info.plist";
 		rLen = 0;
-		rLoc = 9223372036854775807;
+		rLoc = 9223372036854775808;
 	};
 	E844EC2010FFF08100BB8705 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -367,26 +367,6 @@
 		vrLen = 935;
 		vrLoc = 0;
 	};
-	E844EC2110FFF08100BB8705 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = E827921410D8624B00DBBBAC /* GeolocationViewController.m */;
-		name = "GeolocationViewController.m: 50";
-		rLen = 0;
-		rLoc = 1685;
-		rType = 0;
-		vrLen = 1455;
-		vrLoc = 691;
-	};
-	E844EC2210FFF08100BB8705 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = E827921410D8624B00DBBBAC /* GeolocationViewController.m */;
-		name = "GeolocationViewController.m: 126";
-		rLen = 0;
-		rLoc = 4567;
-		rType = 0;
-		vrLen = 1546;
-		vrLoc = 1846;
-	};
 	E85A2A7210DC09C500C9D8B9 /* PBXBookmark */ = {
 		isa = PBXBookmark;
 		fRef = E80C14A210D9E7F300FE425A /* tab-location.png */;
@@ -394,27 +374,17 @@
 	E85A2A9910DC3A9300C9D8B9 /* GeolocationWiFiSpotter.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {772, 756}}";
-			sepNavSelRange = "{107, 0}";
+			sepNavSelRange = "{591, 0}";
 			sepNavVisRange = "{0, 591}";
 		};
 	};
 	E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {772, 784}}";
-			sepNavSelRange = "{644, 0}";
-			sepNavVisRange = "{3, 1187}";
+			sepNavSelRange = "{231, 0}";
+			sepNavVisRange = "{0, 1190}";
 			sepNavWindowFrame = "{{167, 51}, {821, 827}}";
 		};
-	};
-	E875734610FBC35700274D89 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = E85A2A9910DC3A9300C9D8B9 /* GeolocationWiFiSpotter.h */;
-		name = "GeolocationWiFiSpotter.h: 6";
-		rLen = 0;
-		rLoc = 107;
-		rType = 0;
-		vrLen = 591;
-		vrLoc = 0;
 	};
 	E875734910FBC35700274D89 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -435,16 +405,6 @@
 		rType = 0;
 		vrLen = 455;
 		vrLoc = 0;
-	};
-	E875739C10FBED7C00274D89 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */;
-		name = "GeolocationWiFiSpotter.m: 25";
-		rLen = 0;
-		rLoc = 644;
-		rType = 0;
-		vrLen = 1187;
-		vrLoc = 3;
 	};
 	E87573B610FBF30300274D89 /* PBXBookmark */ = {
 		isa = PBXBookmark;
@@ -563,5 +523,45 @@
 		name = SCNetwork.h;
 		path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.sdk/System/Library/Frameworks/SystemConfiguration.framework/Headers/SCNetwork.h;
 		sourceTree = "<absolute>";
+	};
+	E8FDFA49110143D300F35F3B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E827921410D8624B00DBBBAC /* GeolocationViewController.m */;
+		name = "GeolocationViewController.m: 13";
+		rLen = 0;
+		rLoc = 267;
+		rType = 0;
+		vrLen = 1648;
+		vrLoc = 0;
+	};
+	E8FDFA4A110143D300F35F3B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E85A2A9910DC3A9300C9D8B9 /* GeolocationWiFiSpotter.h */;
+		name = "GeolocationWiFiSpotter.h: 32";
+		rLen = 0;
+		rLoc = 591;
+		rType = 0;
+		vrLen = 591;
+		vrLoc = 0;
+	};
+	E8FDFA4B110143D300F35F3B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */;
+		name = "GeolocationWiFiSpotter.m: 25";
+		rLen = 0;
+		rLoc = 644;
+		rType = 0;
+		vrLen = 1190;
+		vrLoc = 0;
+	};
+	E8FDFA4C110143D300F35F3B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */;
+		name = "GeolocationWiFiSpotter.m: 13";
+		rLen = 0;
+		rLoc = 231;
+		rType = 0;
+		vrLen = 1190;
+		vrLoc = 0;
 	};
 }
