@@ -20,13 +20,17 @@
 	associate = dlsym(libHandle, "Apple80211Associate");
 	scan  = dlsym(libHandle, "Apple80211Scan");
 	
+	#if !TARGET_IPHONE_SIMULATOR
 	open(&libHandle);
 	bind(libHandle, @"en0");
+	#endif
 }
 
 - (void)close {
+	#if !TARGET_IPHONE_SIMULATOR
 	close(libHandle);
 	dlclose(libHandle);
+	#endif
 }
 
 - (void)scan {
@@ -34,14 +38,15 @@
 }
 
 - (void)performScan {
+#if !TARGET_IPHONE_SIMULATOR
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	CFDictionaryRef parameters = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     scan(libHandle, &networks, parameters);
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSpotterNotif object:self];
-	
+		
 	[pool release];
+#endif
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSpotterNotif object:self];
 }
 
 @end

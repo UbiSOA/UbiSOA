@@ -15,6 +15,7 @@
 @interface GeolocationViewController : UIViewController<UIScrollViewDelegate, UIActionSheetDelegate> {
 	IBOutlet UIScrollView *scrollView;
 	IBOutlet UIActivityIndicatorView *activityView;
+	IBOutlet UINavigationItem *item;
 	UIImageView *imageView, *imageTrainDot;
 	GeolocationWiFiSpotter *spotter;
 	CGPoint lastPoint;
@@ -24,9 +25,11 @@
 @property (nonatomic, retain) UIScrollView *scrollView;
 @property (nonatomic, retain) UIActivityIndicatorView *activityView;
 @property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UINavigationItem *item;
 
 - (void)tapIn:(CGPoint)point;
 - (void)scanDone;
 - (void)segmentAction:(id)sender;
+- (void)locate:(id)sender;
 
 @end

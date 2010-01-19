@@ -9,7 +9,7 @@
 #import "GeolocationViewController.h"
 
 @implementation GeolocationViewController
-@synthesize scrollView, activityView, imageView;
+@synthesize scrollView, activityView, imageView, item;
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
 	[imageTrainDot setAlpha:0.0];
@@ -75,7 +75,7 @@
 		[imageTrainDot setAlpha:1.0];
 		
 		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You are about to send training data for the specified location. Do you want to continue?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Yes, Send Data", nil];
-		[actionSheet showInView:[self parentViewController].view];
+		[actionSheet showInView:self.parentViewController.parentViewController.view];
 		[actionSheet release];
 	}
 	
@@ -102,11 +102,13 @@
 	NSLog(@"X:%f Y:%f", lastPoint.x, lastPoint.y);
 	NSString *signalData = @"";
 	
-	for (int i = 0, n = CFArrayGetCount([spotter networks]); i < n; i++) {
-		CFDictionaryRef network = CFArrayGetValueAtIndex([spotter networks], i);
-		NSLog(@"%@\t%@", CFDictionaryGetValue(network, @"SSID_STR"), CFDictionaryGetValue(network, @"RSSI"));
+	if (spotter.networks != nil) {
+		for (int i = 0, n = CFArrayGetCount([spotter networks]); i < n; i++) {
+			CFDictionaryRef network = CFArrayGetValueAtIndex([spotter networks], i);
+			NSLog(@"%@\t%@", CFDictionaryGetValue(network, @"SSID_STR"), CFDictionaryGetValue(network, @"RSSI"));
 
-		signalData = [NSString stringWithFormat:@"%@%@=%@,", signalData, CFDictionaryGetValue(network, @"BSSID"), CFDictionaryGetValue(network, @"RSSI")];
+			signalData = [NSString stringWithFormat:@"%@%@=%@,", signalData, CFDictionaryGetValue(network, @"BSSID"), CFDictionaryGetValue(network, @"RSSI")];
+		}
 	}
 	
 	if (mode == UBTrainingGeolocationMode) {	
@@ -119,10 +121,10 @@
 		[request start];
 	
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-		NSLog([request responseString]);
+		NSLog(@"%@", [request responseString]);
 	}
 	
-	if (mode == UBTrackingGeolocationMode) {
+	if (mode == UBTrackingGeolocationMode && [signalData compare:@""] != 0) {
 		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@", @"http://158.97.88.156:8310/", [signalData substringToIndex:([signalData length] - 1)], @"/", [[UIDevice currentDevice] model]]];
 		ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
 		[request start];
@@ -131,7 +133,7 @@
 		CFShow(request);
 		
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-		NSLog([request responseString]);
+		NSLog(@"%@", [request responseString]);
 		
 		if ([request responseStatusCode] != 200) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Problem" message:@"The geolocation service cannot be located or the location cannot be estimated." delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
@@ -164,6 +166,10 @@
 
 - (void)segmentAction:(id)sender {
 	mode = [(UISegmentedControl *)sender selectedSegmentIndex];
+}
+
+- (void)locate:(id)sender {
+	NSLog(@"%@", sender);
 }
 
 @end
