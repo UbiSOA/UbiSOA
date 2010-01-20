@@ -24,6 +24,15 @@
 		E82CD86211068A4F00A1D4E2 /* ButtonGray.png in Resources */ = {isa = PBXBuildFile; fileRef = E82CD86011068A4F00A1D4E2 /* ButtonGray.png */; };
 		E82E4CD610DB3B770003E1FA /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E82E4CD510DB3B770003E1FA /* icon.png */; };
 		E82E4CF710DC02E00003E1FA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E82E4CF610DC02E00003E1FA /* Default.png */; };
+		E85215401106C0E900E3A5AE /* NoMapsConfigured.png in Resources */ = {isa = PBXBuildFile; fileRef = E852153F1106C0E800E3A5AE /* NoMapsConfigured.png */; };
+		E85215CC1106CB7100E3A5AE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85215CB1106CB7100E3A5AE /* QuartzCore.framework */; };
+		E85216751106E7CB00E3A5AE /* GeolocationMapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E85216731106E7CB00E3A5AE /* GeolocationMapsViewController.m */; };
+		E85216761106E7CB00E3A5AE /* GeolocationMapsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E85216741106E7CB00E3A5AE /* GeolocationMapsViewController.xib */; };
+		E852169C1106ECC600E3A5AE /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = E852169B1106ECC600E3A5AE /* Database.m */; };
+		E85216EB1106EFF000E3A5AE /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E85216EA1106EFF000E3A5AE /* libsqlite3.0.dylib */; };
+		E8521757110700CE00E3A5AE /* GeolocationMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8521755110700CE00E3A5AE /* GeolocationMapViewController.m */; };
+		E8521758110700CE00E3A5AE /* GeolocationMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8521756110700CE00E3A5AE /* GeolocationMapViewController.xib */; };
+		E8521A961107420A00E3A5AE /* GeolocationMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E8521A951107420A00E3A5AE /* GeolocationMap.m */; };
 		E85A2A9B10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m in Sources */ = {isa = PBXBuildFile; fileRef = E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */; };
 		E87573B310FBF2E600274D89 /* map-dcc-full.png in Resources */ = {isa = PBXBuildFile; fileRef = E87573B210FBF2E600274D89 /* map-dcc-full.png */; };
 		E8A5690610F81FC20083AB00 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A568FB10F81FC20083AB00 /* NSObject+SBJSON.m */; };
@@ -53,8 +62,8 @@
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* UbiSOAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UbiSOAAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* UbiSOAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UbiSOAAppDelegate.m; sourceTree = "<group>"; };
+		1D3623240D0F684500981E51 /* UbiSOAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UbiSOAAppDelegate.h; path = Classes/UbiSOAAppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* UbiSOAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UbiSOAAppDelegate.m; path = Classes/UbiSOAAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* UbiSOA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UbiSOA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765070DF74369002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -76,6 +85,19 @@
 		E82CD86011068A4F00A1D4E2 /* ButtonGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonGray.png; sourceTree = "<group>"; };
 		E82E4CD510DB3B770003E1FA /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		E82E4CF610DC02E00003E1FA /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		E852153F1106C0E800E3A5AE /* NoMapsConfigured.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoMapsConfigured.png; sourceTree = "<group>"; };
+		E85215CB1106CB7100E3A5AE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E85216721106E7CB00E3A5AE /* GeolocationMapsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationMapsViewController.h; sourceTree = "<group>"; };
+		E85216731106E7CB00E3A5AE /* GeolocationMapsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationMapsViewController.m; sourceTree = "<group>"; };
+		E85216741106E7CB00E3A5AE /* GeolocationMapsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GeolocationMapsViewController.xib; path = Classes/GeolocationMapsViewController.xib; sourceTree = "<group>"; };
+		E852169A1106ECC600E3A5AE /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
+		E852169B1106ECC600E3A5AE /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
+		E85216EA1106EFF000E3A5AE /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		E8521754110700CE00E3A5AE /* GeolocationMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationMapViewController.h; sourceTree = "<group>"; };
+		E8521755110700CE00E3A5AE /* GeolocationMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationMapViewController.m; sourceTree = "<group>"; };
+		E8521756110700CE00E3A5AE /* GeolocationMapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GeolocationMapViewController.xib; path = Classes/GeolocationMapViewController.xib; sourceTree = "<group>"; };
+		E8521A941107420A00E3A5AE /* GeolocationMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationMap.h; sourceTree = "<group>"; };
+		E8521A951107420A00E3A5AE /* GeolocationMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationMap.m; sourceTree = "<group>"; };
 		E85A2A9910DC3A9300C9D8B9 /* GeolocationWiFiSpotter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationWiFiSpotter.h; sourceTree = "<group>"; };
 		E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationWiFiSpotter.m; sourceTree = "<group>"; };
 		E87573B210FBF2E600274D89 /* map-dcc-full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-dcc-full.png"; sourceTree = "<group>"; };
@@ -133,6 +155,8 @@
 				E8D4E1FC10DF045200C7B8C5 /* CFNetwork.framework in Frameworks */,
 				E8D4E1FE10DF046100C7B8C5 /* SystemConfiguration.framework in Frameworks */,
 				E8D4E20010DF047200C7B8C5 /* libz.1.2.3.dylib in Frameworks */,
+				E85215CC1106CB7100E3A5AE /* QuartzCore.framework in Frameworks */,
+				E85216EB1106EFF000E3A5AE /* libsqlite3.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,11 +166,9 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E80C156C10D9F7C600FE425A /* Constants.h */,
+				E85216C31106ED8F00E3A5AE /* Common */,
 				E8D4E1C510DF03E200C7B8C5 /* External */,
 				E85A2AAA10DC3BDB00C9D8B9 /* Geolocation */,
-				1D3623240D0F684500981E51 /* UbiSOAAppDelegate.h */,
-				1D3623250D0F684500981E51 /* UbiSOAAppDelegate.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -174,8 +196,10 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				28A0AB4B0D9B1048005BE974 /* UbiSOA_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				28A0AB4B0D9B1048005BE974 /* UbiSOA_Prefix.pch */,
+				1D3623240D0F684500981E51 /* UbiSOAAppDelegate.h */,
+				1D3623250D0F684500981E51 /* UbiSOAAppDelegate.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -183,10 +207,12 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E827922310D863F400DBBBAC /* Images */,
-				8D1107310486CEB800E47090 /* UbiSOA-Info.plist */,
+				E85216741106E7CB00E3A5AE /* GeolocationMapsViewController.xib */,
+				E8521756110700CE00E3A5AE /* GeolocationMapViewController.xib */,
 				E827921510D8624B00DBBBAC /* GeolocationViewController.xib */,
+				E827922310D863F400DBBBAC /* Images */,
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
+				8D1107310486CEB800E47090 /* UbiSOA-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -194,12 +220,14 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E8D4E1FB10DF045200C7B8C5 /* CFNetwork.framework */,
-				E8D4E1FD10DF046100C7B8C5 /* SystemConfiguration.framework */,
+				E85216EA1106EFF000E3A5AE /* libsqlite3.0.dylib */,
 				E8D4E1FF10DF047200C7B8C5 /* libz.1.2.3.dylib */,
-				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
-				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				E8D4E1FB10DF045200C7B8C5 /* CFNetwork.framework */,
 				288765070DF74369002DB57D /* CoreGraphics.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				E85215CB1106CB7100E3A5AE /* QuartzCore.framework */,
+				E8D4E1FD10DF046100C7B8C5 /* SystemConfiguration.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -207,6 +235,7 @@
 		E827922310D863F400DBBBAC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E852153F1106C0E800E3A5AE /* NoMapsConfigured.png */,
 				E82CD85F11068A4F00A1D4E2 /* ButtonBlue.png */,
 				E82CD86011068A4F00A1D4E2 /* ButtonGray.png */,
 				E82CD80F11067C7900A1D4E2 /* NoServicesFound.png */,
@@ -252,6 +281,16 @@
 			name = ASIHTTPRequest;
 			sourceTree = "<group>";
 		};
+		E85216C31106ED8F00E3A5AE /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				E80C156C10D9F7C600FE425A /* Constants.h */,
+				E852169A1106ECC600E3A5AE /* Database.h */,
+				E852169B1106ECC600E3A5AE /* Database.m */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
 		E85A2AAA10DC3BDB00C9D8B9 /* Geolocation */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,6 +300,12 @@
 				E827921410D8624B00DBBBAC /* GeolocationViewController.m */,
 				E85A2A9910DC3A9300C9D8B9 /* GeolocationWiFiSpotter.h */,
 				E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */,
+				E85216721106E7CB00E3A5AE /* GeolocationMapsViewController.h */,
+				E85216731106E7CB00E3A5AE /* GeolocationMapsViewController.m */,
+				E8521754110700CE00E3A5AE /* GeolocationMapViewController.h */,
+				E8521755110700CE00E3A5AE /* GeolocationMapViewController.m */,
+				E8521A941107420A00E3A5AE /* GeolocationMap.h */,
+				E8521A951107420A00E3A5AE /* GeolocationMap.m */,
 			);
 			name = Geolocation;
 			sourceTree = "<group>";
@@ -355,6 +400,9 @@
 				E82CD81011067C7900A1D4E2 /* NoServicesFound.png in Resources */,
 				E82CD86111068A4F00A1D4E2 /* ButtonBlue.png in Resources */,
 				E82CD86211068A4F00A1D4E2 /* ButtonGray.png in Resources */,
+				E85215401106C0E900E3A5AE /* NoMapsConfigured.png in Resources */,
+				E85216761106E7CB00E3A5AE /* GeolocationMapsViewController.xib in Resources */,
+				E8521758110700CE00E3A5AE /* GeolocationMapViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +434,10 @@
 				E8A5690910F81FC20083AB00 /* SBJsonBase.m in Sources */,
 				E8A5690A10F81FC20083AB00 /* SBJsonParser.m in Sources */,
 				E8A5690B10F81FC20083AB00 /* SBJsonWriter.m in Sources */,
+				E85216751106E7CB00E3A5AE /* GeolocationMapsViewController.m in Sources */,
+				E852169C1106ECC600E3A5AE /* Database.m in Sources */,
+				E8521757110700CE00E3A5AE /* GeolocationMapViewController.m in Sources */,
+				E8521A961107420A00E3A5AE /* GeolocationMap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

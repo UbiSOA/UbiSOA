@@ -9,7 +9,7 @@
 #import "GeolocationViewController.h"
 
 @implementation GeolocationViewController
-@synthesize scrollView, imageView;
+@synthesize scrollView, noServicesView;
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
 	[imageTrainDot setAlpha:0.0];
@@ -19,9 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	UIImageView *tempImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kMapFile]];
-	self.imageView = tempImageView;
-	[tempImageView release];
+	imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kMapFile]];
 	
 	scrollView.contentSize = CGSizeMake(imageView.frame.size.width, imageView.frame.size.height);
 	scrollView.maximumZoomScale = 2.0;
@@ -70,6 +68,7 @@
 	[scrollView release];
 	[spotter close];
 	[spotter release];
+	[noServicesView release];
 }
 
 - (void)tapIn:(CGPoint)point {	
@@ -194,6 +193,32 @@
 - (void)willUseService:(int)serviceIndex {
 	activeServiceIndex = serviceIndex;
 	NSLog(@"WILL USE SERVICE: %@", [services objectAtIndex:activeServiceIndex]);
+
+	if ([self.view.subviews lastObject] == [self.view viewWithTag:101]) {
+		[UIView beginAnimations:@"HideNoServicesView" context:nil];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+		[UIView setAnimationDuration:0.75];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[self.view sendSubviewToBack:[self.view viewWithTag:101]];
+		[UIView commitAnimations];
+	}
+	
+//	[self showNewMap:nil];
+}
+
+#pragma mark -
+#pragma mark Maps related methods
+
+- (void)showNewMap:(id)sender {
+	/*GeolocationMapsViewController *maps = [[GeolocationMapsViewController alloc] initWithNibName:@"GeolocationMapsViewController" bundle:[NSBundle mainBundle]];
+	[maps setTitle:@"Maps"];
+	[[self navigationController] pushViewController:maps animated:NO];
+	[maps release];*/
+	
+	GeolocationMapViewController *map = [[GeolocationMapViewController alloc] initWithNibName:@"GeolocationMapViewController" bundle:[NSBundle mainBundle]];
+	[map setTitle:@"New Map"];
+	[[self navigationController] pushViewController:map animated:YES];
+	[map release];
 }
 
 #pragma mark -
@@ -221,7 +246,6 @@
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
 	if (![services containsObject:aNetService]) [services addObject:aNetService];
-	NSLog(@"%@", services);
 	if (!moreComing) {
 		searchingServices = NO;
 		[searchingAlert dismissWithClickedButtonIndex:1 animated:NO];
@@ -271,6 +295,15 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	if (alertView == searchingAlert && buttonIndex == 1) [self chooseService];
+}
+
+#pragma mark -
+#pragma mark UIView delegate methods
+
+- (void)viewDidAppear:(BOOL)animated {
+	if ([self.view.subviews lastObject] == [self.view viewWithTag:102]) {
+		NSLog(@"MOSTRANDO ADD MAP?");
+	}
 }
 
 @end

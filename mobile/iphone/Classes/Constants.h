@@ -9,6 +9,7 @@
 
 #define kMapFile		@"map-dcc-full.png"
 #define kSpotterNotif	@"Notif-WiFiSpotter"
+#define kDatabaseFile	@"Data.sqlite3"
 
 typedef enum _UBGeolocationMode {
 	UBTrainingGeolocationMode,

@@ -7,13 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
 #import "GeolocationWiFiSpotter.h"
 #import "ASIFormDataRequest.h"
 #import "JSON.h"
+#import "GeolocationMapsViewController.h"
+#import "GeolocationMapViewController.h"
+#import "Database.h"
 
 @interface GeolocationViewController : UIViewController<UIScrollViewDelegate, UIActionSheetDelegate> {
 	IBOutlet UIScrollView *scrollView;
+	IBOutlet UIView *noServicesView;
 	UIActivityIndicatorView *activityView;
 	UIImageView *imageView, *imageTrainDot;
 	GeolocationWiFiSpotter *spotter;
@@ -28,7 +33,7 @@
 }
 
 @property (nonatomic, retain) UIScrollView *scrollView;
-@property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UIView *noServicesView;
 
 - (void)tapIn:(CGPoint)point;
 - (void)scanDone;
@@ -39,6 +44,9 @@
 - (void)lookForServices:(id)sender;
 - (void)chooseService;
 - (void)willUseService:(int)serviceIndex;
+
+// Maps related methods
+- (void)showNewMap:(id)sender;
 
 // NSNetServiceBrowser delegate methods for service browsing
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)browser;
