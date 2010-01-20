@@ -9,7 +9,7 @@
 #import "GeolocationViewController.h"
 
 @implementation GeolocationViewController
-@synthesize scrollView, activityView, imageView, item;
+@synthesize scrollView, imageView;
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
 	[imageTrainDot setAlpha:0.0];
@@ -46,6 +46,11 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scanDone) name:kSpotterNotif object:nil];
 	
 	mode = UBTrainingGeolocationMode;
+	
+	services = [[NSMutableArray alloc] init];
+	searchingServices = NO;
+	
+	[self lookForServices:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,11 +62,13 @@
 
 - (void)dealloc {
     [super dealloc];
+	[services release];
+	[browser release];
+	[imageView release];
+	[imageTrainDot release];
+	[activityView release];
+	[scrollView release];
 	[spotter close];
-	[imageView dealloc];
-	[imageTrainDot dealloc];
-	[activityView dealloc];
-	[scrollView dealloc];
 	[spotter release];
 }
 
@@ -85,22 +92,11 @@
 	}
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-	if (buttonIndex != [actionSheet cancelButtonIndex]) {
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-		[spotter scan];
-		return;
-	}
-	
-	[scrollView setUserInteractionEnabled:YES];
-	[activityView stopAnimating];
-	[imageTrainDot setAlpha:0.0];
-}
-
 - (void)scanDone {
 	NSLog(@"LISTO!!!");
 	NSLog(@"X:%f Y:%f", lastPoint.x, lastPoint.y);
 	NSString *signalData = @"";
+	return;
 	
 	if (spotter.networks != nil) {
 		for (int i = 0, n = CFArrayGetCount([spotter networks]); i < n; i++) {
@@ -170,6 +166,111 @@
 
 - (void)locate:(id)sender {
 	NSLog(@"%@", sender);
+}
+
+#pragma mark -
+#pragma mark Services related methods
+
+- (void)lookForServices:(id)sender {
+	if (browser == nil) {
+		browser = [[NSNetServiceBrowser alloc] init];
+		[browser setDelegate:self];
+	}
+	if (!searchingServices) [browser searchForServicesOfType:@"_ubisoa._tcp" inDomain:@"local."];
+}
+
+- (void)chooseService {
+	if ([services count] == 1) [self willUseService:0];
+	if ([services count] > 1) {
+		servicesMenu = [[[UIActionSheet alloc] initWithTitle:@"Choose a Geolocation service:" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil] autorelease];
+		for (NSNetService *service in services)
+			[servicesMenu addButtonWithTitle:[service name]];
+		[servicesMenu addButtonWithTitle:@"Cancel"];
+		[servicesMenu setCancelButtonIndex:[services count]];
+		[servicesMenu showInView:self.parentViewController.parentViewController.view];
+	}
+}
+
+- (void)willUseService:(int)serviceIndex {
+	activeServiceIndex = serviceIndex;
+	NSLog(@"WILL USE SERVICE: %@", [services objectAtIndex:activeServiceIndex]);
+}
+
+#pragma mark -
+#pragma mark NSNetServiceBrowser delegate methods for service browsing
+
+- (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)browser {
+	searchingServices = YES;
+	
+	searchingAlert = [[[UIAlertView alloc] initWithTitle:@"Looking for Services" message:@"\n\n" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
+	[searchingAlert show];
+	
+	UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+	aiv.center = CGPointMake(searchingAlert.bounds.size.width / 2.0f, searchingAlert.bounds.size.height * 0.43f);
+	[aiv startAnimating];
+	[searchingAlert addSubview:aiv];
+	[aiv release];
+}
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)browser didNotSearch:(NSDictionary *)errorDict {
+	if (searchingServices) {
+		searchingServices = NO;
+		[searchingAlert dismissWithClickedButtonIndex:0 animated:YES];
+	}
+}
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
+	if (![services containsObject:aNetService]) [services addObject:aNetService];
+	NSLog(@"%@", services);
+	if (!moreComing) {
+		searchingServices = NO;
+		[searchingAlert dismissWithClickedButtonIndex:1 animated:NO];
+		[browser stop];
+	}
+}
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
+	[services removeObject:aNetService];
+	if (!moreComing) {
+		UIAlertView *av = [[[UIAlertView alloc] initWithTitle:@"Services Lost" message:@"Some of the services are no longer available." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+		[av show];
+		[browser stop];
+	}
+}
+
+#pragma mark -
+#pragma mark UIActionSheet delegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (actionSheet == servicesMenu)
+		if (buttonIndex != actionSheet.cancelButtonIndex)
+			[self willUseService:buttonIndex];
+	
+	
+	/*	if (buttonIndex != [actionSheet cancelButtonIndex]) {
+	 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	 [spotter scan];
+	 return;
+	 }
+	 
+	 [scrollView setUserInteractionEnabled:YES];
+	 [activityView stopAnimating];
+	 [imageTrainDot setAlpha:0.0];*/
+}
+
+#pragma mark -
+#pragma mark UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (alertView == searchingAlert && buttonIndex == 0) {
+		[browser stop];
+		searchingServices = NO;
+		[searchingAlert dismissWithClickedButtonIndex:0 animated:YES];
+	}
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (alertView == searchingAlert && buttonIndex == 1) [self chooseService];
 }
 
 @end
