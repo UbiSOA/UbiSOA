@@ -1,2 +1,5 @@
+# Imagery Credit Notes #
+
 ## NoMapsConfigured.psd ##
+
 - Original map icon downloaded from: http://bethelofhouston.com/Websites/bethelipc/Images/road_map_icon.png
