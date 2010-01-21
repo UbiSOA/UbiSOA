@@ -191,7 +191,7 @@
 	int i = 1;
 	NSString *path;
 	do {
-		path = [NSString stringWithFormat:@"%@/Documents/IMG_%03d.PNG", NSHomeDirectory(), i++];
+		path = [NSString stringWithFormat:@"%@/Documents/IMG_%04d.JPG", NSHomeDirectory(), i++];
 	} while ([[NSFileManager defaultManager] fileExistsAtPath:path]);
 	return path;
 }
