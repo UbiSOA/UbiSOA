@@ -13,12 +13,18 @@
 
 @interface Database : NSObject {
 	sqlite3 *database;
+	NSMutableArray *data;
 }
+
+@property (nonatomic, retain) NSMutableArray *data;
 
 + (Database *)sharedInstance;
 - (id)init;
 - (void)dealloc;
-- (int)countRows:(NSString *)ofTable;
+- (int)countRowsOfTable:(NSString *)aTable;
+- (void)removeRow:(int)row ofTable:(NSString *)aTable;
 - (BOOL)addMap:(id)aMap;
+- (BOOL)updateMap:(id)aMap;
+- (void)loadMaps;
 
 @end

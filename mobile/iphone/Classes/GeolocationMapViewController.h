@@ -11,12 +11,16 @@
 #import "GeolocationMap.h"
 #import "GeolocationMapsViewController.h"
 
+
 @interface GeolocationMapViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 	GeolocationMap *map;
+	BOOL editing;
 }
 
 @property (nonatomic, retain) GeolocationMap *map;
+@property (nonatomic) BOOL editing;
 
 - (NSString *)findUniqueSavePath;
+- (void)done:(id)sender;
 
 @end

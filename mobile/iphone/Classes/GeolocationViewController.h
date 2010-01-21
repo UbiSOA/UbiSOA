@@ -30,10 +30,12 @@
 	UIAlertView *searchingAlert;
 	int activeServiceIndex;
 	UIActionSheet *servicesMenu;
+	GeolocationMap *selectedMap;
 }
 
 @property (nonatomic, retain) UIScrollView *scrollView;
 @property (nonatomic, retain) UIView *noServicesView;
+@property (nonatomic, retain) GeolocationMap *selectedMap;
 
 - (void)tapIn:(CGPoint)point;
 - (void)scanDone;
@@ -47,6 +49,8 @@
 
 // Maps related methods
 - (void)showNewMap:(id)sender;
+- (void)showMaps:(id)sender;
+- (void)showMaps:(id)sender withAnimation:(BOOL)animated;
 
 // NSNetServiceBrowser delegate methods for service browsing
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)browser;

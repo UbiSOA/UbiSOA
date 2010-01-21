@@ -14,11 +14,13 @@
 	IBOutlet NSString *name, *file;
 	IBOutlet UIImage *image;
 	double neLat, neLng, seLat, seLng, swLat, swLng, nwLat, nwLng;
+	int tag;
 }
 
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *file;
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic) double neLat, neLng, seLat, seLng, swLat, swLng, nwLat, nwLng;
+@property (nonatomic) int tag;
 
 @end

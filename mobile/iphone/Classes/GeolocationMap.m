@@ -10,7 +10,7 @@
 
 
 @implementation GeolocationMap
-@synthesize name, file, image, neLat, neLng, seLat, seLng, swLat, swLng, nwLat, nwLng;
+@synthesize name, file, image, neLat, neLng, seLat, seLng, swLat, swLng, nwLat, nwLng, tag;
 
 - (void)dealloc {
 	[name release];
@@ -20,7 +20,7 @@
 }
 
 - (NSString *)description {
-	return [[NSString alloc] initWithFormat:@"Map:%@ Image:%@ (%.7f/%.7f, %.7f/%.7f, %.7f/%.7f, %.7f/%.7f)", self.name, [self.file lastPathComponent], self.neLat, self.neLng, self.seLat, self.seLng, self.swLat, self.swLng, self.nwLat,self.nwLng];
+	return [[NSString alloc] initWithFormat:@"Map:%@ Image:%@ Tag:%d (%.7f/%.7f, %.7f/%.7f, %.7f/%.7f, %.7f/%.7f)", self.name, [self.file lastPathComponent], self.tag, self.neLat, self.neLng, self.seLat, self.seLng, self.swLat, self.swLng, self.nwLat,self.nwLng];
 }
 
 @end

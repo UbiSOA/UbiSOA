@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "Database.h"
-
+#import "GeolocationMapViewController.h"
+#import "GeolocationViewController.h"
 
 @interface GeolocationMapsViewController : UITableViewController {
 
 }
 
-- (void)viewDidAppear:(BOOL)animated;
+- (void)addMap:(id)sender;
 
 @end

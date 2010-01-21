@@ -9,7 +9,7 @@
 #import "GeolocationViewController.h"
 
 @implementation GeolocationViewController
-@synthesize scrollView, noServicesView;
+@synthesize scrollView, noServicesView, selectedMap;
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
 	[imageTrainDot setAlpha:0.0];
@@ -59,7 +59,6 @@
 }
 
 - (void)dealloc {
-    [super dealloc];
 	[services release];
 	[browser release];
 	[imageView release];
@@ -69,6 +68,8 @@
 	[spotter close];
 	[spotter release];
 	[noServicesView release];
+	[selectedMap release];
+    [super dealloc];
 }
 
 - (void)tapIn:(CGPoint)point {	
@@ -193,32 +194,30 @@
 - (void)willUseService:(int)serviceIndex {
 	activeServiceIndex = serviceIndex;
 	NSLog(@"WILL USE SERVICE: %@", [services objectAtIndex:activeServiceIndex]);
-
-	if ([self.view.subviews lastObject] == [self.view viewWithTag:101]) {
-		[UIView beginAnimations:@"HideNoServicesView" context:nil];
-		[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
-		[UIView setAnimationDuration:0.75];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-		[self.view sendSubviewToBack:[self.view viewWithTag:101]];
-		[UIView commitAnimations];
-	}
-	
-//	[self showNewMap:nil];
+	[self viewDidAppear:NO];
 }
 
 #pragma mark -
 #pragma mark Maps related methods
 
 - (void)showNewMap:(id)sender {
-	/*GeolocationMapsViewController *maps = [[GeolocationMapsViewController alloc] initWithNibName:@"GeolocationMapsViewController" bundle:[NSBundle mainBundle]];
-	[maps setTitle:@"Maps"];
-	[[self navigationController] pushViewController:maps animated:NO];
-	[maps release];*/
-	
 	GeolocationMapViewController *map = [[GeolocationMapViewController alloc] initWithNibName:@"GeolocationMapViewController" bundle:[NSBundle mainBundle]];
 	[map setTitle:@"New Map"];
 	[[self navigationController] pushViewController:map animated:YES];
 	[map release];
+}
+
+- (void)showMaps:(id)sender {
+	[self showMaps:sender withAnimation:YES];
+}
+
+- (void)showMaps:(id)sender withAnimation:(BOOL)animated {
+	[[Database sharedInstance] loadMaps];
+	
+	GeolocationMapsViewController *maps = [[GeolocationMapsViewController alloc] initWithNibName:@"GeolocationMapsViewController" bundle:[NSBundle mainBundle]];
+	[maps setTitle:@"Maps"];
+	[[self navigationController] pushViewController:maps animated:animated];
+	[maps release];
 }
 
 #pragma mark -
@@ -301,9 +300,74 @@
 #pragma mark UIView delegate methods
 
 - (void)viewDidAppear:(BOOL)animated {
-	if ([self.view.subviews lastObject] == [self.view viewWithTag:102]) {
-		NSLog(@"MOSTRANDO ADD MAP?");
+	BOOL noServicesOnTop = [self.view.subviews lastObject] == [self.view viewWithTag:101];
+	BOOL noMapsOnTop = [self.view.subviews lastObject] == [self.view viewWithTag:102];
+	int mapCount = [[Database sharedInstance] countRowsOfTable:@"maps"];
+	int servicesCount = [services count];
+
+//	NSLog(@"---PRE----");
+//	NSLog(@"SELECTED MAP: %@", self.selectedMap);
+//	NSLog(@"SERVICES ON TOP: %@", (noServicesOnTop)? @"YES": @"NO");
+//	NSLog(@"NO MAPS ON TOP: %@", (noMapsOnTop)? @"YES": @"NO");
+//	NSLog(@"MAPS ON FILE: %d", mapCount);
+//	NSLog(@"SERVICES COUNT: %d", servicesCount);
+//	NSLog(@"-------");
+	
+	if (servicesCount > 0 && noServicesOnTop) {
+		[UIView beginAnimations:@"NoServicesViewHide" context:nil];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[UIView setAnimationDuration:0.75];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+		[self.view sendSubviewToBack:[self.view viewWithTag:101]];
+		[UIView commitAnimations];
+		noServicesOnTop = NO;
+		noMapsOnTop = [self.view.subviews lastObject] == [self.view viewWithTag:102];
 	}
+	
+	if (mapCount == 1 && self.selectedMap == nil) {
+		[[Database sharedInstance] loadMaps];
+		self.selectedMap = [[[Database sharedInstance] data] objectAtIndex:0];
+	}
+	
+	if (mapCount == 0 && self.selectedMap != nil)
+		self.selectedMap = nil;
+	
+	if (mapCount > 0 && self.selectedMap != nil && noMapsOnTop) {
+		[UIView beginAnimations:@"NoMapsViewHide" context:nil];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[UIView setAnimationDuration:0.75];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+		[self.view sendSubviewToBack:[self.view viewWithTag:102]];
+		[UIView commitAnimations];
+		noMapsOnTop = NO;
+	}
+	
+	if (mapCount == 0 && !noMapsOnTop && !noServicesOnTop) {
+		[UIView beginAnimations:@"NoMapsViewShow" context:nil];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[UIView setAnimationDuration:0.75];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:YES];
+		[self.view bringSubviewToFront:[self.view viewWithTag:102]];
+		[UIView commitAnimations];
+		noMapsOnTop = YES;
+	}
+	
+	if (mapCount > 1 && !noServicesOnTop && self.selectedMap == nil)
+		[self showMaps:nil withAnimation:YES];
+	
+	noServicesOnTop = [self.view.subviews lastObject] == [self.view viewWithTag:101];
+	noMapsOnTop = [self.view.subviews lastObject] == [self.view viewWithTag:102];
+	mapCount = [[Database sharedInstance] countRowsOfTable:@"maps"];
+	servicesCount = [services count];
+	
+//	NSLog(@"---AFTER----");
+//	NSLog(@"SELECTED MAP: %@", self.selectedMap);
+//	NSLog(@"SERVICES ON TOP: %@", (noServicesOnTop)? @"YES": @"NO");
+//	NSLog(@"NO MAPS ON TOP: %@", (noMapsOnTop)? @"YES": @"NO");
+//	NSLog(@"MAPS ON FILE: %d", mapCount);
+//	NSLog(@"SERVICES COUNT: %d", servicesCount);
+//	NSLog(@"-------");	
+	
 }
 
 @end

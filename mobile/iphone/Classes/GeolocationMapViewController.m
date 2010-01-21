@@ -10,56 +10,20 @@
 
 
 @implementation GeolocationMapViewController
-@synthesize map;
+@synthesize map, editing;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	map = [[GeolocationMap alloc] init];
-	map.name = @"New Map";
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(newDone:)] autorelease];
+	if (map == nil) {
+		map = [[GeolocationMap alloc] init];
+		map.name = @"New Map";
+	}
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)] autorelease];
 }
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 - (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
 }
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
 
 #pragma mark Table view methods
 
@@ -93,7 +57,6 @@
     if (section == 2) return 8;
 	return 1;
 }
-
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -168,64 +131,17 @@
     return cell;
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 1) {
 		UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+		picker.navigationBar.barStyle = UIBarStyleBlackOpaque;
+		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;		
 		picker.delegate = self;
 		picker.allowsEditing = NO;
-		[self.navigationController presentModalViewController:picker animated:YES];
+		[self presentModalViewController:picker animated:YES];
 		[picker release];
 	}
-	
-	
-    // Navigation logic may go here. Create and push another view controller.
-	// AnotherViewController *anotherViewController = [[AnotherViewController alloc] initWithNibName:@"AnotherView" bundle:nil];
-	// [self.navigationController pushViewController:anotherViewController];
-	// [anotherViewController release];
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 
 - (void)dealloc {
 	[map release];
@@ -258,9 +174,14 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	self.map.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-	self.map.file = [self findUniqueSavePath];
+	self.map.file = editing? [NSString stringWithFormat:@"%@/Documents/%@", NSHomeDirectory(), self.map.file]: [self findUniqueSavePath];
 	[self.navigationController dismissModalViewControllerAnimated:YES];
 	[self.tableView reloadData];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	navigationController.navigationBar.barStyle = UIBarStyleDefault;
 }
 
 #pragma mark -
@@ -275,11 +196,12 @@
 	return path;
 }
 
-- (void)newDone:(id)sender {
-	if (self.map.name == nil) {
+- (void)done:(id)sender {
+	[self.tableView reloadData];
+	if (self.map.name == nil || [self.map.name compare:@""] == 0) {
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Missing Information" message:@"The map must have a name." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 		[alert show];
-	} else if (self.map.image == nil) {
+	} else if (!editing && self.map.image == nil) {
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Missing Information" message:@"You must choose an image." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 		[alert show];
 	} else if (self.map.neLat == 0.0 || self.map.neLng == 0.0 ||
@@ -289,9 +211,17 @@
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Missing Information" message:@"The format for some of the coordinates is not valid." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 		[alert show];
 	} else {
-		if ([[Database sharedInstance] addMap:self.map])
-			[UIImagePNGRepresentation(self.map.image) writeToFile:self.map.file atomically:YES];
-		[self.navigationController popViewControllerAnimated:YES];
+		BOOL stored = NO;
+		if (editing) stored = [[Database sharedInstance] updateMap:self.map];
+		else stored = [[Database sharedInstance] addMap:self.map];
+		if (stored) {
+			if (!editing) [UIImagePNGRepresentation(self.map.image) writeToFile:self.map.file atomically:YES];
+			[[Database sharedInstance] loadMaps];
+			[self.navigationController popViewControllerAnimated:YES];
+		} else {
+			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Storage Error" message:@"Cannot create new map." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+			[alert show];
+		}
 	}
 }
 

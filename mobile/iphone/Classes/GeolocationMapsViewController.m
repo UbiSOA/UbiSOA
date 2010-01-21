@@ -20,25 +20,24 @@
 }
 */
 
-/*
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addMap:)];
 }
-*/
 
-/*
+- (void)addMap:(id)sender {
+	GeolocationMapViewController *map = [[GeolocationMapViewController alloc] initWithNibName:@"GeolocationMapViewController" bundle:[NSBundle mainBundle]];
+	[map setTitle:@"New Map"];
+	[[self navigationController] pushViewController:map animated:YES];
+	[map release];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	[self.tableView reloadData];
 }
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
+
 /*
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
@@ -80,7 +79,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return [[[Database sharedInstance] data] count];
 }
 
 
@@ -88,25 +87,34 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    // Set up the cell...
+	GeolocationMap *map = [[[Database sharedInstance] data] objectAtIndex:indexPath.row];
+    cell.textLabel.text = map.name;
+	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	
     return cell;
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	// AnotherViewController *anotherViewController = [[AnotherViewController alloc] initWithNibName:@"AnotherView" bundle:nil];
-	// [self.navigationController pushViewController:anotherViewController];
-	// [anotherViewController release];
+	GeolocationViewController *controller = [self.navigationController.viewControllers objectAtIndex:0];
+	[controller setSelectedMap:[[[Database sharedInstance] data] objectAtIndex:indexPath.row]];
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	GeolocationMapViewController *controller = [[GeolocationMapViewController alloc] initWithNibName:@"GeolocationMapViewController" bundle:[NSBundle mainBundle]];
+	GeolocationMap *map = [[[Database sharedInstance] data] objectAtIndex:indexPath.row];
+	[controller setEditing:YES];
+	[controller setMap:map];
+	[controller setTitle:map.name];
+	[self.navigationController pushViewController:controller animated:YES];
+	[controller release];
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -117,19 +125,22 @@
 */
 
 
-/*
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
+		GeolocationMap *map = [[[Database sharedInstance] data] objectAtIndex:indexPath.row];
+		NSString *path = [NSString stringWithFormat:@"%@/Documents/%@", NSHomeDirectory(), map.file];
+		[[NSFileManager defaultManager] removeItemAtPath:path error:nil];	
+
+		[[Database sharedInstance] removeRow:map.tag ofTable:@"maps"];
+		[[Database sharedInstance] loadMaps];
+		
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+
+		if ([[[Database sharedInstance] data] count] == 0)
+			[self.navigationController popViewControllerAnimated:YES];
+    }
 }
-*/
 
 
 /*
