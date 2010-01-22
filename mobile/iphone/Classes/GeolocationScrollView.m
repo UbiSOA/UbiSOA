@@ -18,7 +18,7 @@
 	float x = point.x / self.contentSize.width;
 	float y = point.y / self.contentSize.height;
 	[((GeolocationViewController*)[self delegate]) tapIn:CGPointMake(x, y)];*/
-	[((GeolocationViewController*)[self delegate]) tapIn:[touch locationInView:self]];
+	[((GeolocationViewController2*)[self delegate]) tapIn:[touch locationInView:self]];
 }
 
 @end

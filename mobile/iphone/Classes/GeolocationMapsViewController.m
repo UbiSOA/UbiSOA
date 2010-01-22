@@ -10,20 +10,11 @@
 
 
 @implementation GeolocationMapsViewController
+@synthesize service;
 
-/*
-- (id)initWithStyle:(UITableViewStyle)style {
-    // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-    if (self = [super initWithStyle:style]) {
-    }
-    return self;
-}
-*/
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addMap:)];
 }
 
 - (void)addMap:(id)sender {
@@ -33,42 +24,34 @@
 	[map release];
 }
 
+- (void)chooseMap:(int)mapIndex animated:(BOOL)animate {
+	GeolocationViewController *controller = [[GeolocationViewController alloc] initWithNibName:@"GeolocationViewController" bundle:[NSBundle mainBundle]];
+	controller.service = self.service;
+	controller.map = [[[Database sharedInstance] data] objectAtIndex:mapIndex];
+	controller.title = controller.map.name;
+	controller.hidesBottomBarWhenPushed = YES;
+	[self.navigationController pushViewController:controller animated:animate];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	[[Database sharedInstance] loadMaps];
 	[self.tableView reloadData];
+	
+	if ([[[Database sharedInstance] data] count] > 0) {
+		if (self.tableView.tableHeaderView != nil) {
+			hiddenHeader = self.tableView.tableHeaderView;
+			[hiddenHeader retain];
+		}
+		self.tableView.tableHeaderView = nil;
+		self.tableView.scrollEnabled = YES;
+		self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	} else self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addMap:)];
 }
-
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 - (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
+	[super didReceiveMemoryWarning];
 }
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
 
 #pragma mark Table view methods
 
@@ -76,16 +59,11 @@
     return 1;
 }
 
-
-// Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [[[Database sharedInstance] data] count];
 }
 
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
     static NSString *CellIdentifier = @"Cell";
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -101,9 +79,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	GeolocationViewController *controller = [self.navigationController.viewControllers objectAtIndex:0];
-	[controller setSelectedMap:[[[Database sharedInstance] data] objectAtIndex:indexPath.row]];
-	[self.navigationController popViewControllerAnimated:YES];
+	[self chooseMap:indexPath.row animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -116,16 +92,6 @@
 	[controller release];
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-// Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		GeolocationMap *map = [[[Database sharedInstance] data] objectAtIndex:indexPath.row];
@@ -137,41 +103,31 @@
 		
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
 
-		if ([[[Database sharedInstance] data] count] == 0)
-			[self.navigationController popViewControllerAnimated:YES];
+		if ([[[Database sharedInstance] data] count] == 0) {
+			[UIView beginAnimations:@"ShowHiddenHeader" context:nil];
+			[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:YES];
+			[UIView setAnimationDuration:0.5];
+			self.tableView.tableHeaderView = hiddenHeader;
+			[self.tableView reloadData];
+			self.navigationItem.leftBarButtonItem = nil;
+			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addMap:)];
+			self.tableView.scrollEnabled = NO;
+			[UIView commitAnimations];
+		}
     }
 }
 
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+- (void)setEditing:(BOOL)editing animated:(BOOL)animate {
+	[super setEditing:editing animated:animate];
+	if (editing == 1) {
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addMap:)];
+	} else self.navigationItem.leftBarButtonItem = nil;
 }
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 
 - (void)dealloc {
+	[hiddenHeader release];
+	[service release];
     [super dealloc];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	/*if ([[Database sharedInstance] countRows:@"maps"] == 0) {
-		[UIView beginAnimations:@"HideNoServicesView" context:nil];
-		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.parentViewController.view cache:YES];
-		[UIView setAnimationDuration:0.5];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-		[(UINavigationController *)[self parentViewController] popViewControllerAnimated:NO];
-		[UIView commitAnimations];
-	}*/
 }
 
 @end

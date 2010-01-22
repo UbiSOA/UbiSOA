@@ -11,10 +11,14 @@
 #import "GeolocationMapViewController.h"
 #import "GeolocationViewController.h"
 
-@interface GeolocationMapsViewController : UITableViewController {
 
+@interface GeolocationMapsViewController : UITableViewController {
+	UIView *hiddenHeader;
+	NSNetService *service;
 }
 
-- (void)addMap:(id)sender;
+@property (nonatomic, retain) NSNetService *service;
+
+- (void)chooseMap:(int)mapIndex animated:(BOOL)animate;
 
 @end

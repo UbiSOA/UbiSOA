@@ -15,8 +15,8 @@
 		28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindow.xib */; };
 		E80C14A310D9E7F300FE425A /* tab-location.png in Resources */ = {isa = PBXBuildFile; fileRef = E80C14A210D9E7F300FE425A /* tab-location.png */; };
 		E80C14E810D9ECE100FE425A /* GeolocationScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = E80C14E710D9ECE100FE425A /* GeolocationScrollView.m */; };
-		E827921610D8624B00DBBBAC /* GeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E827921410D8624B00DBBBAC /* GeolocationViewController.m */; };
-		E827921710D8624B00DBBBAC /* GeolocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E827921510D8624B00DBBBAC /* GeolocationViewController.xib */; };
+		E827921610D8624B00DBBBAC /* GeolocationViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = E827921410D8624B00DBBBAC /* GeolocationViewController2.m */; };
+		E827921710D8624B00DBBBAC /* GeolocationViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = E827921510D8624B00DBBBAC /* GeolocationViewController2.xib */; };
 		E827921B10D863E800DBBBAC /* map-dcc.png in Resources */ = {isa = PBXBuildFile; fileRef = E827921A10D863E800DBBBAC /* map-dcc.png */; };
 		E827923B10D9E5C000DBBBAC /* map-vistah.png in Resources */ = {isa = PBXBuildFile; fileRef = E827923A10D9E5C000DBBBAC /* map-vistah.png */; };
 		E82CD81011067C7900A1D4E2 /* NoServicesFound.png in Resources */ = {isa = PBXBuildFile; fileRef = E82CD80F11067C7900A1D4E2 /* NoServicesFound.png */; };
@@ -24,6 +24,10 @@
 		E82CD86211068A4F00A1D4E2 /* ButtonGray.png in Resources */ = {isa = PBXBuildFile; fileRef = E82CD86011068A4F00A1D4E2 /* ButtonGray.png */; };
 		E82E4CD610DB3B770003E1FA /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E82E4CD510DB3B770003E1FA /* icon.png */; };
 		E82E4CF710DC02E00003E1FA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E82E4CF610DC02E00003E1FA /* Default.png */; };
+		E83B14F711093652003388BF /* GeolocationServicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E83B14F511093652003388BF /* GeolocationServicesViewController.m */; };
+		E83B14F811093652003388BF /* GeolocationServicesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E83B14F611093652003388BF /* GeolocationServicesViewController.xib */; };
+		E83B18D61109A035003388BF /* GeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E83B18D41109A035003388BF /* GeolocationViewController.m */; };
+		E83B18D71109A035003388BF /* GeolocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E83B18D51109A035003388BF /* GeolocationViewController.xib */; };
 		E85215401106C0E900E3A5AE /* NoMapsConfigured.png in Resources */ = {isa = PBXBuildFile; fileRef = E852153F1106C0E800E3A5AE /* NoMapsConfigured.png */; };
 		E85215CC1106CB7100E3A5AE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85215CB1106CB7100E3A5AE /* QuartzCore.framework */; };
 		E85216751106E7CB00E3A5AE /* GeolocationMapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E85216731106E7CB00E3A5AE /* GeolocationMapsViewController.m */; };
@@ -75,9 +79,9 @@
 		E80C14E610D9ECE100FE425A /* GeolocationScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationScrollView.h; sourceTree = "<group>"; };
 		E80C14E710D9ECE100FE425A /* GeolocationScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationScrollView.m; sourceTree = "<group>"; };
 		E80C156C10D9F7C600FE425A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		E827921310D8624B00DBBBAC /* GeolocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationViewController.h; sourceTree = "<group>"; };
-		E827921410D8624B00DBBBAC /* GeolocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationViewController.m; sourceTree = "<group>"; };
-		E827921510D8624B00DBBBAC /* GeolocationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GeolocationViewController.xib; path = Classes/GeolocationViewController.xib; sourceTree = "<group>"; };
+		E827921310D8624B00DBBBAC /* GeolocationViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationViewController2.h; sourceTree = "<group>"; };
+		E827921410D8624B00DBBBAC /* GeolocationViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationViewController2.m; sourceTree = "<group>"; };
+		E827921510D8624B00DBBBAC /* GeolocationViewController2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GeolocationViewController2.xib; path = Classes/GeolocationViewController2.xib; sourceTree = "<group>"; };
 		E827921A10D863E800DBBBAC /* map-dcc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-dcc.png"; sourceTree = "<group>"; };
 		E827923A10D9E5C000DBBBAC /* map-vistah.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-vistah.png"; sourceTree = "<group>"; };
 		E82CD80F11067C7900A1D4E2 /* NoServicesFound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoServicesFound.png; sourceTree = "<group>"; };
@@ -85,6 +89,12 @@
 		E82CD86011068A4F00A1D4E2 /* ButtonGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonGray.png; sourceTree = "<group>"; };
 		E82E4CD510DB3B770003E1FA /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		E82E4CF610DC02E00003E1FA /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		E83B14F411093652003388BF /* GeolocationServicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationServicesViewController.h; sourceTree = "<group>"; };
+		E83B14F511093652003388BF /* GeolocationServicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationServicesViewController.m; sourceTree = "<group>"; };
+		E83B14F611093652003388BF /* GeolocationServicesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GeolocationServicesViewController.xib; path = Classes/GeolocationServicesViewController.xib; sourceTree = "<group>"; };
+		E83B18D31109A035003388BF /* GeolocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationViewController.h; sourceTree = "<group>"; };
+		E83B18D41109A035003388BF /* GeolocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationViewController.m; sourceTree = "<group>"; };
+		E83B18D51109A035003388BF /* GeolocationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GeolocationViewController.xib; path = Classes/GeolocationViewController.xib; sourceTree = "<group>"; };
 		E852153F1106C0E800E3A5AE /* NoMapsConfigured.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoMapsConfigured.png; sourceTree = "<group>"; };
 		E85215CB1106CB7100E3A5AE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E85216721106E7CB00E3A5AE /* GeolocationMapsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationMapsViewController.h; sourceTree = "<group>"; };
@@ -209,7 +219,9 @@
 			children = (
 				E85216741106E7CB00E3A5AE /* GeolocationMapsViewController.xib */,
 				E8521756110700CE00E3A5AE /* GeolocationMapViewController.xib */,
-				E827921510D8624B00DBBBAC /* GeolocationViewController.xib */,
+				E83B14F611093652003388BF /* GeolocationServicesViewController.xib */,
+				E83B18D51109A035003388BF /* GeolocationViewController.xib */,
+				E827921510D8624B00DBBBAC /* GeolocationViewController2.xib */,
 				E827922310D863F400DBBBAC /* Images */,
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* UbiSOA-Info.plist */,
@@ -294,18 +306,22 @@
 		E85A2AAA10DC3BDB00C9D8B9 /* Geolocation */ = {
 			isa = PBXGroup;
 			children = (
-				E80C14E610D9ECE100FE425A /* GeolocationScrollView.h */,
-				E80C14E710D9ECE100FE425A /* GeolocationScrollView.m */,
-				E827921310D8624B00DBBBAC /* GeolocationViewController.h */,
-				E827921410D8624B00DBBBAC /* GeolocationViewController.m */,
-				E85A2A9910DC3A9300C9D8B9 /* GeolocationWiFiSpotter.h */,
-				E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */,
+				E8521A941107420A00E3A5AE /* GeolocationMap.h */,
+				E8521A951107420A00E3A5AE /* GeolocationMap.m */,
 				E85216721106E7CB00E3A5AE /* GeolocationMapsViewController.h */,
 				E85216731106E7CB00E3A5AE /* GeolocationMapsViewController.m */,
 				E8521754110700CE00E3A5AE /* GeolocationMapViewController.h */,
 				E8521755110700CE00E3A5AE /* GeolocationMapViewController.m */,
-				E8521A941107420A00E3A5AE /* GeolocationMap.h */,
-				E8521A951107420A00E3A5AE /* GeolocationMap.m */,
+				E80C14E610D9ECE100FE425A /* GeolocationScrollView.h */,
+				E80C14E710D9ECE100FE425A /* GeolocationScrollView.m */,
+				E83B14F411093652003388BF /* GeolocationServicesViewController.h */,
+				E83B14F511093652003388BF /* GeolocationServicesViewController.m */,
+				E83B18D31109A035003388BF /* GeolocationViewController.h */,
+				E83B18D41109A035003388BF /* GeolocationViewController.m */,
+				E827921310D8624B00DBBBAC /* GeolocationViewController2.h */,
+				E827921410D8624B00DBBBAC /* GeolocationViewController2.m */,
+				E85A2A9910DC3A9300C9D8B9 /* GeolocationWiFiSpotter.h */,
+				E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */,
 			);
 			name = Geolocation;
 			sourceTree = "<group>";
@@ -386,7 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */,
-				E827921710D8624B00DBBBAC /* GeolocationViewController.xib in Resources */,
+				E827921710D8624B00DBBBAC /* GeolocationViewController2.xib in Resources */,
 				E827921B10D863E800DBBBAC /* map-dcc.png in Resources */,
 				E827923B10D9E5C000DBBBAC /* map-vistah.png in Resources */,
 				E80C14A310D9E7F300FE425A /* tab-location.png in Resources */,
@@ -403,6 +419,8 @@
 				E85215401106C0E900E3A5AE /* NoMapsConfigured.png in Resources */,
 				E85216761106E7CB00E3A5AE /* GeolocationMapsViewController.xib in Resources */,
 				E8521758110700CE00E3A5AE /* GeolocationMapViewController.xib in Resources */,
+				E83B14F811093652003388BF /* GeolocationServicesViewController.xib in Resources */,
+				E83B18D71109A035003388BF /* GeolocationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,7 +433,7 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* UbiSOAAppDelegate.m in Sources */,
-				E827921610D8624B00DBBBAC /* GeolocationViewController.m in Sources */,
+				E827921610D8624B00DBBBAC /* GeolocationViewController2.m in Sources */,
 				E80C14E810D9ECE100FE425A /* GeolocationScrollView.m in Sources */,
 				E85A2A9B10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m in Sources */,
 				E8D4E1DF10DF03F600C7B8C5 /* ASIAuthenticationDialog.m in Sources */,
@@ -438,6 +456,8 @@
 				E852169C1106ECC600E3A5AE /* Database.m in Sources */,
 				E8521757110700CE00E3A5AE /* GeolocationMapViewController.m in Sources */,
 				E8521A961107420A00E3A5AE /* GeolocationMap.m in Sources */,
+				E83B14F711093652003388BF /* GeolocationServicesViewController.m in Sources */,
+				E83B18D61109A035003388BF /* GeolocationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

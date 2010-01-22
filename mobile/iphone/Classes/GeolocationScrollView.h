@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GeolocationViewController.h"
+#import "GeolocationViewController2.h"
 
 
 @interface GeolocationScrollView : UIScrollView {

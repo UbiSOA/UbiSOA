@@ -25,9 +25,8 @@ static Database *sharedInstance = nil;
 - (id)init {
 	self = [super init];
     if (self) {
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:kDatabaseFile];
-		if (sqlite3_open([documentsDirectory UTF8String], &database) != SQLITE_OK) {
+		NSString *path = [NSString stringWithFormat:@"%@/Documents/%@", NSHomeDirectory(), kDatabaseFile];
+		if (sqlite3_open([path UTF8String], &database) != SQLITE_OK) {
 			sqlite3_close(database);
 			NSAssert(0, @"Failed to open database.");
 		}
@@ -95,46 +94,22 @@ static Database *sharedInstance = nil;
 		sqlite3_close(database);
 		return NO;
 	}
-	NSLog(@"DB ERROR: %s QUERY: %s", sqlite3_errmsg(database), query);
 	sqlite3_finalize(stmt);
 	return YES;
 }
 
 - (BOOL)updateMap:(id)aMap {
 	GeolocationMap *map = (GeolocationMap *)aMap;
-/*	char *query = "UPDATE maps SET name='?', file='?', neLat=?, neLng=?, seLat=?, seLng=?, swLat=?, swLng=?, nwLat=?, nwLng=? WHERE id=?";
-	sqlite3_stmt *stmt;
-	if (sqlite3_prepare_v2(database, query, -1, &stmt, nil) == SQLITE_OK) {
-		sqlite3_bind_text(stmt, 1, [map.name UTF8String], -1, NULL);
-		sqlite3_bind_text(stmt, 2, [[map.file lastPathComponent] UTF8String], -1, NULL);
-		sqlite3_bind_double(stmt, 3, map.neLat);
-		sqlite3_bind_double(stmt, 4, map.neLng);
-		sqlite3_bind_double(stmt, 5, map.seLat);
-		sqlite3_bind_double(stmt, 6, map.seLng);
-		sqlite3_bind_double(stmt, 7, map.swLat);
-		sqlite3_bind_double(stmt, 8, map.swLng);
-		sqlite3_bind_double(stmt, 9, map.nwLat);
-		sqlite3_bind_double(stmt, 10, map.nwLng);
-		sqlite3_bind_int(stmt, 11, map.tag);
-	} else NSLog(@"DB ERROR: %s QUERY: %s", sqlite3_errmsg(database), query);
-	if (sqlite3_step(stmt) != SQLITE_DONE) {
-		NSLog(@"DB ERROR: %s QUERY: %s", sqlite3_errmsg(database), query);
-		sqlite3_close(database);
-		return NO;
-	}
-	NSLog(@"DB ERROR: %s QUERY: %s", sqlite3_errmsg(database), query);
-	sqlite3_finalize(stmt);
-	return YES;*/
-	
 	NSString *query = [NSString stringWithFormat:@"UPDATE maps SET name='%@', file='%@', neLat=%.7f, neLng=%.7f, seLat=%.7f, seLng=%.7f, swLat=%.7f, swLng=%.7f, nwLat=%.7f, nwLng=%.7f WHERE id=%d", map.name, [map.file lastPathComponent], map.neLat, map.neLng, map.seLat, map.seLng, map.swLat, map.swLng, map.nwLat, map.nwLng, map.tag];
 	sqlite3_stmt *st;
-	sqlite3_prepare_v2(database, [query UTF8String], -1, &st, nil);
-	NSLog(@"DB:%s QUERY:%@", sqlite3_errmsg(database), query);
-	sqlite3_step(st);
-	NSLog(@"DB:%s QUERY:%@", sqlite3_errmsg(database), query);
+	if (sqlite3_prepare_v2(database, [query UTF8String], -1, &st, nil) != SQLITE_OK)
+		NSLog(@"DB:%s QUERY:%@", sqlite3_errmsg(database), query);
+	if (sqlite3_step(st) != SQLITE_DONE) {
+		NSLog(@"DB:%s QUERY:%@", sqlite3_errmsg(database), query);
+		sqlite3_close(database);
+	}
 	sqlite3_finalize(st);
 	return YES;
-	
 }
 
 - (void)loadMaps {
@@ -161,10 +136,7 @@ static Database *sharedInstance = nil;
 			[map release];
 		}
 		sqlite3_finalize(st);
-	}
-	
-	NSLog(@"%@", data);
-	CFShow([[NSFileManager defaultManager] directoryContentsAtPath:[NSHomeDirectory() stringByAppendingString:@"/Documents"]]);
+	} else NSLog(@"DB ERROR: %s QUERY: %s", sqlite3_errmsg(database), query);
 }
 
 @end

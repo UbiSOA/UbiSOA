@@ -11,8 +11,8 @@
 
 
 @interface GeolocationMap : NSObject {
-	IBOutlet NSString *name, *file;
-	IBOutlet UIImage *image;
+	NSString *name, *file;
+	UIImage *image;
 	double neLat, neLng, seLat, seLng, swLat, swLng, nwLat, nwLng;
 	int tag;
 }
