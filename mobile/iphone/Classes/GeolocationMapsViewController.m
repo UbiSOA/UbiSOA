@@ -20,6 +20,7 @@
 - (void)addMap:(id)sender {
 	GeolocationMapViewController *map = [[GeolocationMapViewController alloc] initWithNibName:@"GeolocationMapViewController" bundle:[NSBundle mainBundle]];
 	[map setTitle:@"New Map"];
+	[map setHidesBottomBarWhenPushed:YES];
 	[[self navigationController] pushViewController:map animated:YES];
 	[map release];
 }
@@ -88,6 +89,7 @@
 	[controller setEditing:YES];
 	[controller setMap:map];
 	[controller setTitle:map.name];
+	[controller setHidesBottomBarWhenPushed:YES];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }

@@ -10,22 +10,21 @@
 #import "Constants.h"
 #import <dlfcn.h>
 
+@protocol GeolocationWiFiSpotterDelegate <NSObject>
+- (void)spotterDidScan:(CFArrayRef)data;
+@end
 
 @interface GeolocationWiFiSpotter : NSObject {
 	void *libHandle;
 	int (*open)(void *);
 	int (*bind)(void *, NSString *);
 	int (*close)(void *);
-	int (*associate)(void *, NSDictionary*, NSString*);
+	int (*assoc)(void *, NSDictionary*, NSString*);
 	int (*scan)(void *, NSArray **, void *);
     CFArrayRef networks;
+	NSMutableArray *delegates;
 }
 
-@property (nonatomic) CFArrayRef networks;
-
-- (void)open;
-- (void)close;
-- (void)scan;
-- (void)performScan;
++ (GeolocationWiFiSpotter *)sharedInstance;
 
 @end

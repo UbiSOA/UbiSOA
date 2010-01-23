@@ -10,62 +10,43 @@
 
 
 @implementation GeolocationViewController
-@synthesize service, map;
+@synthesize service, map, scrollView;
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tool-location.png"] style:UIBarButtonItemStyleBordered target:nil action:nil];
-//	UIActivityIndicatorView *act = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-//	[act startAnimating];
-//	[act sizeToFit];
-//	act.autoresizingMask =
-//    (UIViewAutoresizingFlexibleLeftMargin |
-//	 UIViewAutoresizingFlexibleRightMargin |
-//	 UIViewAutoresizingFlexibleTopMargin |
-//	 UIViewAutoresizingFlexibleBottomMargin);
-//	UIBarButtonItem *b = [[UIBarButtonItem alloc] initWithCustomView:act];
-//	[b setStyle:UIBarButtonItemStyleBordered];
-//	self.navigationItem.rightBarButtonItem = b;
-//	[b release];
-//	[act release];
+	
+	// Load map image to the scroll.
+	imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", map.file]]];
+	scrollView.contentSize = CGSizeMake(imageView.frame.size.width, imageView.frame.size.height);
+	scrollView.maximumZoomScale = 2.0;
+	scrollView.minimumZoomScale = (imageView.frame.size.width < imageView.frame.size.height)?
+	scrollView.frame.size.width / imageView.frame.size.width:
+	scrollView.frame.size.height / imageView.frame.size.height;
+	scrollView.clipsToBounds = YES;
+	scrollView.delegate = self;
+	[scrollView addSubview:imageView];
+	[scrollView setZoomScale:scrollView.minimumZoomScale];
 }
 
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 - (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
 }
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
 
 - (void)dealloc {
 	[service release];
 	[map release];
+	[scrollView release];
+	[imageView release];
     [super dealloc];
+}
+
+#pragma mark -
+#pragma mark UIScrollView delegate methods
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+	return imageView;
 }
 
 

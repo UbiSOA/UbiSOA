@@ -39,21 +39,25 @@
 		hiddenHeader = self.tableView.tableHeaderView;
 		[hiddenHeader retain];
 		
-		if ([services count] > 1) {
-			[UIView beginAnimations:@"TableHeaderHide" context:nil];
-			[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
-			[UIView setAnimationDuration:1.0];
-		}
+		[UIView beginAnimations:@"TableHeaderHide" context:nil];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+		[UIView setAnimationDuration:0.5];
+		[UIView setAnimationDelegate:self];
+		[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
 		self.tableView.tableHeaderView = nil;
 		[self.tableView setScrollEnabled:YES];
 		[self.tableView reloadData];
-		if ([services count] == 1) [self willUseService:0 animated:NO];
-		if ([services count] > 1) [UIView commitAnimations];
+		[UIView commitAnimations];
 	}
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void) animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+	if ([services count] == 1) [self willUseService:0 animated:YES];
 }
 
 #pragma mark -
@@ -101,17 +105,6 @@
 	maps.service = [services objectAtIndex:serviceIndex];
 	[self.navigationController pushViewController:maps animated:animate];
 	[maps release];
-	
-	if (!animate && [[Database sharedInstance] countRowsOfTable:@"maps"] == 1) {
-		GeolocationViewController *controller = [[GeolocationViewController alloc] initWithNibName:@"GeolocationViewController" bundle:[NSBundle mainBundle]];
-		controller.service = [services objectAtIndex:0];
-		[[Database sharedInstance] loadMaps];
-		controller.map = [[[Database sharedInstance] data] objectAtIndex:0];
-		controller.title = controller.map.name;
-		controller.hidesBottomBarWhenPushed = YES;
-		[self.navigationController pushViewController:controller animated:animate];
-		[controller release];
-	}
 }
 
 #pragma mark -
@@ -143,7 +136,6 @@
 		searchingServices = NO;
 		[searchingAlert dismissWithClickedButtonIndex:0 animated:YES];
 		[browser stop];
-		[self viewDidAppear:NO];
 	}
 }
 
@@ -165,6 +157,10 @@
 		searchingServices = NO;
 		[searchingAlert dismissWithClickedButtonIndex:0 animated:YES];
 	}
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	[self viewDidAppear:YES];
 }
 
 @end

@@ -13,12 +13,9 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindow.xib */; };
-		E80C14A310D9E7F300FE425A /* tab-location.png in Resources */ = {isa = PBXBuildFile; fileRef = E80C14A210D9E7F300FE425A /* tab-location.png */; };
 		E80C14E810D9ECE100FE425A /* GeolocationScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = E80C14E710D9ECE100FE425A /* GeolocationScrollView.m */; };
-		E827921610D8624B00DBBBAC /* GeolocationViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = E827921410D8624B00DBBBAC /* GeolocationViewController2.m */; };
-		E827921710D8624B00DBBBAC /* GeolocationViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = E827921510D8624B00DBBBAC /* GeolocationViewController2.xib */; };
-		E827921B10D863E800DBBBAC /* map-dcc.png in Resources */ = {isa = PBXBuildFile; fileRef = E827921A10D863E800DBBBAC /* map-dcc.png */; };
-		E827923B10D9E5C000DBBBAC /* map-vistah.png in Resources */ = {isa = PBXBuildFile; fileRef = E827923A10D9E5C000DBBBAC /* map-vistah.png */; };
+		E8227A10110AB9860006E675 /* IndicatorLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = E8227A0E110AB9860006E675 /* IndicatorLocation.png */; };
+		E8227A11110AB9860006E675 /* BarIconLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = E8227A0F110AB9860006E675 /* BarIconLocation.png */; };
 		E82CD81011067C7900A1D4E2 /* NoServicesFound.png in Resources */ = {isa = PBXBuildFile; fileRef = E82CD80F11067C7900A1D4E2 /* NoServicesFound.png */; };
 		E82CD86111068A4F00A1D4E2 /* ButtonBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = E82CD85F11068A4F00A1D4E2 /* ButtonBlue.png */; };
 		E82CD86211068A4F00A1D4E2 /* ButtonGray.png in Resources */ = {isa = PBXBuildFile; fileRef = E82CD86011068A4F00A1D4E2 /* ButtonGray.png */; };
@@ -38,14 +35,13 @@
 		E8521758110700CE00E3A5AE /* GeolocationMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8521756110700CE00E3A5AE /* GeolocationMapViewController.xib */; };
 		E8521A961107420A00E3A5AE /* GeolocationMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E8521A951107420A00E3A5AE /* GeolocationMap.m */; };
 		E85A2A9B10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m in Sources */ = {isa = PBXBuildFile; fileRef = E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */; };
-		E87573B310FBF2E600274D89 /* map-dcc-full.png in Resources */ = {isa = PBXBuildFile; fileRef = E87573B210FBF2E600274D89 /* map-dcc-full.png */; };
 		E8A5690610F81FC20083AB00 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A568FB10F81FC20083AB00 /* NSObject+SBJSON.m */; };
 		E8A5690710F81FC20083AB00 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A568FD10F81FC20083AB00 /* NSString+SBJSON.m */; };
 		E8A5690810F81FC20083AB00 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A568FF10F81FC20083AB00 /* SBJSON.m */; };
 		E8A5690910F81FC20083AB00 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A5690110F81FC20083AB00 /* SBJsonBase.m */; };
 		E8A5690A10F81FC20083AB00 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A5690310F81FC20083AB00 /* SBJsonParser.m */; };
 		E8A5690B10F81FC20083AB00 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A5690510F81FC20083AB00 /* SBJsonWriter.m */; };
-		E8CD6CAD10E066D9006BFC2B /* ico-traindot.png in Resources */ = {isa = PBXBuildFile; fileRef = E8CD6CAC10E066D9006BFC2B /* ico-traindot.png */; };
+		E8CD6CAD10E066D9006BFC2B /* IndicatorLocationDot.png in Resources */ = {isa = PBXBuildFile; fileRef = E8CD6CAC10E066D9006BFC2B /* IndicatorLocationDot.png */; };
 		E8D4E1DF10DF03F600C7B8C5 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D4E1CB10DF03F600C7B8C5 /* ASIAuthenticationDialog.m */; };
 		E8D4E1E010DF03F600C7B8C5 /* ASIFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D4E1CD10DF03F600C7B8C5 /* ASIFormDataRequest.m */; };
 		E8D4E1E110DF03F600C7B8C5 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D4E1CF10DF03F600C7B8C5 /* ASIHTTPRequest.m */; };
@@ -59,9 +55,6 @@
 		E8D4E1FE10DF046100C7B8C5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8D4E1FD10DF046100C7B8C5 /* SystemConfiguration.framework */; };
 		E8D4E20010DF047200C7B8C5 /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8D4E1FF10DF047200C7B8C5 /* libz.1.2.3.dylib */; };
 		E8D4E21710DF054A00C7B8C5 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D4E21610DF054A00C7B8C5 /* Reachability.m */; };
-		E8DEB34211058326006DD59D /* tool-gear.png in Resources */ = {isa = PBXBuildFile; fileRef = E8DEB34011058326006DD59D /* tool-gear.png */; };
-		E8DEB34311058326006DD59D /* tool-location.png in Resources */ = {isa = PBXBuildFile; fileRef = E8DEB34111058326006DD59D /* tool-location.png */; };
-		E8DEB43011059F8C006DD59D /* tool-ubisoa.png in Resources */ = {isa = PBXBuildFile; fileRef = E8DEB42F11059F8C006DD59D /* tool-ubisoa.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,15 +68,11 @@
 		28AD73870D9D96C1002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* UbiSOA-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "UbiSOA-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		E80C14A210D9E7F300FE425A /* tab-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-location.png"; sourceTree = "<group>"; };
 		E80C14E610D9ECE100FE425A /* GeolocationScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationScrollView.h; sourceTree = "<group>"; };
 		E80C14E710D9ECE100FE425A /* GeolocationScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationScrollView.m; sourceTree = "<group>"; };
 		E80C156C10D9F7C600FE425A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		E827921310D8624B00DBBBAC /* GeolocationViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationViewController2.h; sourceTree = "<group>"; };
-		E827921410D8624B00DBBBAC /* GeolocationViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationViewController2.m; sourceTree = "<group>"; };
-		E827921510D8624B00DBBBAC /* GeolocationViewController2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GeolocationViewController2.xib; path = Classes/GeolocationViewController2.xib; sourceTree = "<group>"; };
-		E827921A10D863E800DBBBAC /* map-dcc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-dcc.png"; sourceTree = "<group>"; };
-		E827923A10D9E5C000DBBBAC /* map-vistah.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-vistah.png"; sourceTree = "<group>"; };
+		E8227A0E110AB9860006E675 /* IndicatorLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IndicatorLocation.png; sourceTree = "<group>"; };
+		E8227A0F110AB9860006E675 /* BarIconLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BarIconLocation.png; sourceTree = "<group>"; };
 		E82CD80F11067C7900A1D4E2 /* NoServicesFound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoServicesFound.png; sourceTree = "<group>"; };
 		E82CD85F11068A4F00A1D4E2 /* ButtonBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBlue.png; sourceTree = "<group>"; };
 		E82CD86011068A4F00A1D4E2 /* ButtonGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonGray.png; sourceTree = "<group>"; };
@@ -110,7 +99,6 @@
 		E8521A951107420A00E3A5AE /* GeolocationMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationMap.m; sourceTree = "<group>"; };
 		E85A2A9910DC3A9300C9D8B9 /* GeolocationWiFiSpotter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationWiFiSpotter.h; sourceTree = "<group>"; };
 		E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationWiFiSpotter.m; sourceTree = "<group>"; };
-		E87573B210FBF2E600274D89 /* map-dcc-full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-dcc-full.png"; sourceTree = "<group>"; };
 		E8A568F910F81FC20083AB00 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		E8A568FA10F81FC20083AB00 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		E8A568FB10F81FC20083AB00 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -124,7 +112,7 @@
 		E8A5690310F81FC20083AB00 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		E8A5690410F81FC20083AB00 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		E8A5690510F81FC20083AB00 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		E8CD6CAC10E066D9006BFC2B /* ico-traindot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ico-traindot.png"; sourceTree = "<group>"; };
+		E8CD6CAC10E066D9006BFC2B /* IndicatorLocationDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IndicatorLocationDot.png; sourceTree = "<group>"; };
 		E8D4E1CA10DF03F600C7B8C5 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIAuthenticationDialog.h; path = External/ASIHTTPRequest/ASIAuthenticationDialog.h; sourceTree = SOURCE_ROOT; };
 		E8D4E1CB10DF03F600C7B8C5 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIAuthenticationDialog.m; path = External/ASIHTTPRequest/ASIAuthenticationDialog.m; sourceTree = SOURCE_ROOT; };
 		E8D4E1CC10DF03F600C7B8C5 /* ASIFormDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIFormDataRequest.h; path = External/ASIHTTPRequest/ASIFormDataRequest.h; sourceTree = SOURCE_ROOT; };
@@ -149,9 +137,6 @@
 		E8D4E1FF10DF047200C7B8C5 /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
 		E8D4E21510DF054A00C7B8C5 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = External/ASIHTTPRequest/Reachability.h; sourceTree = SOURCE_ROOT; };
 		E8D4E21610DF054A00C7B8C5 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = External/ASIHTTPRequest/Reachability.m; sourceTree = SOURCE_ROOT; };
-		E8DEB34011058326006DD59D /* tool-gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tool-gear.png"; sourceTree = "<group>"; };
-		E8DEB34111058326006DD59D /* tool-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tool-location.png"; sourceTree = "<group>"; };
-		E8DEB42F11059F8C006DD59D /* tool-ubisoa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tool-ubisoa.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,7 +206,6 @@
 				E8521756110700CE00E3A5AE /* GeolocationMapViewController.xib */,
 				E83B14F611093652003388BF /* GeolocationServicesViewController.xib */,
 				E83B18D51109A035003388BF /* GeolocationViewController.xib */,
-				E827921510D8624B00DBBBAC /* GeolocationViewController2.xib */,
 				E827922310D863F400DBBBAC /* Images */,
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* UbiSOA-Info.plist */,
@@ -247,20 +231,15 @@
 		E827922310D863F400DBBBAC /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				E852153F1106C0E800E3A5AE /* NoMapsConfigured.png */,
+				E8227A0F110AB9860006E675 /* BarIconLocation.png */,
 				E82CD85F11068A4F00A1D4E2 /* ButtonBlue.png */,
 				E82CD86011068A4F00A1D4E2 /* ButtonGray.png */,
-				E82CD80F11067C7900A1D4E2 /* NoServicesFound.png */,
-				E8DEB42F11059F8C006DD59D /* tool-ubisoa.png */,
-				E8DEB34011058326006DD59D /* tool-gear.png */,
-				E8DEB34111058326006DD59D /* tool-location.png */,
-				E87573B210FBF2E600274D89 /* map-dcc-full.png */,
-				E8CD6CAC10E066D9006BFC2B /* ico-traindot.png */,
 				E82E4CF610DC02E00003E1FA /* Default.png */,
 				E82E4CD510DB3B770003E1FA /* icon.png */,
-				E80C14A210D9E7F300FE425A /* tab-location.png */,
-				E827923A10D9E5C000DBBBAC /* map-vistah.png */,
-				E827921A10D863E800DBBBAC /* map-dcc.png */,
+				E8227A0E110AB9860006E675 /* IndicatorLocation.png */,
+				E8CD6CAC10E066D9006BFC2B /* IndicatorLocationDot.png */,
+				E852153F1106C0E800E3A5AE /* NoMapsConfigured.png */,
+				E82CD80F11067C7900A1D4E2 /* NoServicesFound.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -318,8 +297,6 @@
 				E83B14F511093652003388BF /* GeolocationServicesViewController.m */,
 				E83B18D31109A035003388BF /* GeolocationViewController.h */,
 				E83B18D41109A035003388BF /* GeolocationViewController.m */,
-				E827921310D8624B00DBBBAC /* GeolocationViewController2.h */,
-				E827921410D8624B00DBBBAC /* GeolocationViewController2.m */,
 				E85A2A9910DC3A9300C9D8B9 /* GeolocationWiFiSpotter.h */,
 				E85A2A9A10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m */,
 			);
@@ -402,17 +379,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */,
-				E827921710D8624B00DBBBAC /* GeolocationViewController2.xib in Resources */,
-				E827921B10D863E800DBBBAC /* map-dcc.png in Resources */,
-				E827923B10D9E5C000DBBBAC /* map-vistah.png in Resources */,
-				E80C14A310D9E7F300FE425A /* tab-location.png in Resources */,
 				E82E4CD610DB3B770003E1FA /* icon.png in Resources */,
 				E82E4CF710DC02E00003E1FA /* Default.png in Resources */,
-				E8CD6CAD10E066D9006BFC2B /* ico-traindot.png in Resources */,
-				E87573B310FBF2E600274D89 /* map-dcc-full.png in Resources */,
-				E8DEB34211058326006DD59D /* tool-gear.png in Resources */,
-				E8DEB34311058326006DD59D /* tool-location.png in Resources */,
-				E8DEB43011059F8C006DD59D /* tool-ubisoa.png in Resources */,
+				E8CD6CAD10E066D9006BFC2B /* IndicatorLocationDot.png in Resources */,
 				E82CD81011067C7900A1D4E2 /* NoServicesFound.png in Resources */,
 				E82CD86111068A4F00A1D4E2 /* ButtonBlue.png in Resources */,
 				E82CD86211068A4F00A1D4E2 /* ButtonGray.png in Resources */,
@@ -421,6 +390,8 @@
 				E8521758110700CE00E3A5AE /* GeolocationMapViewController.xib in Resources */,
 				E83B14F811093652003388BF /* GeolocationServicesViewController.xib in Resources */,
 				E83B18D71109A035003388BF /* GeolocationViewController.xib in Resources */,
+				E8227A10110AB9860006E675 /* IndicatorLocation.png in Resources */,
+				E8227A11110AB9860006E675 /* BarIconLocation.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +404,6 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* UbiSOAAppDelegate.m in Sources */,
-				E827921610D8624B00DBBBAC /* GeolocationViewController2.m in Sources */,
 				E80C14E810D9ECE100FE425A /* GeolocationScrollView.m in Sources */,
 				E85A2A9B10DC3A9300C9D8B9 /* GeolocationWiFiSpotter.m in Sources */,
 				E8D4E1DF10DF03F600C7B8C5 /* ASIAuthenticationDialog.m in Sources */,

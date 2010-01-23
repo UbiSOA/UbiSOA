@@ -12,7 +12,7 @@
 @implementation Database
 @synthesize data;
 
-static Database *sharedInstance = nil;
+static Database *sharedInstance;
 
 #pragma mark -
 #pragma mark Core methods

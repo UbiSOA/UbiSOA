@@ -16,7 +16,7 @@
     [super viewDidLoad];
 	if (map == nil) {
 		map = [[GeolocationMap alloc] init];
-		map.name = @"New Map";
+		map.name = @"";
 	}
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)] autorelease];
 }
@@ -71,7 +71,7 @@
 			case 0:
 				label = (indexPath.section == 0)? @"Name": @"NE Latitude";
 				tag = (indexPath.section == 0)? 0: 1;
-				text = (tag == 0)? (self.map.name == nil)? @"New Map": self.map.name: [NSString stringWithFormat:@"%.7F", self.map.neLat];
+				text = (tag == 0)? (self.map.name == nil)? @"": self.map.name: [NSString stringWithFormat:@"%.7F", self.map.neLat];
 				break;
 			case 1:
 				label = @"NE Longitude"; tag = indexPath.row + 1;
@@ -111,7 +111,12 @@
 		[textField setReturnKeyType:UIReturnKeyDone];
 		[textField setTag:tag];
 		[textField setText:text];
-		[textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+		if ([text compare:@""] == 0 || text == nil)
+			[textField setPlaceholder:@"Enter Name "];
+		if ([text compare:@"0.0000000"] == 0) {
+			[textField setPlaceholder:[textField.text stringByAppendingString:@" "]];
+			[textField setText:@""];
+		}
 		[textField setAdjustsFontSizeToFitWidth:YES];
 		if (indexPath.row == 0) [textField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
 		[textField addTarget:self action:@selector(textFieldDone:) forControlEvents:UIControlEventEditingDidEnd];
@@ -215,7 +220,8 @@
 		if (editing) stored = [[Database sharedInstance] updateMap:self.map];
 		else stored = [[Database sharedInstance] addMap:self.map];
 		if (stored) {
-			if (!editing) [UIImagePNGRepresentation(self.map.image) writeToFile:self.map.file atomically:YES];
+			if ([self.map.file compare:[self.map.file lastPathComponent]] != 0)
+				[UIImagePNGRepresentation(self.map.image) writeToFile:self.map.file atomically:YES];
 			[[Database sharedInstance] loadMaps];
 			[self.navigationController popViewControllerAnimated:YES];
 		} else {

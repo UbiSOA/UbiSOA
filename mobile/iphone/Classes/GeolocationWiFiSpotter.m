@@ -10,27 +10,37 @@
 
 
 @implementation GeolocationWiFiSpotter
-@synthesize networks;
+static GeolocationWiFiSpotter *sharedInstance;
 
-- (void)open {
+
++ (GeolocationWiFiSpotter *)sharedInstance {
+	if (!sharedInstance) sharedInstance = [[self alloc] init];
+	return sharedInstance;
+}
+
+- (id)init {
+	self = [super init];
 	libHandle = dlopen("/System/Library/SystemConfiguration/WiFiManager.bundle/WiFiManager", RTLD_LAZY);
 	open  = dlsym(libHandle, "Apple80211Open");
 	bind  = dlsym(libHandle, "Apple80211BindToInterface");
 	close = dlsym(libHandle, "Apple80211Close");
-	associate = dlsym(libHandle, "Apple80211Associate");
+	assoc = dlsym(libHandle, "Apple80211Associate");
 	scan  = dlsym(libHandle, "Apple80211Scan");
 	
 	#if !TARGET_IPHONE_SIMULATOR
 	open(&libHandle);
 	bind(libHandle, @"en0");
 	#endif
+	return self;
+	
+	delegates = [[NSMutableDictionary alloc] init];
 }
 
 - (void)close {
-	#if !TARGET_IPHONE_SIMULATOR
+#if !TARGET_IPHONE_SIMULATOR
 	close(libHandle);
 	dlclose(libHandle);
-	#endif
+#endif
 }
 
 - (void)scan {
@@ -40,13 +50,22 @@
 - (void)performScan {
 #if !TARGET_IPHONE_SIMULATOR
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	CFDictionaryRef parameters = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     scan(libHandle, &networks, parameters);
-		
 	[pool release];
 #endif
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSpotterNotif object:self];
+	for (id<GeolocationWiFiSpotterDelegate> object in delegates)
+		if (object != nil) [object spotterDidScan:networks];
+}
+
+- (void)addDelegate:(id<GeolocationWiFiSpotterDelegate>)object {
+	[delegates addObject:object];
+}
+
+- (void)dealloc {
+	[self close];
+	[delegates release];
+	[super dealloc];
 }
 
 @end
