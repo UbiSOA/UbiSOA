@@ -55,6 +55,8 @@ static GeolocationWiFiSpotter *sharedInstance;
 	CFDictionaryRef parameters = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     scan(libHandle, &networks, parameters);
 	[pool release];
+#else
+	[NSThread sleepForTimeInterval:2.0];
 #endif	
 	if (self.delegate != nil) [self.delegate spotterDidScan:networks];
 	else NSLog(@"SPOTTER TRIED TO UPDATE RELEASED OBJECT!");
