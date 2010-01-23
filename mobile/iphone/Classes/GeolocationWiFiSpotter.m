@@ -10,6 +10,7 @@
 
 
 @implementation GeolocationWiFiSpotter
+@synthesize delegate;
 static GeolocationWiFiSpotter *sharedInstance;
 
 
@@ -32,8 +33,6 @@ static GeolocationWiFiSpotter *sharedInstance;
 	bind(libHandle, @"en0");
 	#endif
 	return self;
-	
-	delegates = [[NSMutableDictionary alloc] init];
 }
 
 - (void)close {
@@ -43,8 +42,11 @@ static GeolocationWiFiSpotter *sharedInstance;
 #endif
 }
 
-- (void)scan {
+- (BOOL)scan {
+	if (busy) return NO;
 	[NSThread detachNewThreadSelector:@selector(performScan) toTarget:self withObject:nil];
+	busy = YES;
+	return YES;
 }
 
 - (void)performScan {
@@ -53,18 +55,15 @@ static GeolocationWiFiSpotter *sharedInstance;
 	CFDictionaryRef parameters = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     scan(libHandle, &networks, parameters);
 	[pool release];
-#endif
-	for (id<GeolocationWiFiSpotterDelegate> object in delegates)
-		if (object != nil) [object spotterDidScan:networks];
-}
-
-- (void)addDelegate:(id<GeolocationWiFiSpotterDelegate>)object {
-	[delegates addObject:object];
+#endif	
+	if (self.delegate != nil) [self.delegate spotterDidScan:networks];
+	else NSLog(@"SPOTTER TRIED TO UPDATE RELEASED OBJECT!");
+	busy = NO;
 }
 
 - (void)dealloc {
 	[self close];
-	[delegates release];
+	[delegate release];
 	[super dealloc];
 }
 

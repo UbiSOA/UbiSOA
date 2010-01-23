@@ -22,9 +22,13 @@
 	int (*assoc)(void *, NSDictionary*, NSString*);
 	int (*scan)(void *, NSArray **, void *);
     CFArrayRef networks;
-	NSMutableArray *delegates;
+	id<GeolocationWiFiSpotterDelegate> delegate;
+	BOOL busy;
 }
 
+@property (nonatomic, assign) id<GeolocationWiFiSpotterDelegate>delegate;
+
 + (GeolocationWiFiSpotter *)sharedInstance;
+- (BOOL)scan;
 
 @end

@@ -27,14 +27,17 @@
 	scrollView.delegate = self;
 	[scrollView addSubview:imageView];
 	[scrollView setZoomScale:scrollView.minimumZoomScale];
+	
+	// Configuring WiFi spotter
+	[[GeolocationWiFiSpotter sharedInstance] setDelegate:self];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 - (void)dealloc {
+	[[GeolocationWiFiSpotter sharedInstance] setDelegate:nil];
 	[service release];
 	[map release];
 	[scrollView release];
@@ -49,5 +52,23 @@
 	return imageView;
 }
 
+#pragma mark -
+#pragma mark GeolocationWiFiSpotter delegate methods
+
+- (void)spotterDidScan:(CFArrayRef)data {
+	NSLog(@"--->");
+	NSLog(@"spotterDidScan:%@", data);
+	NSLog(@"<---");
+}
+
+#pragma mark -
+#pragma mark Estimate current location
+
+- (IBAction)estimateCurrentLocation:(id)sender {
+	if (![[GeolocationWiFiSpotter sharedInstance] scan]) {
+		NSLog(@"NO SCAN");
+		return;
+	}
+}
 
 @end

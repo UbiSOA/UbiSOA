@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "GeolocationMap.h"
+#import "GeolocationWiFiSpotter.h"
 
 
-@interface GeolocationViewController : UIViewController <UIScrollViewDelegate> {
+@interface GeolocationViewController : UIViewController <UIScrollViewDelegate, GeolocationWiFiSpotterDelegate> {
 	NSNetService *service;
 	GeolocationMap *map;
 	IBOutlet UIScrollView *scrollView;
@@ -20,5 +21,7 @@
 @property (nonatomic, retain) NSNetService *service;
 @property (nonatomic, retain) GeolocationMap *map;
 @property (nonatomic, retain) UIScrollView *scrollView;
+
+- (IBAction)estimateCurrentLocation:(id)sender;
 
 @end
