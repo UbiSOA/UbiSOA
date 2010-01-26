@@ -11,7 +11,7 @@
 #import <dlfcn.h>
 
 @protocol GeolocationWiFiSpotterDelegate <NSObject>
-- (void)spotterDidScan:(CFArrayRef)data;
+- (void)spotterDidScan;
 @end
 
 @interface GeolocationWiFiSpotter : NSObject {
@@ -23,12 +23,12 @@
 	int (*scan)(void *, NSArray **, void *);
     CFArrayRef networks;
 	id<GeolocationWiFiSpotterDelegate> delegate;
-	BOOL busy;
 }
 
 @property (nonatomic, assign) id<GeolocationWiFiSpotterDelegate>delegate;
 
 + (GeolocationWiFiSpotter *)sharedInstance;
-- (BOOL)scan;
+- (void)scan;
+- (NSString *)signalData;
 
 @end

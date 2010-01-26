@@ -42,25 +42,37 @@ static GeolocationWiFiSpotter *sharedInstance;
 #endif
 }
 
-- (BOOL)scan {
-	if (busy) return NO;
+- (void)scan {
 	[NSThread detachNewThreadSelector:@selector(performScan) toTarget:self withObject:nil];
-	busy = YES;
-	return YES;
 }
 
 - (void)performScan {
-#if !TARGET_IPHONE_SIMULATOR
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+#if !TARGET_IPHONE_SIMULATOR
 	CFDictionaryRef parameters = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     scan(libHandle, &networks, parameters);
-	[pool release];
 #else
-	[NSThread sleepForTimeInterval:2.0];
-#endif	
-	if (self.delegate != nil) [self.delegate spotterDidScan:networks];
+	[NSThread sleepForTimeInterval:kSimulatedWiFiSpotterDelay];
+#endif
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(spotterDidScan)])
+[self.delegate spotterDidScan];
 	else NSLog(@"SPOTTER TRIED TO UPDATE RELEASED OBJECT!");
-	busy = NO;
+	[pool release];
+}
+
+- (NSString *)signalData {
+#if TARGET_IPHONE_SIMULATOR
+	return kSimulatedSignalData;
+#endif
+	NSString *signalData = @"";
+	if (networks != nil)
+		for (int i = 0, n = CFArrayGetCount(networks); i < n; i++) {
+			CFDictionaryRef network = CFArrayGetValueAtIndex(networks, i);
+			signalData = [signalData stringByAppendingFormat:@"%@=%@,", CFDictionaryGetValue(network, @"BSSID"), CFDictionaryGetValue(network, @"RSSI")];
+		}
+	if ([signalData length] > 0)
+		signalData = [signalData substringToIndex:[signalData length] - 1];
+	return signalData;
 }
 
 - (void)dealloc {

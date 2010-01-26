@@ -27,7 +27,6 @@
 
 - (void)chooseMap:(int)mapIndex animated:(BOOL)animate {
 	GeolocationViewController *controller = [[GeolocationViewController alloc] initWithNibName:@"GeolocationViewController" bundle:[NSBundle mainBundle]];
-	NSLog(@"ANTES DE: %d", [controller retainCount]);
 	controller.service = self.service;
 	controller.map = [[[Database sharedInstance] data] objectAtIndex:mapIndex];
 	controller.title = controller.map.name;

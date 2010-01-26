@@ -7,12 +7,19 @@
  *
  */
 
-#define kMapFile		@"map-dcc-full.png"
-#define kSpotterNotif	@"Notif-WiFiSpotter"
-#define kDatabaseFile	@"Data.sqlite3"
+#define kDatabaseFile @"Data.sqlite3"
+#define kSimulatedSignalData @"0:9:5b:51:6b:76=-66,0:7:e:7d:91:90=-49,0:11:24:21:15:a2=-48"
+#define kSimulatedWiFiSpotterDelay 1.0
 
 typedef enum _UBGeolocationMode {
 	UBTrainingGeolocationMode,
 	UBTrackingGeolocationMode,
-	UBLoggingGeolocationMode
+	UBTestingGeolocationMode
 } UBGeolocationMode;
+
+typedef enum _UBGeolocationActionType {
+	UBTrainingGeolocationActionType = 1,
+	UBTrackingGeolocationActionType,
+	UBTestingGeolocationActionType,
+	UBLocateGeolocationActionType
+} UBGeolocationActionType;

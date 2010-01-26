@@ -133,10 +133,30 @@
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
 	if (![services containsObject:aNetService]) [services addObject:aNetService];
 	if (!moreComing) {
+		NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+		[services sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+		[sd release];
+		
+		for (NSNetService *service in services) {
+			[service setDelegate:self];
+			[service resolveWithTimeout:0.0];
+		}
+		
 		searchingServices = NO;
 		[searchingAlert dismissWithClickedButtonIndex:0 animated:YES];
 		[browser stop];
 	}
+}
+
+- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
+	[sender stop];
+	NSNumber *errorDomain = [errorDict valueForKey:NSNetServicesErrorDomain];
+	NSNumber *errorCode = [errorDict valueForKey:NSNetServicesErrorCode];
+	NSLog(@"Unable to resolve Bonjour service (Domain: %@, Error Code: %@)", errorDomain, errorCode);
+}
+
+- (void)netServiceDidResolveAddress:(NSNetService *)sender {
+	NSLog(@"Bonjour service resolved: %@, Host: %@, Port: %d", sender, [sender hostName], [sender port]);
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
