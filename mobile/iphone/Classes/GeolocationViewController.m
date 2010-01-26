@@ -27,6 +27,21 @@
 	scrollView.delegate = self;
 	[scrollView addSubview:imageView];
 	[scrollView setZoomScale:scrollView.minimumZoomScale];
+	[imageView release];
+	
+	indicatorCenter = CGPointMake(0.5, 0.5);
+	
+	shadow = [[UIImageView alloc] initWithImage:[self create:50]];
+	shadow.center = CGPointMake(indicatorCenter.x * imageView.frame.size.width, indicatorCenter.y * imageView.frame.size.height);
+	[scrollView addSubview:shadow];
+	[shadow release];
+	
+	// Configuring the location indicator
+	indicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IndicatorLocation.png"]];
+
+	indicator.center = CGPointMake(indicatorCenter.x * imageView.frame.size.width, indicatorCenter.y * imageView.frame.size.height);
+	[scrollView addSubview:indicator];
+	[indicator release];
 	
 	// Configuring WiFi spotter
 	[[GeolocationWiFiSpotter sharedInstance] setDelegate:self];
@@ -41,7 +56,6 @@
 	[service release];
 	[map release];
 	[scrollView release];
-	[imageView release];
     [super dealloc];
 }
 
@@ -49,7 +63,33 @@
 #pragma mark UIScrollView delegate methods
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+	[indicator setAlpha:0.0];
+	[shadow setAlpha:0.0];
 	return imageView;
+}
+
+
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale {
+	indicator.center = CGPointMake(indicatorCenter.x * imageView.frame.size.width, indicatorCenter.y * imageView.frame.size.height);
+	shadow.center = indicator.center;
+
+	[UIView beginAnimations:@"show" context:nil];
+	[indicator setAlpha:1.0];
+	[shadow setAlpha:1.0];
+	[UIView commitAnimations];
+}
+
+- (void)tapIn:(CGPoint)point {
+	NSLog(@"TAP IN %f,%f", point.x, point.y);
+}
+
+#pragma mark -
+#pragma mark UISearchBar delegate methods
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
+	mode = selectedScope;
+	[self setStatusText:@"Double tap on the map"];
 }
 
 #pragma mark -
@@ -64,7 +104,7 @@
 }
 
 #pragma mark -
-#pragma mark Estimate current location
+#pragma mark Common methods
 
 - (void)animateEstimationButton:(BOOL)animate andDisableIt:(BOOL)disable {
 	UIBarButtonItem *button = [[(UIToolbar *)[self.view viewWithTag:1] items] objectAtIndex:0];
@@ -75,6 +115,14 @@
 	UIActivityIndicatorView *act = (UIActivityIndicatorView *)[self.view viewWithTag:2];
 	if (animate) [act startAnimating]; else [act stopAnimating];
 }
+
+- (void)setStatusText:(NSString *)newStatus {
+	UILabel *label = (UILabel *)[self.view viewWithTag:3];
+	[label setText:newStatus];
+}
+
+#pragma mark -
+#pragma mark Estimate current location
 
 - (IBAction)estimateCurrentLocation:(id)sender {
 	if (action == UBLocateGeolocationActionType) {
@@ -106,12 +154,36 @@
 	if ([request responseStatusCode] != 200) {
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Request Error" message:[request responseString] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 		[alert show];
+		[self setStatusText:[request responseString]];
 	} else {
 		// TO DO: Show current location in GUI
 	}
 	
+	[UIView beginAnimations:@"im" context:nil];
+	[shadow setImage:[self create:100]];
+	[shadow setFrame:CGRectMake(indicatorCenter.x * imageView.frame.size.width - 50, indicatorCenter.y * imageView.frame.size.height - 50, 100, 100)];
+	[UIView commitAnimations];
+	
 	[self animateEstimationButton:NO andDisableIt:NO];	
 	action = 0;
+}
+
+- (UIImage *)create:(float)width {
+	UIGraphicsBeginImageContext(CGSizeMake(width + 2, width + 2));
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	CGContextSetFillColorWithColor(context, [[kShadowColor colorWithAlphaComponent:0.2] CGColor]);
+	CGContextAddEllipseInRect(context, CGRectMake(1, 1, width, width));
+	CGContextFillPath(context);
+	
+	CGContextSetLineWidth(context, 2);
+	CGContextSetStrokeColorWithColor(context, [[kShadowColor colorWithAlphaComponent:0.5] CGColor]);
+	CGContextAddEllipseInRect(context, CGRectMake(2, 2, width - 2, width - 2));
+	CGContextStrokePath(context);
+	
+	UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return theImage;
 }
 
 @end
