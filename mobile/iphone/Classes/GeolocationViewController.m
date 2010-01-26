@@ -31,17 +31,18 @@
 	
 	indicatorCenter = CGPointMake(0.5, 0.5);
 	
-	shadow = [[UIImageView alloc] initWithImage:[self create:50]];
-	shadow.center = CGPointMake(indicatorCenter.x * imageView.frame.size.width, indicatorCenter.y * imageView.frame.size.height);
-	[scrollView addSubview:shadow];
-	[shadow release];
+	errorRange = 10.0;
+	errorRangeView = [[UIImageView alloc] initWithImage:[self createErrorRangeImage:errorRange]];
+	errorRangeView.center = CGPointMake(indicatorCenter.x * imageView.frame.size.width, indicatorCenter.y * imageView.frame.size.height);
+	[scrollView addSubview:errorRangeView];
+	[errorRangeView release];
 	
 	// Configuring the location indicator
-	indicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IndicatorLocation.png"]];
+	indicatorView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IndicatorLocation.png"]];
 
-	indicator.center = CGPointMake(indicatorCenter.x * imageView.frame.size.width, indicatorCenter.y * imageView.frame.size.height);
-	[scrollView addSubview:indicator];
-	[indicator release];
+	indicatorView.center = CGPointMake(indicatorCenter.x * imageView.frame.size.width, indicatorCenter.y * imageView.frame.size.height);
+	[scrollView addSubview:indicatorView];
+	[indicatorView release];
 	
 	// Configuring WiFi spotter
 	[[GeolocationWiFiSpotter sharedInstance] setDelegate:self];
@@ -62,21 +63,20 @@
 #pragma mark -
 #pragma mark UIScrollView delegate methods
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-	[indicator setAlpha:0.0];
-	[shadow setAlpha:0.0];
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)aScrollView {
+	[indicatorView setAlpha:0.0];
+	[errorRangeView setAlpha:0.0];
 	return imageView;
 }
 
-
-
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale {
-	indicator.center = CGPointMake(indicatorCenter.x * imageView.frame.size.width, indicatorCenter.y * imageView.frame.size.height);
-	shadow.center = indicator.center;
-
+	indicatorView.center = CGPointMake(indicatorCenter.x * imageView.frame.size.width, indicatorCenter.y * imageView.frame.size.height);
+	errorRangeView.center = indicatorView.center;
+	[self updateErrorRangeAnimated:NO];
+	
 	[UIView beginAnimations:@"show" context:nil];
-	[indicator setAlpha:1.0];
-	[shadow setAlpha:1.0];
+	[indicatorView setAlpha:1.0];
+	[errorRangeView setAlpha:1.0];
 	[UIView commitAnimations];
 }
 
@@ -121,6 +121,35 @@
 	[label setText:newStatus];
 }
 
+- (UIImage *)createErrorRangeImage:(float)width {
+	UIGraphicsBeginImageContext(CGSizeMake(width + 2, width + 2));
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	CGContextSetFillColorWithColor(context, [[kShadowColor colorWithAlphaComponent:0.1] CGColor]);
+	CGContextAddEllipseInRect(context, CGRectMake(1, 1, width, width));
+	CGContextFillPath(context);
+	
+	CGContextSetLineWidth(context, 2);
+	CGContextSetStrokeColorWithColor(context, [[kShadowColor colorWithAlphaComponent:0.4] CGColor]);
+	CGContextAddEllipseInRect(context, CGRectMake(2, 2, width - 2, width - 2));
+	CGContextStrokePath(context);
+	
+	UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return theImage;
+}
+
+- (void)updateErrorRangeAnimated:(BOOL)animate {
+	float orgAlpha = indicatorView.alpha;
+	float range = errorRange * scrollView.zoomScale;
+	indicatorView.alpha = orgAlpha;
+	errorRangeView.alpha = orgAlpha;
+	if (animate) [UIView beginAnimations:@"ErrorRangeChange" context:nil];
+	[errorRangeView setImage:[self createErrorRangeImage:range]];
+	[errorRangeView setFrame:CGRectMake(indicatorCenter.x * imageView.frame.size.width - range / 2.0, indicatorCenter.y * imageView.frame.size.height - range / 2.0, range, range)];
+	if (animate) [UIView commitAnimations];
+}
+
 #pragma mark -
 #pragma mark Estimate current location
 
@@ -159,31 +188,11 @@
 		// TO DO: Show current location in GUI
 	}
 	
-	[UIView beginAnimations:@"im" context:nil];
-	[shadow setImage:[self create:100]];
-	[shadow setFrame:CGRectMake(indicatorCenter.x * imageView.frame.size.width - 50, indicatorCenter.y * imageView.frame.size.height - 50, 100, 100)];
-	[UIView commitAnimations];
+	errorRange = 200;
+	[self updateErrorRangeAnimated:YES];
 	
 	[self animateEstimationButton:NO andDisableIt:NO];	
 	action = 0;
-}
-
-- (UIImage *)create:(float)width {
-	UIGraphicsBeginImageContext(CGSizeMake(width + 2, width + 2));
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	
-	CGContextSetFillColorWithColor(context, [[kShadowColor colorWithAlphaComponent:0.2] CGColor]);
-	CGContextAddEllipseInRect(context, CGRectMake(1, 1, width, width));
-	CGContextFillPath(context);
-	
-	CGContextSetLineWidth(context, 2);
-	CGContextSetStrokeColorWithColor(context, [[kShadowColor colorWithAlphaComponent:0.5] CGColor]);
-	CGContextAddEllipseInRect(context, CGRectMake(2, 2, width - 2, width - 2));
-	CGContextStrokePath(context);
-	
-	UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	return theImage;
 }
 
 @end

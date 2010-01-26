@@ -16,10 +16,11 @@
 	NSNetService *service;
 	GeolocationMap *map;
 	IBOutlet UIScrollView *scrollView;
-	UIImageView *imageView, *indicator, *shadow;
+	UIImageView *imageView, *indicatorView, *errorRangeView;
 	UBGeolocationActionType action;
 	UBGeolocationMode mode;
 	CGPoint indicatorCenter;
+	float errorRange;
 }
 
 @property (nonatomic, retain) NSNetService *service;
@@ -29,8 +30,9 @@
 - (void)tapIn:(CGPoint)point;
 - (void)animateEstimationButton:(BOOL)animate andDisableIt:(BOOL)disable;
 - (void)setStatusText:(NSString *)newStatus;
+- (UIImage *)createErrorRangeImage:(float)width;
+- (void)updateErrorRangeAnimated:(BOOL)animate;
 - (IBAction)estimateCurrentLocation:(id)sender;
 - (void)performEstimationOfCurrentLocation;
-- (UIImage *)create:(float)width;
 
 @end
