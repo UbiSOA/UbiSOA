@@ -10,9 +10,10 @@
 #import "GeolocationMap.h"
 #import "GeolocationWiFiSpotter.h"
 #import "ASIFormDataRequest.h"
+#import "JSON.h"
 
 
-@interface GeolocationViewController : UIViewController <UIScrollViewDelegate, GeolocationWiFiSpotterDelegate> {
+@interface GeolocationViewController : UIViewController <UIScrollViewDelegate, GeolocationWiFiSpotterDelegate, UIActionSheetDelegate> {
 	NSNetService *service;
 	GeolocationMap *map;
 	IBOutlet UIScrollView *scrollView;
@@ -21,6 +22,7 @@
 	UBGeolocationMode mode;
 	CGPoint indicatorCenter;
 	float errorRange;
+	BOOL dontHideIndicators;
 }
 
 @property (nonatomic, retain) NSNetService *service;
@@ -28,11 +30,13 @@
 @property (nonatomic, retain) UIScrollView *scrollView;
 
 - (void)tapIn:(CGPoint)point;
+- (void)moveIndicatorViewAnimated:(BOOL)animate;
 - (void)animateEstimationButton:(BOOL)animate andDisableIt:(BOOL)disable;
 - (void)setStatusText:(NSString *)newStatus;
 - (UIImage *)createErrorRangeImage:(float)width;
 - (void)updateErrorRangeAnimated:(BOOL)animate;
 - (IBAction)estimateCurrentLocation:(id)sender;
 - (void)performEstimationOfCurrentLocation;
+- (void)performTraining;
 
 @end
