@@ -351,4 +351,35 @@
 	action = 0;
 }
 
+#pragma mark -
+#pragma mark Training
+
+- (void)performTraining {
+	if (action != UBTrainingGeolocationActionType) return;
+	[self setStatusText:@"Sending request…"];
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	
+	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://%@:%d", [self.service hostName], [self.service port]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+	[request setPostValue:[NSString stringWithFormat:@"%f", indicatorCenter.x] forKey:@"latitude"];
+	[request setPostValue:[NSString stringWithFormat:@"%f", indicatorCenter.y] forKey:@"longitude"];
+	[request setPostValue:[[GeolocationWiFiSpotter sharedInstance] signalData] forKey:@"signalData"];
+	[request setPostValue:[[UIDevice currentDevice] model] forKey:@"platform"];
+	[request start];
+	
+	NSLog(@"%@", [request responseHeaders]);
+	NSLog(@"Status Code: %d, Status Message: %@", [request responseStatusCode], [request responseStatusMessage]);
+	NSLog(@"%@", [request responseString]);
+	
+	if ([request responseStatusCode] != 201) {
+		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Request Error" message:[request responseString] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+		[alert show];
+	}
+	[self setStatusText:[request responseString]];
+	
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];	
+	[self animateEstimationButton:NO andDisableIt:NO];
+	action = 0;
+}
+
 @end
