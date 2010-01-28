@@ -431,7 +431,7 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 			servicePorts.put(name, port);
 			updateServicesList();
 			System.out.println("HOST: " + hostName + ", PORT:" + port);
-		}
+		}
 	}
 	
 	private class CoordsDialog extends JDialog {
