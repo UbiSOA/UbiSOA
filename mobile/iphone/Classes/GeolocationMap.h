@@ -23,4 +23,6 @@
 @property (nonatomic) double neLat, neLng, seLat, seLng, swLat, swLng, nwLat, nwLng;
 @property (nonatomic) int tag;
 
++ (float)distanceBetweenPoint:(CGPoint)aPoint andThePoint:(CGPoint)otherPoint;
+
 @end

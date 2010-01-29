@@ -12,6 +12,12 @@
 #define kSimulatedSignalData @"0:9:5b:51:6b:76=-66,0:7:e:7d:91:90=-49,0:11:24:21:15:a2=-48"
 #define kSimulatedWiFiSpotterDelay 1.2
 
+#if TARGET_IPHONE_SIMULATOR
+#define kPlatform @"iPhoneSim"
+#else
+#define kPlatform [[UIDevice currentDevice] model]
+#endif
+
 typedef enum _UBGeolocationMode {
 	UBTrainingGeolocationMode,
 	UBTrackingGeolocationMode,

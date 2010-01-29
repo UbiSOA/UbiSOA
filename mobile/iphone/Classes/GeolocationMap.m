@@ -23,4 +23,8 @@
 	return [[NSString alloc] initWithFormat:@"Map:%@ Image:%@ Tag:%d (%.7f/%.7f, %.7f/%.7f, %.7f/%.7f, %.7f/%.7f)", self.name, [self.file lastPathComponent], self.tag, self.neLat, self.neLng, self.seLat, self.seLng, self.swLat, self.swLng, self.nwLat,self.nwLng];
 }
 
++ (float)distanceBetweenPoint:(CGPoint)aPoint andThePoint:(CGPoint)otherPoint {
+	return sqrt(pow(otherPoint.x - aPoint.x, 2) + pow(otherPoint.y - aPoint.y, 2));
+}
+
 @end

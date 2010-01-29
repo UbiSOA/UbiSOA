@@ -78,21 +78,26 @@
 
 - (void)tapIn:(CGPoint)point {
 	if (action > 0) return;
-	switch (mode) {
-		case UBTrainingGeolocationMode:
-			action = UBTrainingGeolocationActionType;
-			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You are about to send training data for the specified location. Do you want to continue?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Yes, Send Data", nil];
-			[actionSheet showInView:self.view];
-			[actionSheet release];
-			[self animateEstimationButton:YES andDisableIt:YES];
-			errorRange = 6;
-			[self updateErrorRangeAnimated:YES];
-			indicatorCenter = CGPointMake(point.x / imageView.frame.size.width, point.y / imageView.frame.size.height);
-			[self moveIndicatorViewAnimated:YES];
-			break;
-		default:
-			NSLog(@"Unhandled tap in (%f,%f)", point.x, point.y);
-			break;
+	
+	if (mode == UBTrainingGeolocationMode) {
+		action = UBTrainingGeolocationActionType;
+		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You are about to send training data for the specified location. Do you want to continue?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Yes, Send Data", nil];
+		[actionSheet showInView:self.view];
+		[actionSheet release];
+	}
+	
+	if (mode == UBTrainingGeolocationMode || mode == UBTestingGeolocationMode) {
+		[self animateEstimationButton:YES andDisableIt:YES];
+		errorRange = 6;
+		[self updateErrorRangeAnimated:YES];
+		indicatorCenter = CGPointMake(point.x / imageView.frame.size.width, point.y / imageView.frame.size.height);
+		[self moveIndicatorViewAnimated:YES];
+	}
+	
+	if (mode == UBTestingGeolocationMode) {
+		action = UBTestingGeolocationActionType;
+		[[GeolocationWiFiSpotter sharedInstance] scan];
+		[self setStatusText:@"Capturing signal data…"];
 	}
 }
 
@@ -125,15 +130,21 @@
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
 	mode = selectedScope;
 	switch (mode) {
-		case UBTrainingGeolocationMode:
-			[self animateEstimationButton:NO andDisableIt:NO];
+		case UBTrackingGeolocationMode:
+			[self animateEstimationButton:NO andDisableIt:YES];
 			break;
 		default:
-			[self animateEstimationButton:NO andDisableIt:YES];
+			[self animateEstimationButton:NO andDisableIt:NO];
 			break;
 	}
 	[self setStatusText:@"Double tap on the map"];
 	action = 0;
+	
+	if (mode == UBTrackingGeolocationMode) {
+		if (action > 0) return; action = UBTrackingGeolocationActionType;
+		[[GeolocationWiFiSpotter sharedInstance] scan];
+		[self setStatusText:@"Capturing signal data…"];
+	}
 }
 
 #pragma mark -
@@ -141,7 +152,10 @@
 
 - (void)spotterDidScan {
 	switch (action) {
-		case UBLocateGeolocationActionType: [self performEstimationOfCurrentLocation]; break;
+		case UBTestingGeolocationActionType:
+		case UBTrackingGeolocationActionType:
+		case UBLocateGeolocationActionType:
+			[self performEstimationOfCurrentLocation]; break;
 		case UBTrainingGeolocationActionType: [self performTraining]; break;
 	}
 }
@@ -210,11 +224,11 @@
 }
 
 - (void)performEstimationOfCurrentLocation {
-	if (action != UBLocateGeolocationActionType) return;
+	if (action == 0) return;
 	[self setStatusText:@"Sending request…"];	
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	
- 	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://%@:%d/%@/%@", [self.service hostName], [self.service port], [[GeolocationWiFiSpotter sharedInstance] signalData], [[UIDevice currentDevice] model]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+ 	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://%@:%d/%@/%@", [self.service hostName], [self.service port], [[GeolocationWiFiSpotter sharedInstance] signalData], kPlatform] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
 	[request start];
 
@@ -228,10 +242,13 @@
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Request Error" message:[request responseString] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 		[alert show];
 		[self setStatusText:[request responseString]];
+		errorRange = 6;
+		action = 0;
 	} else {
 		SBJsonParser *parser = [SBJsonParser new];
 		NSDictionary *obj = [parser objectWithString:[request responseString]];
 		
+		CGPoint originalCenter = indicatorCenter;		
 		indicatorCenter = CGPointMake([[obj valueForKey:@"latitude"] floatValue], [[obj valueForKey:@"longitude"] floatValue]);
 		[parser release];
 		dontHideIndicators = YES;
@@ -243,13 +260,19 @@
 		[UIView commitAnimations];
 		dontHideIndicators = NO;
 		[self setStatusText:@"Location estimated"];
+		if (action == UBTrackingGeolocationActionType)
+			[self setStatusText:@"Tracking your location…"];
+		if (action == UBTestingGeolocationActionType)
+			[self setStatusText:[NSString stringWithFormat:@"Estimation error: %.2f m", [GeolocationMap distanceBetweenPoint:originalCenter andThePoint:indicatorCenter]]];
+		errorRange = random() % 200;
 	}
 	
-	errorRange = random() % 200;
 	[self updateErrorRangeAnimated:YES];
+	[self animateEstimationButton:NO andDisableIt:action == UBTrackingGeolocationActionType];
 	
-	[self animateEstimationButton:NO andDisableIt:NO];	
-	action = 0;
+	if (action == UBTrackingGeolocationActionType)
+		[[GeolocationWiFiSpotter sharedInstance] scan];
+	else action = 0;
 }
 
 #pragma mark -
@@ -265,7 +288,7 @@
 	[request setPostValue:[NSString stringWithFormat:@"%f", indicatorCenter.x] forKey:@"latitude"];
 	[request setPostValue:[NSString stringWithFormat:@"%f", indicatorCenter.y] forKey:@"longitude"];
 	[request setPostValue:[[GeolocationWiFiSpotter sharedInstance] signalData] forKey:@"signalData"];
-	[request setPostValue:[[UIDevice currentDevice] model] forKey:@"platform"];
+	[request setPostValue:kPlatform forKey:@"platform"];
 	[request start];
 	
 	NSLog(@"%@", [request responseHeaders]);

@@ -1,6 +1,7 @@
 mobile/iphone/build
 mobile/iphone/UbiSOA.xcodeproj/*.pbxuser
 mobile/iphone/UbiSOA.xcodeproj/*.mode1v3
+mobile/iphone/UbiSOA.xcodeproj/.LSOverride
 apps/desktop/java/MedicalServices/bin
 apps/desktop/java/MedicalServices/.classpath
 apps/desktop/java/MedicalServices/.settings
