@@ -75,6 +75,13 @@ static GeolocationWiFiSpotter *sharedInstance;
 	return signalData;
 }
 
+- (int)signalDataAPCount {
+#if TARGET_IPHONE_SIMULATOR
+	return 3;
+#endif
+	return CFArrayGetCount(networks);
+}
+
 - (void)dealloc {
 	[self close];
 	[delegate release];

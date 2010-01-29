@@ -42,6 +42,10 @@
 		E8A5690A10F81FC20083AB00 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A5690310F81FC20083AB00 /* SBJsonParser.m */; };
 		E8A5690B10F81FC20083AB00 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A5690510F81FC20083AB00 /* SBJsonWriter.m */; };
 		E8CD6CAD10E066D9006BFC2B /* IndicatorLocationDot.png in Resources */ = {isa = PBXBuildFile; fileRef = E8CD6CAC10E066D9006BFC2B /* IndicatorLocationDot.png */; };
+		E8D196381112B28D0080E850 /* GeolocationLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D196361112B28D0080E850 /* GeolocationLogViewController.m */; };
+		E8D196391112B28D0080E850 /* GeolocationLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8D196371112B28D0080E850 /* GeolocationLogViewController.xib */; };
+		E8D1971F1112C2620080E850 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8D1971E1112C2620080E850 /* MessageUI.framework */; };
+		E8D197551112C6F50080E850 /* TabLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = E8D197541112C6F50080E850 /* TabLocation.png */; };
 		E8D4E1DF10DF03F600C7B8C5 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D4E1CB10DF03F600C7B8C5 /* ASIAuthenticationDialog.m */; };
 		E8D4E1E010DF03F600C7B8C5 /* ASIFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D4E1CD10DF03F600C7B8C5 /* ASIFormDataRequest.m */; };
 		E8D4E1E110DF03F600C7B8C5 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D4E1CF10DF03F600C7B8C5 /* ASIHTTPRequest.m */; };
@@ -113,6 +117,11 @@
 		E8A5690410F81FC20083AB00 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		E8A5690510F81FC20083AB00 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		E8CD6CAC10E066D9006BFC2B /* IndicatorLocationDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IndicatorLocationDot.png; sourceTree = "<group>"; };
+		E8D196351112B28D0080E850 /* GeolocationLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeolocationLogViewController.h; sourceTree = "<group>"; };
+		E8D196361112B28D0080E850 /* GeolocationLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeolocationLogViewController.m; sourceTree = "<group>"; };
+		E8D196371112B28D0080E850 /* GeolocationLogViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GeolocationLogViewController.xib; path = Classes/GeolocationLogViewController.xib; sourceTree = "<group>"; };
+		E8D1971E1112C2620080E850 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		E8D197541112C6F50080E850 /* TabLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabLocation.png; sourceTree = "<group>"; };
 		E8D4E1CA10DF03F600C7B8C5 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIAuthenticationDialog.h; path = External/ASIHTTPRequest/ASIAuthenticationDialog.h; sourceTree = SOURCE_ROOT; };
 		E8D4E1CB10DF03F600C7B8C5 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIAuthenticationDialog.m; path = External/ASIHTTPRequest/ASIAuthenticationDialog.m; sourceTree = SOURCE_ROOT; };
 		E8D4E1CC10DF03F600C7B8C5 /* ASIFormDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIFormDataRequest.h; path = External/ASIHTTPRequest/ASIFormDataRequest.h; sourceTree = SOURCE_ROOT; };
@@ -152,6 +161,7 @@
 				E8D4E20010DF047200C7B8C5 /* libz.1.2.3.dylib in Frameworks */,
 				E85215CC1106CB7100E3A5AE /* QuartzCore.framework in Frameworks */,
 				E85216EB1106EFF000E3A5AE /* libsqlite3.0.dylib in Frameworks */,
+				E8D1971F1112C2620080E850 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +212,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E8D196371112B28D0080E850 /* GeolocationLogViewController.xib */,
 				E85216741106E7CB00E3A5AE /* GeolocationMapsViewController.xib */,
 				E8521756110700CE00E3A5AE /* GeolocationMapViewController.xib */,
 				E83B14F611093652003388BF /* GeolocationServicesViewController.xib */,
@@ -216,6 +227,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E8D1971E1112C2620080E850 /* MessageUI.framework */,
 				E85216EA1106EFF000E3A5AE /* libsqlite3.0.dylib */,
 				E8D4E1FF10DF047200C7B8C5 /* libz.1.2.3.dylib */,
 				E8D4E1FB10DF045200C7B8C5 /* CFNetwork.framework */,
@@ -231,6 +243,7 @@
 		E827922310D863F400DBBBAC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E8D197541112C6F50080E850 /* TabLocation.png */,
 				E8227A0F110AB9860006E675 /* BarIconLocation.png */,
 				E82CD85F11068A4F00A1D4E2 /* ButtonBlue.png */,
 				E82CD86011068A4F00A1D4E2 /* ButtonGray.png */,
@@ -285,6 +298,8 @@
 		E85A2AAA10DC3BDB00C9D8B9 /* Geolocation */ = {
 			isa = PBXGroup;
 			children = (
+				E8D196351112B28D0080E850 /* GeolocationLogViewController.h */,
+				E8D196361112B28D0080E850 /* GeolocationLogViewController.m */,
 				E8521A941107420A00E3A5AE /* GeolocationMap.h */,
 				E8521A951107420A00E3A5AE /* GeolocationMap.m */,
 				E85216721106E7CB00E3A5AE /* GeolocationMapsViewController.h */,
@@ -392,6 +407,8 @@
 				E83B18D71109A035003388BF /* GeolocationViewController.xib in Resources */,
 				E8227A10110AB9860006E675 /* IndicatorLocation.png in Resources */,
 				E8227A11110AB9860006E675 /* BarIconLocation.png in Resources */,
+				E8D196391112B28D0080E850 /* GeolocationLogViewController.xib in Resources */,
+				E8D197551112C6F50080E850 /* TabLocation.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +445,7 @@
 				E8521A961107420A00E3A5AE /* GeolocationMap.m in Sources */,
 				E83B14F711093652003388BF /* GeolocationServicesViewController.m in Sources */,
 				E83B18D61109A035003388BF /* GeolocationViewController.m in Sources */,
+				E8D196381112B28D0080E850 /* GeolocationLogViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

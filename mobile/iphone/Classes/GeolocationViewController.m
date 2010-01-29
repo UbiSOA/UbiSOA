@@ -10,7 +10,7 @@
 
 
 @implementation GeolocationViewController
-@synthesize service, map, scrollView;
+@synthesize service, map, scrollView, log;
 
 
 - (void)viewDidLoad {
@@ -46,6 +46,11 @@
 	
 	// Configuring WiFi spotter
 	[[GeolocationWiFiSpotter sharedInstance] setDelegate:self];
+	
+	// Configuring the Log
+	logView = [[GeolocationLogViewController alloc] initWithNibName:@"GeolocationLogViewController" bundle:[NSBundle mainBundle]];
+	[logView setTitle:@"Log"];
+	self.log = @"";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,7 +62,19 @@
 	[service release];
 	[map release];
 	[scrollView release];
+	[logView release];
+	[log release];
     [super dealloc];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	if (logView.textView.text != nil) self.log = logView.textView.text;
+	if (mode == UBTrackingGeolocationMode) {
+		action = UBTrackingGeolocationActionType;
+		[[GeolocationWiFiSpotter sharedInstance] scan];
+		[self setStatusText:@"Capturing signal data…"];
+	}
 }
 
 #pragma mark -
@@ -145,6 +162,14 @@
 		[[GeolocationWiFiSpotter sharedInstance] scan];
 		[self setStatusText:@"Capturing signal data…"];
 	}
+	
+	NSString *modeString = @"";
+	switch (mode) {
+		case UBTrainingGeolocationMode: modeString = @"Training"; break;
+		case UBTrackingGeolocationMode: modeString = @"Tracking"; break;
+		case UBTestingGeolocationMode: modeString = @"Testing"; break;
+	}
+	self.log = [self.log stringByAppendingFormat:@"\nMode now is: %@\n\n", modeString];
 }
 
 #pragma mark -
@@ -206,6 +231,13 @@
 	if (animate) [UIView commitAnimations];
 }
 
+- (IBAction)showLog:(id)sender {
+	action = 0;
+	[self.navigationController pushViewController:logView animated:YES];
+	logView.textView.text = self.log;
+	logView.mapName = map.name;
+}
+
 #pragma mark -
 #pragma mark Estimate current location
 
@@ -254,6 +286,18 @@
 		dontHideIndicators = YES;
 		CGPoint offset = CGPointMake(indicatorCenter.x * imageView.frame.size.width - scrollView.frame.size.width / 2.0, indicatorCenter.y * imageView.frame.size.height - scrollView.frame.size.height / 2.0);
 		
+		switch (action) {
+			case UBLocateGeolocationActionType:
+				self.log = [self.log stringByAppendingFormat:@"Estimation:\t%.7f\t%.7f\n", indicatorCenter.x, indicatorCenter.y];
+				break;
+			case UBTrackingGeolocationActionType:
+				self.log = [self.log stringByAppendingFormat:@"Tracking:\t%.7f\t%.7f\n", indicatorCenter.x, indicatorCenter.y];
+				break;
+			case UBTestingGeolocationActionType:
+				self.log = [self.log stringByAppendingFormat:@"AP count: %d\nOriginal:\t%.7f\t%.7f\nEstimated:\t%.7f\t%.7f\nError:\t%.3f\n\n", [[GeolocationWiFiSpotter sharedInstance] signalDataAPCount], originalCenter.x, originalCenter.y, indicatorCenter.x, indicatorCenter.y, [GeolocationMap distanceBetweenPoint:originalCenter andThePoint:indicatorCenter]];
+				break;
+		}
+				
 		[UIView beginAnimations:@"CenterLocation" context:nil];
 		[scrollView setContentOffset:offset];
 		[self moveIndicatorViewAnimated:NO];
@@ -264,7 +308,7 @@
 			[self setStatusText:@"Tracking your location…"];
 		if (action == UBTestingGeolocationActionType)
 			[self setStatusText:[NSString stringWithFormat:@"Estimation error: %.2f m", [GeolocationMap distanceBetweenPoint:originalCenter andThePoint:indicatorCenter]]];
-		errorRange = random() % 200;
+		errorRange = random() % 100 + 50;
 	}
 	
 	[self updateErrorRangeAnimated:YES];
@@ -298,7 +342,8 @@
 	if ([request responseStatusCode] != 201) {
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Request Error" message:[request responseString] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 		[alert show];
-	}
+	} else self.log = [self.log stringByAppendingFormat:@"Training:\t%.7f\t%.7f\n", indicatorCenter.x, indicatorCenter.y];
+
 	[self setStatusText:[request responseString]];
 	
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];	

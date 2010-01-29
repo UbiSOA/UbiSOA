@@ -30,5 +30,6 @@
 + (GeolocationWiFiSpotter *)sharedInstance;
 - (void)scan;
 - (NSString *)signalData;
+- (int)signalDataAPCount;
 
 @end

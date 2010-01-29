@@ -11,6 +11,7 @@
 #import "GeolocationWiFiSpotter.h"
 #import "ASIFormDataRequest.h"
 #import "JSON.h"
+#import "GeolocationLogViewController.h"
 
 
 @interface GeolocationViewController : UIViewController <UIScrollViewDelegate, GeolocationWiFiSpotterDelegate, UIActionSheetDelegate> {
@@ -23,11 +24,14 @@
 	CGPoint indicatorCenter;
 	float errorRange;
 	BOOL dontHideIndicators;
+	GeolocationLogViewController *logView;
+	NSString *log;
 }
 
 @property (nonatomic, retain) NSNetService *service;
 @property (nonatomic, retain) GeolocationMap *map;
 @property (nonatomic, retain) UIScrollView *scrollView;
+@property (nonatomic, retain) NSString *log;
 
 - (void)tapIn:(CGPoint)point;
 - (void)moveIndicatorViewAnimated:(BOOL)animate;
@@ -38,5 +42,6 @@
 - (IBAction)estimateCurrentLocation:(id)sender;
 - (void)performEstimationOfCurrentLocation;
 - (void)performTraining;
+- (IBAction)showLog:(id)sender;
 
 @end
