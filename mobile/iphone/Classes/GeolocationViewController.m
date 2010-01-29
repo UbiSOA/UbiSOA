@@ -364,7 +364,7 @@
 	[request setPostValue:[NSString stringWithFormat:@"%f", indicatorCenter.x] forKey:@"latitude"];
 	[request setPostValue:[NSString stringWithFormat:@"%f", indicatorCenter.y] forKey:@"longitude"];
 	[request setPostValue:[[GeolocationWiFiSpotter sharedInstance] signalData] forKey:@"signalData"];
-	[request setPostValue:[[UIDevice currentDevice] model] forKey:@"platform"];
+	[request setPostValue:kPlatform forKey:@"platform"];
 	[request start];
 	
 	NSLog(@"%@", [request responseHeaders]);
