@@ -144,6 +144,9 @@ public class Filter extends BaseResource {
     	flagText =false;
     	flagGuide =false;
     	flagAudio =false;
+    	
+    	
+    	
     	countIngredients=0;
                 
         if(qrcode != null && role!= null && barcode == null && profile == null)//para el escenario del hospital
@@ -665,8 +668,18 @@ public class Filter extends BaseResource {
         minutes = calendario.get(Calendar.MINUTE);
         String now = hour + ":" + minutes;
         
-        DateFormat sdf2 = new SimpleDateFormat("hh:mm");
-        Date date2 = sdf2.parse(now);
+        DateFormat format;
+        Date date2= new Date();
+        
+        try
+        {
+        	format = new SimpleDateFormat("hh:mm");
+        	date2 = format.parse(now);
+        }
+        catch(Exception e)
+        {
+        	
+        }
     	return date2 ;
     }
     public void filterMedicines()
@@ -683,8 +696,7 @@ public class Filter extends BaseResource {
              //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 
              NodeList listOfPersons = doc.getElementsByTagName("medicine");
-             //System.out.println("Total no of people : " + totalPersons);  
-             
+             //System.out.println("Total no of people : " + totalPersons);           
              
              
 
@@ -729,7 +741,7 @@ public class Filter extends BaseResource {
                      DateFormat sdf = new SimpleDateFormat("hh:mm");
                      Date date = sdf.parse(time);
                      //System.out.println((date2.getTime() -date.getTime())/60000);
-                     Long diference = ((date2.getTime() -date.getTime()))/60000;
+                     Long diference = ((When().getTime() -date.getTime()))/60000;
 
                      //Si la diferencia entre la hora actual y la hora de la ingesta
                      //de medicamentos cae dentro del rango establecido de tiempo
@@ -788,17 +800,7 @@ public class Filter extends BaseResource {
              //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 
              NodeList listOfPersons = doc.getElementsByTagName("medicine");
-             //System.out.println("Total no of people : " + totalPersons);
-             
-             Calendar calendario = new GregorianCalendar();
-             int hour, minutes;
-             hour =calendario.get(Calendar.HOUR_OF_DAY);
-             minutes = calendario.get(Calendar.MINUTE);
-             String now = hour + ":" + minutes;
-             
-             DateFormat sdf2 = new SimpleDateFormat("hh:mm");
-             Date date2 = sdf2.parse(now);
-             
+             //System.out.println("Total no of people : " + totalPersons);            
              
 
              for(int s=0; s<listOfPersons.getLength() ; s++){
@@ -842,7 +844,7 @@ public class Filter extends BaseResource {
                      DateFormat sdf = new SimpleDateFormat("hh:mm");
                      Date date = sdf.parse(time);
                      //System.out.println((date2.getTime() -date.getTime())/60000);
-                     Long diference = ((date2.getTime() -date.getTime()))/60000;
+                     Long diference = ((When().getTime() -date.getTime()))/60000;
 
                      //Si la diferencia entre la hora actual y la hora de la ingesta
                      //de medicamentos cae dentro del rango establecido de tiempo
@@ -1601,7 +1603,14 @@ public class Filter extends BaseResource {
                 	
                 Element eltTexture = d.createElement("texture");                	 
         		Element eltImage = d.createElement("image");
-        		eltImage.appendChild(d.createTextNode(urlTexture));
+        		if(urlTexture.length()> 0)
+        		{        		
+        			eltImage.appendChild(d.createTextNode(urlTexture));
+        		}
+        		else if(texture.length()> 0)
+        		{        		
+        			eltImage.appendChild(d.createTextNode(texture));
+        		}
         		eltTexture.appendChild(eltImage);        		
         		eltPresentation.appendChild(eltTexture);
         		r.appendChild(eltPresentation);              
@@ -1702,6 +1711,13 @@ public class Filter extends BaseResource {
  			System.out.println("Array");
 			 return representArray(variant);
 		 }
+ 		 
+ 		url = new String();
+    	flagMedicine = false;
+    	flagIngredient = false;
+    	flagFood = false;
+    	flagProfile = false; 
+ 		 
  		 return null;
     }
 
