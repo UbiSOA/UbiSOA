@@ -1,18 +1,18 @@
 package firstResource;
 
-import jp.sourceforge.qrcode.QRCodeDecoder;
-import jp.sourceforge.qrcode.util.ContentConverter;
-import jp.sourceforge.qrcode.data.QRCodeImage;
-import jp.sourceforge.qrcode.exception.DecodingFailedException;
-import jp.sourceforge.qrcode.exception.InvalidVersionInfoException;
-
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+
+import jp.sourceforge.qrcode.QRCodeDecoder;
+import jp.sourceforge.qrcode.data.QRCodeImage;
+import jp.sourceforge.qrcode.exception.DecodingFailedException;
+import jp.sourceforge.qrcode.util.ContentConverter;
 import jp.sourceforge.qrcode.util.DebugCanvas;
 import jp.sourceforge.qrcode.util.DebugCanvasAdapter;
-import java.net.URL;
 
 // Smallest example of QRCode Decoder
 

@@ -1,10 +1,17 @@
 package firstResource;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 
+import org.restlet.Client;
 import org.restlet.Context;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
+import org.restlet.data.Protocol;
+import org.restlet.data.Reference;
 import org.restlet.data.Request;
 import org.restlet.data.Response;
 import org.restlet.data.Status;
@@ -15,29 +22,12 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import jp.sourceforge.qrcode.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.graph.*;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.FileManager;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-import java.io.*;
-import java.io.FilterOutputStream;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.ontology.*;
-import org.restlet.Client;
-import org.restlet.data.Form;
-import org.restlet.data.MediaType;
-import org.restlet.data.Protocol;
-import org.restlet.data.Reference;
-import org.restlet.data.Request;
-import org.restlet.data.Response;
-import org.restlet.data.Status;
 /**
  * Resource that manages a list of items.
  * 
@@ -127,7 +117,7 @@ public class UserMedicines extends BaseResource {
  		varName = "penicilina";
  		varQuantity = "2";
  		varType = "Pills";
- 		varTime = "13:45";
+ 		varTime = "16:45";
  		varDescription = "No se administre en personas con afecciones cardiacas";
  		
  		//Se agregan las propiedades
@@ -185,14 +175,12 @@ public class UserMedicines extends BaseResource {
 		 */
         
  		 Client client = new Client(Protocol.HTTP);
-         Client client2 = new Client(Protocol.HTTP);
          
          Reference itemsUri= new Reference("http://localhost:2122/ubicomp/items");
-         Reference itemsUri2= new Reference("http://localhost:2122/ubicomp/items");
          
          for(int cont=0; cont< 5; cont++)
          {
-        	 Item item1= new Item("desenfriol" + cont, "Nothing", "2", "Tableta", "13:06");
+        	 Item item1= new Item("desenfriol" + cont, "Nothing", "2", "Tableta", "16:36");
         	 Reference itemUri = createItem(item1, client, itemsUri);
          }
  		 

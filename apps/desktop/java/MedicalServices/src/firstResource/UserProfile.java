@@ -15,16 +15,11 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import jp.sourceforge.qrcode.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.graph.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 /**
  * Resource that manages a list of items.
  * 
@@ -128,7 +123,7 @@ public class UserProfile extends BaseResource {
  		userProfile.addProperty(weight, varWeight);
  		userProfile.addProperty(birthdate, varBirthDate);
  		userProfile.addProperty(sound, varSound);
- 		userProfile.addProperty(sound, varActivityFactor);
+ 		userProfile.addProperty(activityFactor, varActivityFactor);
 
  		//Se define el namespace, para no poner j.0: se coloca las iniciales SV
 		 model.setNsPrefix( "SV", nm );

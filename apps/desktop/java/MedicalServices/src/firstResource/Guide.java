@@ -2,9 +2,12 @@ package firstResource;
 
 import java.io.IOException;
 
+import org.restlet.Client;
 import org.restlet.Context;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
+import org.restlet.data.Protocol;
+import org.restlet.data.Reference;
 import org.restlet.data.Request;
 import org.restlet.data.Response;
 import org.restlet.data.Status;
@@ -15,22 +18,16 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import jp.sourceforge.qrcode.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.graph.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.ontology.*;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 /**
  * Resource that manages a list of items.
  * 
  */
-public class Guide extends BaseResource {
+public class Guide extends BaseResource3 {
 	
 	static String guideURI    = "http://localhost:2122/ubicomp/presentation/guide";
 	static String nm= "http://www.semanticweb.org/ontologies/2009/10/30/";
@@ -38,6 +35,7 @@ public class Guide extends BaseResource {
 	
 	//Variable que contendra el valor de las imagenes de la guia
 	static String varImage;
+	static String varLocation;
 	
     public Guide(Context context, Request request, Response response) {
         super(context, request, response);
@@ -60,16 +58,16 @@ public class Guide extends BaseResource {
         // Parse the given representation and retrieve pairs of
         // "name=value" tokens.
         Form form = new Form(entity);
-        String itemName = form.getFirstValue("name");
-        String itemDescription = form.getFirstValue("description");
+        String itemName = form.getFirstValue("image");
+        String itemDescription = form.getFirstValue("portion");
 
         // Check that the item is not already registered.
-        if (getItems().containsKey(itemName)) {
+        if (getItems3().containsKey(itemName)) {
             generateErrorRepresentation(
                     "Item " + itemName + " already exists.", "1", getResponse());
         } else {
             // Register the new item
-            getItems().put(itemName, new Item(itemName, itemDescription));
+            getItems3().put(itemName, new ItemGuide(itemName, itemDescription));
 
             // Set the response's status and entity
             getResponse().setStatus(Status.SUCCESS_CREATED);
@@ -98,6 +96,15 @@ public class Guide extends BaseResource {
  		
  		//Se asigna el valor a la variable
  		varImage = "path de la imagen del menu";
+ 		varLocation = "http://localhost:2122/ubicomp/location/outdoor/1111";
+ 		
+ 		Client client = new Client(Protocol.HTTP);
+ 		Reference itemsUri= new Reference("http://localhost:2122/ubicomp/items3");
+ 		for(int cont=0; cont< 5; cont++)
+        {
+ 			ItemGuide item1= new ItemGuide("http://litera.files.wordpress.com/2008/03/590852-zacatecas_cathedral-zacatecas.jpg"+ cont, "http://localhost:2122/ubicomp/location/outdoor/1111");
+ 			Reference itemUri = createItem(item1, client, itemsUri);
+        }
  			
  		//Se agregan las propiedades
  		guide.addProperty(image, varImage);
@@ -112,7 +119,7 @@ public class Guide extends BaseResource {
  		 //Se imprime el archivo RDF
  		 model.write(System.out, "RDF/XML-ABBREV");
         
-    	
+    	/*
         if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
             try {
             	
@@ -130,6 +137,10 @@ public class Guide extends BaseResource {
 
                     Element eltImage = d.createElement("image");
                     eltImage.appendChild(d.createTextNode(varImage));
+                    
+                    Element eltLocation = d.createElement("location");
+                    eltLocation.appendChild(d.createTextNode(varLocation));
+                    eltImage.appendChild(eltLocation);
                 	nodeGuide.appendChild(eltImage);
 
                     Element eltImage2 = d.createElement("image");
@@ -144,6 +155,37 @@ public class Guide extends BaseResource {
                     nodeUbicomp.appendChild(nodePresentation);
                 
                 d.normalizeDocument();
+                
+                */
+ 		if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
+            try {
+            	
+            	DomRepresentation representation = new DomRepresentation(
+                        MediaType.TEXT_XML);
+                // Generate a DOM document representing the list of
+                // items.
+                Document d = representation.getDocument();
+                Element r = d.createElement("guide");
+                //Element r = d.createElement("Ubicomp");
+                d.appendChild(r);
+               
+                for (ItemGuide item : getItems3().values()) {
+                	 Element eltItem = d.createElement("menu");
+                    
+                	//Element eltItem = d.createElement("Qrcode");
+
+                    Element eltName = d.createElement("image");
+                    eltName.appendChild(d.createTextNode(item.getImage()));
+                    eltItem.appendChild(eltName);
+                    
+                    Element eltDescription = d.createElement("location");
+                    eltDescription.appendChild(d.createTextNode(item.getLocation()));
+                    eltItem.appendChild(eltDescription);
+
+                    r.appendChild(eltItem);
+                }
+                
+                d.normalizeDocument();     
 
                 // Returns the XML representation of this document.
                 return representation;
@@ -155,6 +197,23 @@ public class Guide extends BaseResource {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        return null;
+    }
+    
+    public static Reference createItem(ItemGuide item, Client client,
+            Reference itemsUri) {
+        // Gathering informations into a Web form.
+        Form form = new Form();
+        form.add("image", item.getImage());
+        form.add("location", item.getLocation());
+        Representation rep = form.getWebRepresentation();
+
+        // Launch the request
+        Response response = client.post(itemsUri, rep);
+        if (response.getStatus().isSuccess()) {
+            return response.getEntity().getIdentifier();
         }
 
         return null;
