@@ -180,7 +180,7 @@ public class UserMedicines extends BaseResource {
          
          for(int cont=0; cont< 5; cont++)
          {
-        	 Item item1= new Item("desenfriol" + cont, "Nothing", "2", "Tableta", "16:36");
+        	 Item item1= new Item("desenfriol" + cont, "Nothing", "2", "Tableta", "17:36");
         	 Reference itemUri = createItem(item1, client, itemsUri);
          }
  		 
