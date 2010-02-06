@@ -15,7 +15,6 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import jp.sourceforge.qrcode.*;
 
 /**
  * Resource that manages a list of items.

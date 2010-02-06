@@ -1,11 +1,14 @@
 package firstResource;
 
+import net.ubisoa.discovery.DiscoveryCore;
+
 import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.*;
 import org.restlet.Restlet;
 
 public class FirstResourceServerMain {
+	static int port= 2122;
 
     public static void main(String[] args) throws Exception {
     	
@@ -13,7 +16,7 @@ public class FirstResourceServerMain {
         Component component = new Component();
 
         // Add a new HTTP server listening on port 8182.
-        component.getServers().add(Protocol.HTTP, 2122);
+        component.getServers().add(Protocol.HTTP, port);
 
 	
 	// Create a new tracing Restlet  
@@ -43,6 +46,7 @@ public class FirstResourceServerMain {
 
         // Start the component.
         component.start();
+        DiscoveryCore.registerService("Medical Services", "geolocation.resolver", port);
     }
 
 }

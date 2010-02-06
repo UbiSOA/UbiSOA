@@ -1,6 +1,14 @@
 package firstResource;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.restlet.Context;
 import org.restlet.data.Form;
@@ -15,26 +23,14 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import jp.sourceforge.qrcode.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.graph.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import java.io.File;
-import org.w3c.dom.Document;
-import org.w3c.dom.*;
-import java.util.*;
-import java.text.*;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException; 
+import org.xml.sax.SAXParseException;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 /**
  * Resource that manages a list of items.
@@ -46,6 +42,7 @@ public class Filter extends BaseResource {
 	static String filterURI= "http://localhost:2122/ubicomp/filter/";
 	static String nm= "http://www.semanticweb.org/ontologies/2009/10/30/";
 	String path= new String("");
+	
 	String profile= new String("");
 	String role= new String("");
 	String qrcode= new String("");
@@ -104,16 +101,29 @@ public class Filter extends BaseResource {
 	static boolean flagMedicine = false;
 	static boolean flagIngredient = false;
 	static boolean flagFood = false;
+	static boolean flagProfile = false; 
 	
 	//Variables que van a servir para lo de las medicinas
 	int minuteRange = 30;
 	
 	//Variables para los arreglos de imagenes
-	String [] imageArray = new String[9];
+	static private String [] imageArray = new String[9];
 	int indexImage = 0; //Indice para llevar el control de las imagenes almacenadas en el arreglo
 	
+	//Variable para la textura
+	static String texture = new String();
 	
-	//static String nm= "http://www.semanticweb.org/ontologies/2009/10/30/sentientVisor.owl";
+	//Variables para las texturas
+	String textAudio = new String();
+	String urlTexture = new String();
+	
+	//Varibles que definen el contenido del archivo XML resultante y por lo tanto la presentacion de la informacion en AR
+	static boolean flagArray =false;
+	static boolean flagTexture =false;
+	static boolean flagText =false;
+	static boolean flagGuide =false;
+	static boolean flagAudio =false;
+	
     public Filter(Context context, Request request, Response response) {
         super(context, request, response);
 
@@ -129,13 +139,19 @@ public class Filter extends BaseResource {
         qrcode= request.getResourceRef().getQueryAsForm().getFirstValue("qrcode");
         barcode= request.getResourceRef().getQueryAsForm().getFirstValue("barcode");
         
-        
+        flagArray =false;
+    	flagTexture =false;
+    	flagText =false;
+    	flagGuide =false;
+    	flagAudio =false;
+    	countIngredients=0;
                 
-        if(qrcode != null && role!= null && barcode == null && profile == null)
+        if(qrcode != null && role!= null && barcode == null && profile == null)//para el escenario del hospital
         {
         	decodeQrCode(qrcode);
-        	if(flagMedicine== true)
+        	if(flagProfile== true)
         	{
+        		flagArray = true;
         		readRole(role);
         		if(rol.equals("Nurse"))
         		{
@@ -145,46 +161,39 @@ public class Filter extends BaseResource {
         		else if(rol.equals("Physics"))
         		{
         			filterEnvironmentHistory();
-        		}           		
+        		}   
+        		
         	}
-        	//readRole(role);
         }      
-        else if(qrcode != null && profile != null && role == null && barcode == null)
+        else if(qrcode != null && profile != null && role == null && barcode == null)//para el escenario de la dieta alimenticia
         {
         	decodeQrCode(qrcode);
         	if(flagFood== true)
         	{     
         			filterProfile();      	
         			filterFood();
-        			filterIngredients();        		           		
+        			filterIngredients();   
+        		
         	}
-        	else
-        	{
-        		//se debe de crear el archivo XMl para que lo ponga como texto normal en AR
-        		System.out.println("Este es el texto del QR: " +  url);
-        	}
+        	
         		
         }  
-        else if(qrcode != null && profile == null && role == null && barcode == null)
+        else if(qrcode != null && profile == null && role == null && barcode == null) //para los escenarios de solo desplegar texto y mostrar info de un medicamento en especifico
         {
-        	decodeQrCode(qrcode);
-        		//se debe de crear el archivo XMl para que lo ponga como texto normal en AR
-        		System.out.println("Este es el texto del QR: " +  url);
+        		decodeQrCode(qrcode);
+        		if(flagMedicine== true)//cuando se visualiza un medicamento
+        		{
+        			filterMedicine();
+        			flagTexture=true;
+        		}
+        		else//solo va a presentar texto comun en AR
+        		{
+        			System.out.println("Este es el texto del QRsote: " +  url);
+        			flagText= true;
+        		}
 
         		
-        }  
-        /*else if(profile != null)
-        {        	     
-        			filterProfile();      		
-        	
-        }*/  
-        else if(profile != null && qrcode != null)
-        {
-        	System.out.println("mal mal");
-        }
-        
-       
-       
+        }        
         
     }
     
@@ -201,7 +210,6 @@ public class Filter extends BaseResource {
              //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 
              NodeList listOfPersons = doc.getElementsByTagName("Qrcode");
-             int totalPersons = listOfPersons.getLength();
 
              for(int s=0; s<listOfPersons.getLength() ; s++){
 
@@ -218,7 +226,6 @@ public class Filter extends BaseResource {
 
                      NodeList textFNList = urlElement.getChildNodes();
                      url = (( org.w3c.dom.Node)textFNList.item(0)).getNodeValue().trim();
-                     //System.out.println("Url : " + url);
 
                      //-------
                      
@@ -238,6 +245,11 @@ public class Filter extends BaseResource {
                  if(url.indexOf("food") >0)
                  {
                 	 flagFood = true;
+                	 //System.out.println("Food");
+                 }
+                 if(url.indexOf("profile") >0)
+                 {
+                	 flagProfile = true;
                 	 //System.out.println("Food");
                  }
 
@@ -436,7 +448,7 @@ public class Filter extends BaseResource {
     
     public void filterEnvironment()
     {
-    	String urlEnvironment = url.replaceFirst("medicines", "environment");
+    	String urlEnvironment = url.replaceFirst("profile", "environment");
     	 try {        	
 
              DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -449,7 +461,6 @@ public class Filter extends BaseResource {
              //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 
              NodeList listOfPersons = doc.getElementsByTagName("environment");
-             int totalPersons = listOfPersons.getLength();
              //System.out.println("Total no of people : " + totalPersons);
              
 
@@ -543,7 +554,7 @@ public class Filter extends BaseResource {
     
     public void filterEnvironmentHistory()
     {
-    	String urlEnvironment = url.replaceFirst("medicines", "environment/history");
+    	String urlEnvironment = url.replaceFirst("profile", "environment/history");
     	 try {        	
 
              DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -556,7 +567,6 @@ public class Filter extends BaseResource {
              //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 
              NodeList listOfPersons = doc.getElementsByTagName("environment");
-             int totalPersons = listOfPersons.getLength();
              //System.out.println("Total no of people : " + totalPersons);
              
 
@@ -647,30 +657,34 @@ public class Filter extends BaseResource {
 
     }
     
+    private Date When()
+    {
+    	Calendar calendario = new GregorianCalendar();
+        int hour, minutes;
+        hour =calendario.get(Calendar.HOUR_OF_DAY);
+        minutes = calendario.get(Calendar.MINUTE);
+        String now = hour + ":" + minutes;
+        
+        DateFormat sdf2 = new SimpleDateFormat("hh:mm");
+        Date date2 = sdf2.parse(now);
+    	return date2 ;
+    }
     public void filterMedicines()
     {
+    	String urlMedicines = url.replaceAll("profile", "medicines");
     	 try {        	
 
              DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
              DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-             Document doc = docBuilder.parse (url + ".xml");
+             Document doc = docBuilder.parse (urlMedicines + ".xml");
 
              // normalize text representation
              doc.getDocumentElement ().normalize ();
              //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 
              NodeList listOfPersons = doc.getElementsByTagName("medicine");
-             int totalPersons = listOfPersons.getLength();
-             //System.out.println("Total no of people : " + totalPersons);
+             //System.out.println("Total no of people : " + totalPersons);  
              
-             Calendar calendario = new GregorianCalendar();
-             int hour, minutes;
-             hour =calendario.get(Calendar.HOUR_OF_DAY);
-             minutes = calendario.get(Calendar.MINUTE);
-             String now = hour + ":" + minutes;
-             
-             DateFormat sdf2 = new SimpleDateFormat("hh:mm");
-             Date date2 = sdf2.parse(now);
              
              
 
@@ -760,6 +774,113 @@ public class Filter extends BaseResource {
 
     }
     
+    public void filterMedicine()
+    {
+    	
+    	 try {        	
+
+             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+             Document doc = docBuilder.parse (url + ".xml");
+
+             // normalize text representation
+             doc.getDocumentElement ().normalize ();
+             //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
+
+             NodeList listOfPersons = doc.getElementsByTagName("medicine");
+             //System.out.println("Total no of people : " + totalPersons);
+             
+             Calendar calendario = new GregorianCalendar();
+             int hour, minutes;
+             hour =calendario.get(Calendar.HOUR_OF_DAY);
+             minutes = calendario.get(Calendar.MINUTE);
+             String now = hour + ":" + minutes;
+             
+             DateFormat sdf2 = new SimpleDateFormat("hh:mm");
+             Date date2 = sdf2.parse(now);
+             
+             
+
+             for(int s=0; s<listOfPersons.getLength() ; s++){
+
+                 org.w3c.dom.Node firstPersonNode = listOfPersons.item(s);
+                 if(firstPersonNode.getNodeType() ==  org.w3c.dom.Node.ELEMENT_NODE){
+
+
+                     Element firstPersonElement = (Element)firstPersonNode;
+
+                     //-------
+                     
+                     NodeList firstNameList = firstPersonElement.getElementsByTagName("name");
+                     Element firstNameElement = (Element)firstNameList.item(0);
+
+                     NodeList textFNList = firstNameElement.getChildNodes();
+                     name = (( org.w3c.dom.Node)textFNList.item(0)).getNodeValue().trim();
+                     //System.out.println("Name : " + name);
+
+                     //-------
+                     
+                     NodeList lastNameList = firstPersonElement.getElementsByTagName("time");
+                     Element lastNameElement = (Element)lastNameList.item(0);
+
+                     NodeList textLNList = lastNameElement.getChildNodes();
+                     time= (( org.w3c.dom.Node)textLNList.item(0)).getNodeValue().trim();
+                     //System.out.println("Time : " + time);      
+                     
+
+                     //----
+                     
+                     NodeList genderList = firstPersonElement.getElementsByTagName("quantity");
+                     Element genderElement = (Element)genderList.item(0);
+
+                     NodeList textGenderList = genderElement.getChildNodes();
+                     quantity = (( org.w3c.dom.Node)textGenderList.item(0)).getNodeValue().trim();
+                     //System.out.println("Quantity : " + quantity);
+
+                     //------
+                     
+                     DateFormat sdf = new SimpleDateFormat("hh:mm");
+                     Date date = sdf.parse(time);
+                     //System.out.println((date2.getTime() -date.getTime())/60000);
+                     Long diference = ((date2.getTime() -date.getTime()))/60000;
+
+                     //Si la diferencia entre la hora actual y la hora de la ingesta
+                     //de medicamentos cae dentro del rango establecido de tiempo
+                     //se agrega al arreglo de imagenes a desplegar
+                     if(diference > (-1*minuteRange) &&  diference< minuteRange)
+                     {
+                    	 texture = "http://chart.apis.google.com/chart?cht=p&chd=t:50,50&chs=200x200&chtt=" + name + "%20|%20Hour%20" + time + "|Take%20"+ quantity;                    	 
+                     }
+                     else
+                     {
+                    	 texture = "http://chart.apis.google.com/chart?cht=p&chd=t:50,50&chs=200x200&chtt="+ name+"|Take%20At%20"+ time +"&chco=FF0000,FF0000";
+                     }
+                    	 
+               
+
+                 }//end of if clause
+
+
+             }//end of for loop with s var
+             
+         }catch (SAXParseException err) {
+             System.out.println ("** Parsing error" + ", line " 
+                  + err.getLineNumber () + ", uri " + err.getSystemId ());
+             System.out.println(" " + err.getMessage ());
+
+             }catch (SAXException e) {
+             Exception x = e.getException ();
+             ((x == null) ? e : x).printStackTrace ();
+
+             }catch (Throwable t) {
+             t.printStackTrace ();
+             }
+
+             System.out.println("Textura: " + texture);
+
+    }
+    
+    
     public int edad(String fecha_nac) {     //fecha_nac debe tener el formato dd/MM/yyyy
     	   
         Date fechaActual = new Date();
@@ -795,7 +916,6 @@ public class Filter extends BaseResource {
              //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 
              NodeList listOfPersons = doc.getElementsByTagName("profile");
-             int totalPersons = listOfPersons.getLength();
              //System.out.println("Total no of people : " + totalPersons);
 
              for(int s=0; s<listOfPersons.getLength() ; s++){
@@ -926,7 +1046,6 @@ public class Filter extends BaseResource {
              //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 
              NodeList listOfPersons = doc.getElementsByTagName("food");
-             int totalPersons = listOfPersons.getLength();
              //System.out.println("Total no of people : " + totalPersons);
 
              for(int s=0; s<listOfPersons.getLength() ; s++){
@@ -1070,7 +1189,7 @@ public class Filter extends BaseResource {
 
                      NodeList textServingsNumberList = servingsNumberElement.getChildNodes();
                      servingsNumber = (( org.w3c.dom.Node)textServingsNumberList.item(0)).getNodeValue().trim();
-                     System.out.println("Quantity : " + foodName + sugar +  fiber + calcium + vitaminA + vitaminB + protein + transFat + saturedFat + iron + sodium + cholesterol + fatCalories + servingSize + servingsNumber);
+                     //System.out.println("Quantity : " + foodName + sugar +  fiber + calcium + vitaminA + vitaminB + protein + transFat + saturedFat + iron + sodium + cholesterol + fatCalories + servingSize + servingsNumber);
 
                  }//end of if clause
 
@@ -1113,14 +1232,11 @@ public class Filter extends BaseResource {
              DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
              Document doc = docBuilder.parse (urlIngredients + ".xml");
 
-             
-
              // normalize text representation
              doc.getDocumentElement ().normalize ();
              //System.out.println ("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 
              NodeList listOfPersons = doc.getElementsByTagName("ingredient");
-             int totalPersons = listOfPersons.getLength();
              //System.out.println("Total no of people : " + totalPersons);
 
              for(int s=0; s<listOfPersons.getLength() ; s++){
@@ -1219,9 +1335,35 @@ public class Filter extends BaseResource {
 
 
              }//end of for loop with s var
-             
+             System.out.println("Ingredientes" + countIngredients);
              if(countIngredients > 3)
-            	 System.out.println("no es nada bueno");
+             {
+            	 if(sound.equals("YES"))
+            	 {
+            		 textAudio ="NOT RECOMMENDED";
+            		 flagAudio = true;
+            	 }
+            	 else
+            	 {
+            		 urlTexture = "http://chart.apis.google.com/chart?cht=p&chd=t:50,50&chs=200x200&chtt=NOT%20|RECOMMENDED&chco=FF0000,FF0000&chts=000000,20";
+            		 flagTexture = true;
+            	 }
+             }
+             else
+             {
+            	 if(sound.equals("YES"))
+            	 {
+            		 textAudio ="RECOMMENDED";
+            		 flagAudio = true;
+            	 }
+            	 else
+            	 {
+            		 urlTexture = "http://chart.apis.google.com/chart?cht=p&chd=t:50,50&chs=200x200&chtt=RECOMMENDED&chco=00FF00,00FF00&chts=000000,20";
+            		 flagTexture = true;
+            	 }
+             }
+             
+            	 
              
          }catch (SAXParseException err) {
              System.out.println ("** Parsing error" + ", line " 
@@ -1271,6 +1413,214 @@ public class Filter extends BaseResource {
         }
     }
 
+    
+    private Representation representArray(Variant variant)
+    {
+    	
+    	System.out.println("Este es el contenido" + imageArray[1].toString());
+    	if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
+            try {
+            	
+            	DomRepresentation representation = new DomRepresentation(
+                        MediaType.TEXT_XML);
+                // Generate a DOM document representing the list of
+                // items.
+                Document d = representation.getDocument();
+                Element r = d.createElement("ubicomp");
+
+                d.appendChild(r);
+                Element eltPresentation = d.createElement("presentation");
+                	for (int cont = 0; cont < imageArray.length; cont++) {
+                		
+                	if(imageArray[cont]!=null)
+                   	 {
+                			
+                		Element eltArray = d.createElement("array");                	 
+                		Element eltImage = d.createElement("image");
+                		eltImage.appendChild(d.createTextNode(imageArray[cont].toString()));
+                		eltArray.appendChild(eltImage);
+                		
+                		eltPresentation.appendChild(eltArray);
+                		r.appendChild(eltPresentation);
+
+                	 }
+                
+                   
+                }
+                
+                d.normalizeDocument();           	
+
+                // Returns the XML representation of this document.
+                return representation;                   
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    	 return null;
+    }
+    
+    private Representation representGuide(Variant variant)
+    {
+    	
+    	System.out.println("Este es el contenido" + imageArray[1].toString());
+    	if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
+            try {
+            	
+            	DomRepresentation representation = new DomRepresentation(
+                        MediaType.TEXT_XML);
+                // Generate a DOM document representing the list of
+                // items.
+                Document d = representation.getDocument();
+                Element r = d.createElement("ubicomp");
+
+                d.appendChild(r);
+                Element eltPresentation = d.createElement("presentation");
+                	for (int cont = 0; cont < imageArray.length; cont++) {
+                		
+                	if(imageArray[cont]!=null)
+                   	 {
+                			
+                		Element eltGuide = d.createElement("guide");                	 
+                		Element eltImage = d.createElement("image");
+                		eltImage.appendChild(d.createTextNode(imageArray[cont].toString()));
+                		eltGuide.appendChild(eltImage);
+                		
+                		eltPresentation.appendChild(eltGuide);
+                		r.appendChild(eltPresentation);
+
+                	 }
+                
+                   
+                }
+                
+                d.normalizeDocument();           	
+
+                // Returns the XML representation of this document.
+                return representation;                   
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    	 return null;
+    }
+    
+    
+    private Representation representText(Variant variant)
+    {   	
+    	
+    	if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
+            try {
+            	
+            	DomRepresentation representation = new DomRepresentation(
+                        MediaType.TEXT_XML);
+                // Generate a DOM document representing the list of
+                // items.
+                Document d = representation.getDocument();
+                Element r = d.createElement("ubicomp");
+
+                d.appendChild(r);
+                Element eltPresentation = d.createElement("presentation");
+                	
+                			
+                		Element eltText = d.createElement("text");                	 
+                		eltText.appendChild(d.createTextNode(url));                		
+                		eltPresentation.appendChild(eltText);
+                		r.appendChild(eltPresentation);               
+                   
+               
+                
+                d.normalizeDocument();           	
+
+                // Returns the XML representation of this document.
+                return representation;                   
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    	 return null;
+    }
+    
+    private Representation representAudio(Variant variant)
+    {   	
+    	
+    	if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
+            try {
+            	
+            	DomRepresentation representation = new DomRepresentation(
+                        MediaType.TEXT_XML);
+                // Generate a DOM document representing the list of
+                // items.
+                Document d = representation.getDocument();
+                Element r = d.createElement("ubicomp");
+
+                d.appendChild(r);
+                Element eltPresentation = d.createElement("presentation");
+                	
+                Element eltAudio = d.createElement("audio");                	 
+        		Element eltText = d.createElement("text");
+        		eltText.appendChild(d.createTextNode(textAudio));
+        		eltAudio.appendChild(eltText);        		
+        		eltPresentation.appendChild(eltAudio);
+        		r.appendChild(eltPresentation);              
+               
+                
+                d.normalizeDocument();           	
+
+                // Returns the XML representation of this document.
+                return representation;                   
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    	 return null;
+    }
+    
+    private Representation representTexture(Variant variant)
+    {   	
+    	
+    	if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
+            try {
+            	
+            	DomRepresentation representation = new DomRepresentation(
+                        MediaType.TEXT_XML);
+                // Generate a DOM document representing the list of
+                // items.
+                Document d = representation.getDocument();
+                Element r = d.createElement("ubicomp");
+
+                d.appendChild(r);
+                Element eltPresentation = d.createElement("presentation");
+                	
+                Element eltTexture = d.createElement("texture");                	 
+        		Element eltImage = d.createElement("image");
+        		eltImage.appendChild(d.createTextNode(urlTexture));
+        		eltTexture.appendChild(eltImage);        		
+        		eltPresentation.appendChild(eltTexture);
+        		r.appendChild(eltPresentation);              
+               
+                
+                d.normalizeDocument();           	
+
+                // Returns the XML representation of this document.
+                return representation;                   
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    	 return null;
+    }
+    
+    
     /**
      * Returns a listing of all registered items.
      */
@@ -1295,7 +1645,7 @@ public class Filter extends BaseResource {
  		 
  		 //Se imprime el archivo RDF
  		 model.write(System.out, "RDF/XML-ABBREV");
-        
+        /*
     	
         if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
             try {
@@ -1326,7 +1676,33 @@ public class Filter extends BaseResource {
             }
         }
 
-        return null;
+        return null;*/
+ 		 if(flagGuide== true)
+ 		 {
+ 			 System.out.println("Guide");
+ 			 return representGuide(variant);
+ 		 }
+ 		 else if(flagText== true)
+		 {
+ 			System.out.println("Text");
+			 return representText(variant);
+		 }
+ 		 else if(flagTexture== true)
+		 {
+ 			System.out.println("Texture");
+			 return representTexture(variant);
+		 }
+ 		 else if(flagAudio== true)
+		 {
+ 			System.out.println("Audio");
+			 return representAudio(variant);
+		 }
+ 		 else if(flagArray== true)
+		 {
+ 			System.out.println("Array");
+			 return representArray(variant);
+		 }
+ 		 return null;
     }
 
     /**

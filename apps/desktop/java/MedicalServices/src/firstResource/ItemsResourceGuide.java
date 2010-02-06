@@ -22,10 +22,10 @@ import org.w3c.dom.Element;
  * Resource that manages a list of items.
  * 
  */
-public class ItemsResource extends BaseResource {
+public class ItemsResourceGuide extends BaseResource3 {
 	String linea, linea2;
 
-    public ItemsResource(Context context, Request request, Response response) {
+    public ItemsResourceGuide(Context context, Request request, Response response) {
         super(context, request, response);
 
         // Allow modifications of this resource via POST requests.
@@ -44,19 +44,16 @@ public class ItemsResource extends BaseResource {
         // Parse the given representation and retrieve pairs of
         // "name=value" tokens.
         Form form = new Form(entity);
-        String itemName = form.getFirstValue("name");
-        String itemDescription = form.getFirstValue("description");
-        String itemType = form.getFirstValue("type");
-        String itemQuantity= form.getFirstValue("quantity");
-        String itemTime = form.getFirstValue("time");
+        String itemName = form.getFirstValue("image");
+        String itemPortion = form.getFirstValue("location");
 
         // Check that the item is not already registered.
-        if (getItems().containsKey(itemName)) {
+        if (getItems3().containsKey(itemName)) {
             generateErrorRepresentation(
                     "Item " + itemName + " already exists.", "1", getResponse());
         } else {
             // Register the new item
-            getItems().put(itemName, new Item(itemName, itemDescription, itemQuantity, itemType, itemTime));
+            getItems3().put(itemName, new ItemGuide(itemName, itemPortion));
 
             // Set the response's status and entity
             getResponse().setStatus(Status.SUCCESS_CREATED);
@@ -185,25 +182,18 @@ public class ItemsResource extends BaseResource {
                 Document d = representation.getDocument();  
                 Element r = d.createElement("items");  
                 d.appendChild(r);  
-                for (Item item : getItems().values()) {  
+                for (ItemGuide item : getItems3().values()) {  
                     Element eltItem = d.createElement("item");  
   
                     Element eltName = d.createElement("name");  
-                    eltName.appendChild(d.createTextNode(item.getName()));  
+                    eltName.appendChild(d.createTextNode(item.getImage()));  
                     eltItem.appendChild(eltName);  
   
-                    Element eltDescription = d.createElement("description");  
+                    Element eltDescription = d.createElement("portion");  
                     eltDescription.appendChild(d.createTextNode(item  
-                            .getDescription()));  
+                            .getLocation()));  
                     eltItem.appendChild(eltDescription);  
                     
-                    Element eltType = d.createElement("type");
-                    eltType.appendChild(d.createTextNode(item.getType()));
-                    eltItem.appendChild(eltType);
-                    
-                    Element eltTime = d.createElement("time");
-                    eltTime.appendChild(d.createTextNode(item.getTime()));
-                    eltItem.appendChild(eltTime);
                     
                    /* Element eltQuantity = d.createElement("quantity");                    
                     eltQuantity.appendChild(d.createTextNode(item.getQuantity()));
@@ -261,13 +251,12 @@ public class ItemsResource extends BaseResource {
     }
     
     /////////
-    public static Reference createItem(Item item, Client client,
+    public static Reference createItem(ItemIngredient item, Client client,
             Reference itemsUri) {
         // Gathering informations into a Web form.
         Form form = new Form();
         form.add("name", item.getName());
-        form.add("description", item.getDescription());
-        form.add("type", item.getType());
+        form.add("description", item.getPortion());
         Representation rep = form.getWebRepresentation();
 
         // Launch the request

@@ -15,7 +15,6 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -24,20 +23,19 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * Resource that manages a list of items.
  * 
  */
-public class LocationIndoor extends BaseResource {
-	
-	String locationCode= new String();
-	static String locationIndoorURI    = "http://localhost:2122/ubicomp/location/indoor/";
+public class Event extends BaseResource {
+
+	String eventCode= new String();
+	static String eventURI    = "http://localhost:2122/ubicomp/presentation/";
 	static String nm= "http://www.semanticweb.org/ontologies/2009/10/30/";
 	//static String nm= "http://www.semanticweb.org/ontologies/2009/10/30/sentientVisor.owl";
 	
-	//Variables de la localizacion
-	static String varRoomNo;
-	static String varFloorNo;
-	static String varBedNo;
-	static String varName;
+	//Variables del URI
+	static String varClick;
+	static String varDoubleClick;
 	
-    public LocationIndoor(Context context, Request request, Response response) {
+	
+    public Event(Context context, Request request, Response response) {
         super(context, request, response);
 
         // Allow modifications of this resource via POST requests.
@@ -46,8 +44,8 @@ public class LocationIndoor extends BaseResource {
         // Declare the kind of representations supported by this resource.
         getVariants().add(new Variant(MediaType.TEXT_XML));
         
-        locationCode =  request.getAttributes().get("locationCode").toString();  
-        locationIndoorURI = locationIndoorURI + locationCode;
+        eventCode =  request.getAttributes().get("eventCode").toString();  
+        eventURI =  eventURI  +  eventCode;
     }
 
     /**
@@ -90,27 +88,20 @@ public class LocationIndoor extends BaseResource {
         Model model = ModelFactory.createDefaultModel();
         
     	//Properties
-    	Property bedNo= model.createProperty(nm, "bedNo");
-    	Property roomNo= model.createProperty(nm, "roomNo");
-    	Property floorNo = model.createProperty(nm, "floorNo");
-    	Property name= model.createProperty(nm, "name");
-    	   	
+    	Property click= model.createProperty(nm, "click");
+    	Property doubleClick= model.createProperty(nm, "doubleClick");  	   	
     	
  	
  		//Se crea el recurso
- 		Resource locationIndoor = model.createResource(locationIndoorURI);
+ 		Resource event = model.createResource(eventURI);
  		
- 		//Se asigna el valor a las variables
- 		varRoomNo = "46";
- 		varFloorNo = "3";
- 		varBedNo = "35";
- 		varName = "XXXXX Place";
+ 		//Se asignan los valores a las variables
+ 		varClick = "http://www.cicese.mx";
+ 		varDoubleClick = "http://www.jalpa.com.mx";
  			
  		//Se agregan las propiedades
- 		locationIndoor.addProperty(bedNo, varBedNo);
- 		locationIndoor.addProperty(roomNo, varRoomNo);
- 		locationIndoor.addProperty(floorNo, varFloorNo);
- 		locationIndoor.addProperty(name,varName);
+ 		event.addProperty(click, varClick);
+ 		event.addProperty(doubleClick, varDoubleClick);
  		
  		
  		//Se define el namespace, para no poner j.0: se coloca las iniciales SV
@@ -130,30 +121,19 @@ public class LocationIndoor extends BaseResource {
             	Document d = representation.getDocument();
                 //Element r = d.createElement("items");
                 Element nodeUbicomp = d.createElement("ubicomp");
-                Element nodeLocation = d.createElement("location");
                 d.appendChild(nodeUbicomp);
                 
-                	Element nodeIndoor = d.createElement("indoor");
+                	Element nodeEvent = d.createElement("event");
+                    
+                	Element eltClick = d.createElement("click");
+                	eltClick.appendChild(d.createTextNode(varClick));
+                	nodeEvent.appendChild(eltClick);
 
+                    Element eltDoubleClick= d.createElement("doubleClick");
+                    eltDoubleClick.appendChild(d.createTextNode(varDoubleClick));
+                    nodeEvent.appendChild(eltDoubleClick);
                     
-                	Element eltName = d.createElement("name");
-                	eltName.appendChild(d.createTextNode(varName));
-                	nodeIndoor.appendChild(eltName);
-
-                    Element eltBedNo = d.createElement("bedNo");
-                    eltBedNo.appendChild(d.createTextNode(varBedNo));
-                    nodeIndoor.appendChild(eltBedNo);
-                    
-                    Element eltFloorNo = d.createElement("floorNo");
-                    eltFloorNo.appendChild(d.createTextNode(varFloorNo));
-                    nodeIndoor.appendChild(eltFloorNo);
-                    
-                    Element eltRoomNo = d.createElement("roomNo");
-                    eltRoomNo.appendChild(d.createTextNode(varRoomNo));
-                    nodeIndoor.appendChild(eltRoomNo);
-                    
-                    nodeLocation.appendChild(nodeIndoor);
-                    nodeUbicomp.appendChild(nodeLocation);
+                    nodeUbicomp.appendChild(nodeEvent);
                
                 d.normalizeDocument();
 

@@ -15,17 +15,11 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import jp.sourceforge.qrcode.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.graph.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.ontology.*;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 /**
  * Resource that manages a list of items.
  * 
@@ -131,14 +125,6 @@ public class Texture extends BaseResource {
                     Element eltImage = d.createElement("image");
                     eltImage.appendChild(d.createTextNode(varImage));
                     nodeTexture.appendChild(eltImage);
-
-                    Element eltImage2 = d.createElement("image");
-                    eltImage2.appendChild(d.createTextNode(varImage));
-                    nodeTexture.appendChild(eltImage2);
-                    
-                    Element eltImage3 = d.createElement("image");
-                    eltImage3.appendChild(d.createTextNode(varImage));
-                    nodeTexture.appendChild(eltImage3);
 
                     nodePresentation.appendChild(nodeTexture);
                     nodeUbicomp.appendChild(nodePresentation);

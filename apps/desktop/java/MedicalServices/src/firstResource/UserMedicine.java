@@ -15,17 +15,11 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import jp.sourceforge.qrcode.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.graph.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.ontology.*;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 /**
  * Resource that manages a list of items.
  * 
@@ -114,8 +108,8 @@ public class UserMedicine extends BaseResource {
  		varName = "penicilina";
  		varQuantity = "2";
  		varType = "Pills";
- 		varTime = "13:45";
- 		varDescription = "No se administre en personas con afecciones cardiacas";
+ 		varTime = "12:45";
+ 		varDescription = "No se  con afecciones cardiacas";
  		
  		//Se agregan las propiedades
  		medicine.addProperty(name, varName);
@@ -139,13 +133,10 @@ public class UserMedicine extends BaseResource {
                 // Generate a DOM document representing the list of
                 // items.
             	Document d = representation.getDocument();
-                Element nodeUbicomp = d.createElement("ubicomp");
-            	Element nodeUsers= d.createElement("users");
-            	Element nodeUser= d.createElement(user);
-            	Element nodeMedicines= d.createElement("medicines");
-                d.appendChild(nodeUbicomp);
+                Element nodeMedicines= d.createElement("medicines");
+                d.appendChild(nodeMedicines);
                 
-                	Element nodeMedicine = d.createElement(medicineCode);
+                	Element nodeMedicine = d.createElement("medicine");
                 
 
                     Element eltName = d.createElement("name");
@@ -156,6 +147,10 @@ public class UserMedicine extends BaseResource {
                     eltType.appendChild(d.createTextNode(varType));
                     nodeMedicine.appendChild(eltType);
                     
+                    Element eltQuantity = d.createElement("quantity");
+                    eltQuantity.appendChild(d.createTextNode(varQuantity));
+                    nodeMedicine.appendChild(eltQuantity);
+                    
                     Element eltTime = d.createElement("time");
                     eltTime.appendChild(d.createTextNode(varTime));
                     nodeMedicine.appendChild(eltTime);
@@ -165,9 +160,6 @@ public class UserMedicine extends BaseResource {
                     nodeMedicine.appendChild(eltDescription);
                     
                     nodeMedicines.appendChild(nodeMedicine);
-                    nodeUser.appendChild(nodeMedicines);
-                    nodeUsers.appendChild(nodeUser);
-                    nodeUbicomp.appendChild(nodeUsers);
                 
                 d.normalizeDocument();
 

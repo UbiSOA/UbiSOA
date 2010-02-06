@@ -15,17 +15,11 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import jp.sourceforge.qrcode.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.graph.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.ontology.*;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 /**
  * Resource that manages a list of items.
  * 
@@ -106,15 +100,35 @@ public class LocationOutdoor extends BaseResource {
  		Resource locationOutdoor = model.createResource(locationOutdoorURI);
  		
  		//Se asignan los valores a las variables
- 		varLatitude = "28.0987" ;
- 		varLongitude = "80.9983";
- 		varAltitude = "100.4765";
+ 		varAltitude = "28.1987" ;
+ 		if(locationCode.equals("1111"))
+ 		{
+ 			varLongitude = "5";
+ 			varLatitude = "30";
+ 		}
+ 		else if(locationCode.equals("1112"))
+ 		{
+ 			varLongitude = "-5";
+ 			varLatitude = "5";
+ 		}
+ 		else if(locationCode.equals("1113"))
+ 		{
+ 			varLongitude = "-5";
+ 			varLatitude = "-5";
+ 		}
+ 		else if(locationCode.equals("1114"))
+ 		{
+ 			varLongitude = "5";
+ 			varLatitude = "-5";
+ 		}
+ 		
+ 		
  		varName = "Place";
  			
  		//Se agregan las propiedades
- 		locationOutdoor.addProperty(altitude,varLatitude);
+ 		locationOutdoor.addProperty(altitude,varAltitude);
  		locationOutdoor.addProperty(longitude,varLongitude);
- 		locationOutdoor.addProperty(latitude, varAltitude);
+ 		locationOutdoor.addProperty(latitude, varLatitude);
  		locationOutdoor.addProperty(name, varName);
  		
  		

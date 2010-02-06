@@ -18,17 +18,11 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import jp.sourceforge.qrcode.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.graph.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
-import com.hp.hpl.jena.ontology.*;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 /**
  * Resource that manages a list of items.
  * 
@@ -121,10 +115,8 @@ public class UserIngredients extends BaseResource2 {
  		 model.write(System.out, "RDF/XML-ABBREV");
  		 
  		 Client client = new Client(Protocol.HTTP);
-         Client client2 = new Client(Protocol.HTTP);
          
          Reference itemsUri= new Reference("http://localhost:2122/ubicomp/items2");
-         Reference itemsUri2= new Reference("http://localhost:2122/ubicomp/items2");
          
          for(int cont=0; cont< 5; cont++)
          {

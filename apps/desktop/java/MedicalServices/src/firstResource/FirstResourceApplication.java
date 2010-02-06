@@ -15,6 +15,7 @@ public class FirstResourceApplication extends Application {
     /** The list of items is persisted in memory. */
     private final ConcurrentMap<String, Item> items = new ConcurrentHashMap<String, Item>();
     private final ConcurrentMap<String, ItemIngredient> items2 = new ConcurrentHashMap<String, ItemIngredient>();
+    private final ConcurrentMap<String, ItemGuide> items3 = new ConcurrentHashMap<String, ItemGuide>();
 
     /**
      * Creates a root Restlet that will receive all incoming calls.
@@ -63,7 +64,7 @@ public class FirstResourceApplication extends Application {
 		// Attach the handlers to the root router  
 		
 		//Obtiene el perfil del usuario
-		router.attach("/filter", Filter.class);
+		router.attach("/filter", Filter.class);		
 		
 		//Obtiene el perfil del usuario
 		router.attach("/users/{user}/profile", UserProfile.class);
@@ -111,6 +112,9 @@ public class FirstResourceApplication extends Application {
 		router.attach("/presentation/virtualobject/arrow", Arrow.class);
 		
 		//Obtiene los valores de los signos vitales del paciente
+		router.attach("/event/{eventCode}", Event.class);
+		
+		//Obtiene los valores de los signos vitales del paciente
 		router.attach("/event/click", Click.class);
 		
 		//Obtiene los valores de los signos vitales del paciente
@@ -151,6 +155,9 @@ public class FirstResourceApplication extends Application {
 		
 	     // Defines a route for the resource "list of items"
 		router.attach("/items2", ItemsResourceIngredient.class);
+		
+		 // Defines a route for the resource "list of items"
+		router.attach("/items3", ItemsResourceGuide.class);
 
 
         return router;
@@ -166,6 +173,9 @@ public class FirstResourceApplication extends Application {
     }
     public ConcurrentMap<String, ItemIngredient> getItems2() {
         return items2;
+    }
+    public ConcurrentMap<String, ItemGuide> getItems3() {
+        return items3;
     }
 }
 
