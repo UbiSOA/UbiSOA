@@ -118,45 +118,7 @@ public class Guide extends BaseResource3 {
  		 
  		 //Se imprime el archivo RDF
  		 model.write(System.out, "RDF/XML-ABBREV");
-        
-    	/*
-        if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
-            try {
-            	
-            	DomRepresentation representation = new DomRepresentation(
-                        MediaType.TEXT_XML);
-                // Generate a DOM document representing the list of
-                // items.
-                Document d = representation.getDocument();
-                
-                Element nodeUbicomp = d.createElement("ubicomp");
-            	Element nodePresentation= d.createElement("presentation");
-            	d.appendChild(nodeUbicomp);
-                
-            		Element nodeGuide = d.createElement("guide");
-
-                    Element eltImage = d.createElement("image");
-                    eltImage.appendChild(d.createTextNode(varImage));
-                    
-                    Element eltLocation = d.createElement("location");
-                    eltLocation.appendChild(d.createTextNode(varLocation));
-                    eltImage.appendChild(eltLocation);
-                	nodeGuide.appendChild(eltImage);
-
-                    Element eltImage2 = d.createElement("image");
-                    eltImage2.appendChild(d.createTextNode(varImage));
-                    nodeGuide.appendChild(eltImage2);
-                    
-                    Element eltImage3 = d.createElement("image");
-                    eltImage3.appendChild(d.createTextNode(varImage));
-                    nodeGuide.appendChild(eltImage3);
-
-                    nodePresentation.appendChild(nodeGuide);
-                    nodeUbicomp.appendChild(nodePresentation);
-                
-                d.normalizeDocument();
-                
-                */
+ 		 
  		if (MediaType.TEXT_XML.equals(variant.getMediaType())) {
             try {
             	
@@ -165,9 +127,11 @@ public class Guide extends BaseResource3 {
                 // Generate a DOM document representing the list of
                 // items.
                 Document d = representation.getDocument();
-                Element r = d.createElement("guide");
-                //Element r = d.createElement("Ubicomp");
-                d.appendChild(r);
+                //Element r = d.createElement("guide");
+                Element nodeUbicomp = d.createElement("Ubicomp");
+                Element nodePresentation = d.createElement("presentation");
+                Element nodeGuide = d.createElement("guide");
+                d.appendChild(nodeUbicomp);
                
                 for (ItemGuide item : getItems3().values()) {
                 	 Element eltItem = d.createElement("menu");
@@ -182,7 +146,9 @@ public class Guide extends BaseResource3 {
                     eltDescription.appendChild(d.createTextNode(item.getLocation()));
                     eltItem.appendChild(eltDescription);
 
-                    r.appendChild(eltItem);
+                    nodeGuide.appendChild(eltItem);
+                    nodePresentation.appendChild(nodeGuide);
+                    nodeUbicomp.appendChild(nodePresentation);
                 }
                 
                 d.normalizeDocument();     

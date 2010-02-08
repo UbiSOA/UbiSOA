@@ -108,7 +108,7 @@ public class UserMedicine extends BaseResource {
  		varName = "penicilina";
  		varQuantity = "2";
  		varType = "Pills";
- 		varTime = "12:45";
+ 		varTime = "11:45";
  		varDescription = "No se  con afecciones cardiacas";
  		
  		//Se agregan las propiedades
