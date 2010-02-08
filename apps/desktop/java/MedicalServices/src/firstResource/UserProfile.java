@@ -108,7 +108,7 @@ public class UserProfile extends BaseResource {
  		//Se asignan los valores a las variables
  		varWeight     = "72";
  		varHeight     = "166";
- 		varSound     = "YES";
+ 		varSound     = "NO";
  		varGender     = "Male";
  		varFirstName    = "John";
  		varLastName   = "Smith";

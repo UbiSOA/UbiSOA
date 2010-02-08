@@ -117,7 +117,7 @@ public class UserMedicines extends BaseResource {
  		varName = "penicilina";
  		varQuantity = "2";
  		varType = "Pills";
- 		varTime = "16:45";
+ 		varTime = "10:45";
  		varDescription = "No se administre en personas con afecciones cardiacas";
  		
  		//Se agregan las propiedades
@@ -180,7 +180,7 @@ public class UserMedicines extends BaseResource {
          
          for(int cont=0; cont< 5; cont++)
          {
-        	 Item item1= new Item("desenfriol" + cont, "Nothing", "2", "Tableta", "17:36");
+        	 Item item1= new Item("desenfriol" + cont, "Nothing", "2", "Tableta", "10:36");
         	 Reference itemUri = createItem(item1, client, itemsUri);
          }
  		 

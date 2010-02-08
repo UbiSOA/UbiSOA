@@ -145,6 +145,10 @@ public class Filter extends BaseResource {
     	flagGuide =false;
     	flagAudio =false;
     	
+    	flagFood = false;
+    	flagMedicine = false;
+    	flagProfile = false;
+    	flagIngredient = false;
     	
     	
     	countIngredients=0;
@@ -177,23 +181,31 @@ public class Filter extends BaseResource {
         			filterFood();
         			filterIngredients();   
         		
+        	}        	
+        	else if(flagMedicine== true)
+        	{     
+        			filterProfile();      	
+        			filterMedicine();
+        			//flagAudio = true ;
+        		
         	}
         	
         		
         }  
         else if(qrcode != null && profile == null && role == null && barcode == null) //para los escenarios de solo desplegar texto y mostrar info de un medicamento en especifico
         {
-        		decodeQrCode(qrcode);
+        		/*decodeQrCode(qrcode);
         		if(flagMedicine== true)//cuando se visualiza un medicamento
         		{
         			filterMedicine();
         			flagTexture=true;
         		}
         		else//solo va a presentar texto comun en AR
-        		{
+        		{*/
+        			decodeQrCode(qrcode);
         			System.out.println("Este es el texto del QRsote: " +  url);
         			flagText= true;
-        		}
+        		//}
 
         		
         }        
@@ -851,11 +863,29 @@ public class Filter extends BaseResource {
                      //se agrega al arreglo de imagenes a desplegar
                      if(diference > (-1*minuteRange) &&  diference< minuteRange)
                      {
-                    	 texture = "http://chart.apis.google.com/chart?cht=p&chd=t:50,50&chs=200x200&chtt=" + name + "%20|%20Hour%20" + time + "|Take%20"+ quantity;                    	 
+                    	 if(sound.equals("YES"))
+                    	 {
+                    		 textAudio = "Take " + quantity + " " + name + " at " + time ;
+                    		 flagAudio = true;
+                    	 }
+                    	 else
+                    	 {
+                    		 texture = "http://chart.apis.google.com/chart?cht=p&chd=t:50,50&chs=200x200&chtt=" + name + "%20|%20Hour%20" + time + "|Take%20"+ quantity;
+                    		 flagTexture =  true;
+                    	 }
                      }
                      else
                      {
-                    	 texture = "http://chart.apis.google.com/chart?cht=p&chd=t:50,50&chs=200x200&chtt="+ name+"|Take%20At%20"+ time +"&chco=FF0000,FF0000";
+                    	 if(sound.equals("YES"))
+                    	 {
+                    		 textAudio = "Do not take now, take " + quantity + " " +name + " at " + time ;
+                    		 flagAudio = true;
+                    	 }
+                    	 else
+                    	 {
+                    		 texture = "http://chart.apis.google.com/chart?cht=p&chd=t:50,50&chs=200x200&chtt="+ name+"|Take%20At%20"+ time +"&chco=FF0000,FF0000";
+                    		 flagTexture =  true;
+                    	 }
                      }
                     	 
                
@@ -878,7 +908,7 @@ public class Filter extends BaseResource {
              t.printStackTrace ();
              }
 
-             System.out.println("Textura: " + texture);
+             //System.out.println("Textura: " + texture);
 
     }
     

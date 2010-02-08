@@ -91,7 +91,7 @@ public class UserRole extends BaseResource {
  		Resource rol = model.createResource(personRoleURI);
  		
  		//Se agrega el valor a la variable
- 		varRole= "Nurse";
+ 		varRole= "Physics";
  			
  		//Se agregan las propiedades
  		rol.addProperty(role, "nurse");
