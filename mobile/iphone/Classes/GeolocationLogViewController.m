@@ -18,7 +18,7 @@
 	[mapName release];
 	[super dealloc];
 }
-
+
 - (IBAction)clear:(id)sender {
 	self.textView.text = @"";
 	NSLog(@"%@", mapName);
