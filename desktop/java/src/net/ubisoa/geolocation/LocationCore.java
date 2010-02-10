@@ -161,12 +161,4 @@ public class LocationCore  {
 		return res;
 	}
 
-	public Vector<Location> getSignalsTest() {
-		Vector<Location> res = new Vector<Location>();
-		res.add(estimate("iPhone", "0:1c:58:6d:71:b0=-91,0:24:36:a7:6a:4d=-90,0:e:d7:b0:f7:61=-89," + 
-				"0:21:7c:a0:f7:b1=-85,3a:c5:3c:b:ce:1e=-82,0:1c:58:d7:aa:f0=-74,0:9:5b:51:6b:76=-62," + 
-				"0:7:e:7d:91:90=-47"));
-		return res;
-	}
-
 }

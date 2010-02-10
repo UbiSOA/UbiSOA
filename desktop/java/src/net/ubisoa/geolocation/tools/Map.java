@@ -15,13 +15,11 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import net.ubisoa.geolocation.LocationCore;
 import net.ubisoa.geolocation.data.Location;
 
 public class Map extends JPanel {
@@ -44,17 +42,11 @@ public class Map extends JPanel {
 	private TreeMap<String, String> pointLabels = new TreeMap<String, String>();
 	private boolean mustRepaint;
 	
-	private LocationCore locationCore = new LocationCore();
-	private Vector<Location> signals;
-
 	public Map() {
 		super();
 		this.setBackground(new Color(0x9a9da0));
 		this.setAutoscrolls(true);
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		//signals = locationCore.getSignalsByBSSID("iPhone", "0:7:e:7d:91:90");
-		signals = locationCore.getSignalsTest();
-		//for (int i = 0; i < 3000; i++) addOne();
 	}
 	
 	public void paint(Graphics g) {
@@ -88,7 +80,6 @@ public class Map extends JPanel {
 		if (image != null) {
 			drawImage();
 			drawPoints();
-			drawDataset();
 			drawText(statusText);
 		} else drawText(noImageText);
 	}
@@ -96,19 +87,6 @@ public class Map extends JPanel {
 	private void drawBackground() {
 		g2d.setBackground(new Color(0x9a9da0));
 		g2d.clearRect(0, 0, bufImg.getWidth(), bufImg.getHeight());
-	}
-	
-	private void drawDataset() {
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		
-		for (Location l: signals) {
-			float delta = 1.0f - (float)l.getAltitude() / -100.0f;
-			g2d.setColor(new Color(1.0f - delta, 0.0f, delta));
-			//g2d.setColor(new Color(1.0f, 0.0f, 0.0f, 0.1f));
-			
-			g2d.fillOval((int)Math.round(l.getLatitude() * image.getWidth(null) - 5),
-					(int)Math.round(l.getLongitude() * image.getHeight(null) - 5), 10, 10);
-		}
 	}
 		
 	private void drawPoints() {

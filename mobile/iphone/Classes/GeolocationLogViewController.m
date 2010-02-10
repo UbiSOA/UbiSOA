@@ -16,7 +16,8 @@
 - (void)dealloc {
 	[textView release];
 	[mapName release];
-    [super dealloc];
+	textView.tran
+	[super dealloc];
 }
 
 - (IBAction)clear:(id)sender {

@@ -357,10 +357,15 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 				servicePorts.get(selectedService));
 		request.setMethod(Method.POST);
 		
+		String os = System.getProperty("os.name");
+		String osWords[] = os.split(" ");
+		String platform = osWords[0];
+		
 		Form form = new Form();
 		form.add("signalData", spotter.getSignalData());
 		form.add("latitude", location.getLatitude() + "");
 		form.add("longitude", location.getLongitude() + "");
+		form.add("platform", platform);
 		request.setEntity(form.getWebRepresentation());
 		
 		org.restlet.Client client = new org.restlet.Client(Protocol.HTTP);
@@ -409,13 +414,17 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 
 	public void serviceResolved(DNSSDService resolver, int flags, int ifIndex,
 			String fullName, String hostName, int port, TXTRecord txtRecord) {
-		String service = txtRecord.getValueAsString("service");
-		Float version = Float.parseFloat(txtRecord.getValueAsString("txtvers"));
-		if (service.compareTo("ubisoa.geolocation.wifi") == 0 && version >= 1.0) {
+		String service = txtRecord.getValueAsString("implements");
+		if (service.compareTo("geolocation.resolver") == 0 && fullName.contains("local.")) {
+			
+			System.out.println(fullName);
+		
+			
 			String name = fullName.substring(0, fullName.indexOf(".")).replaceAll("\\\\032", " ");
 			serviceHostNames.put(name, hostName);
 			servicePorts.put(name, port);
 			updateServicesList();
+			System.out.println("HOST: " + hostName + ", PORT:" + port);
 		}
 	}
 	

@@ -165,7 +165,7 @@ public class WiFiSpotter {
 		String signalData = "";
 		for (String key: spotsRssi.keySet())
 			if (spotsAge.get(key) <= 3)
-				signalData += key + "," + spotsRssi.get(key) + ",";
+				signalData += key + "=" + spotsRssi.get(key) + ",";
 		
 		return signalData.substring(0, signalData.length() - 1);
 	}
