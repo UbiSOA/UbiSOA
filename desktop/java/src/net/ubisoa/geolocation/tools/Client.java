@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -415,11 +417,15 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 	public void serviceResolved(DNSSDService resolver, int flags, int ifIndex,
 			String fullName, String hostName, int port, TXTRecord txtRecord) {
 		String service = txtRecord.getValueAsString("implements");
-		if (service.compareTo("geolocation.resolver") == 0 && fullName.contains("local.")) {
-			
-			System.out.println(fullName);
 		
-			
+		try {
+			System.out.println(InetAddress.getByName(hostName));
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (service.compareTo("geolocation.resolver") == 0 && fullName.contains("local.")) {
 			String name = fullName.substring(0, fullName.indexOf(".")).replaceAll("\\\\032", " ");
 			serviceHostNames.put(name, hostName);
 			servicePorts.put(name, port);
