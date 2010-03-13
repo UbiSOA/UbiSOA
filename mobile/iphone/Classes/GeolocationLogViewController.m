@@ -16,7 +16,6 @@
 - (void)dealloc {
 	[textView release];
 	[mapName release];
-	textView.tran
 	[super dealloc];
 }
 
