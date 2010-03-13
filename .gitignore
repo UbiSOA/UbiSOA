@@ -53,3 +53,6 @@ desktop/java/bin
 desktop/java/dat
 desktop/java/.settings
 desktop/java/.classpath
+mobile/tinyos/*/build
+mobile/tinyos/*/*.class
+mobile/tinyos/*/*.java
