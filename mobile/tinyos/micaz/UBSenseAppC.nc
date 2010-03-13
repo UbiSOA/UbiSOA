@@ -24,4 +24,4 @@ implementation {
     App.Light -> Light;
     App.Temperature -> Temperature;
     App.Microphone -> Microphone;
-}
+}
