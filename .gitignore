@@ -2,7 +2,6 @@
 *.mode1v3
 .LSOverride
 mobile/*/build
-apps/desktop/java/MedicalServices/bin
 desktop/java/bin
 desktop/java/dat
 .settings
