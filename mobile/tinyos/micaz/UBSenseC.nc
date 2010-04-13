@@ -2,19 +2,24 @@
 #include "UBSense.h"
 
 module UBSenseC {
-    uses interface Boot;
-    uses interface Leds;
-    uses interface Timer<TMilli> as Timer0;
-    uses interface Packet;
-    uses interface AMPacket;
-    uses interface AMSend;
-    uses interface SplitControl as AMControl;
-    uses interface Read<uint16_t> as Voltage;
+    uses {
+        interface Boot;
+        interface Leds;
+        interface Timer<TMilli> as Timer0;
+        interface Packet;
+        interface AMPacket;
+        interface AMSend;
+        interface SplitControl as AMControl;
+        interface Read<uint16_t> as Voltage;
+        interface Read<uint16_t> as Light;
+        interface Read<uint16_t> as Temperature;
+        interface Read<uint16_t> as Microphone;
+    }
 }
 implementation {
     message_t pkt;
     uint16_t counter = 0;
-    uint16_t v0, v1, v2, v3, v4, v5;
+    uint16_t v0, v1, v2, v3;
     bool busy = FALSE;
     
     event void Boot.booted() {
@@ -36,6 +41,9 @@ implementation {
             m -> nid = TOS_NODE_ID;
             m -> platform = HW_PLATFORM;
             m -> voltage = v0;
+            m -> light = v1;
+            m -> temperature = v2;
+            m -> microphone = v3;
             m -> counter = counter++;
             if (call AMSend.send(AM_BROADCAST_ADDR, &pkt, sizeof(UBSenseMsg)) == SUCCESS) {
                 busy = TRUE;
@@ -53,46 +61,31 @@ implementation {
     event void Voltage.readDone(error_t result, uint16_t data) {
         if (result == SUCCESS) {
             v0 = data;
-            sendMessage();
-            //call Light.read();
-        } else call Leds.led0On();
-    }
-/*    
-    event void Light.readDone(error_t result, uint16_t data) {
-        if (result == SUCCESS) {
-            v1 = data;
-            call LightVisible.read();
+            call Light.read();
         } else call Leds.led0On();
     }
     
-    event void LightVisible.readDone(error_t result, uint16_t data) {
+    event void Light.readDone(error_t result, uint16_t data) {
         if (result == SUCCESS) {
-            v2 = data;
+            v1 = data;
             call Temperature.read();
         } else call Leds.led0On();
     }
     
     event void Temperature.readDone(error_t result, uint16_t data) {
         if (result == SUCCESS) {
+            v2 = data;
+            call Microphone.read();
+        } else call Leds.led0On();
+    }
+    
+    event void Microphone.readDone(error_t result, uint16_t data) {
+        if (result == SUCCESS) {
             v3 = data;
-            call TemperatureInternal.read();
-        } else call Leds.led0On();
-    }
-    
-    event void TemperatureInternal.readDone(error_t result, uint16_t data) {
-        if (result == SUCCESS) {
-            v4 = data;
-            call Humidity.read();
-        } else call Leds.led0On();
-    }
-    
-    event void Humidity.readDone(error_t result, uint16_t data) {
-        if (result == SUCCESS) {
-            v5 = data;
             sendMessage();
         } else call Leds.led0On();
     }
-    */
+
     event void AMSend.sendDone(message_t* msg, error_t error) {
         if (&pkt == msg) {
             call Leds.led1Off();
