@@ -1,14 +1,19 @@
+<<<<<<< HEAD
 *.pbxuser
 *.mode1v3
 .LSOverride
 mobile/*/build
+=======
+mobile/*/build
+*.pbxuser
+*.mode1v3
+.LSOverride
+>>>>>>> d6a813f... Completed the MicaZ support.
 apps/desktop/java/MedicalServices/bin
-apps/desktop/java/MedicalServices/.classpath
-apps/desktop/java/MedicalServices/.settings
 desktop/java/bin
 desktop/java/dat
-desktop/java/.settings
-desktop/java/.classpath
+.settings
+.classpath
 mobile/tinyos/*/build
 mobile/tinyos/*/*.class
 mobile/tinyos/*/*.java
