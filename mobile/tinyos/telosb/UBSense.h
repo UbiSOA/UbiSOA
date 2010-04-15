@@ -2,10 +2,10 @@
 #define UBSENSE_H
 
 enum {
-    HW_TELOSB = 100,
-    HW_MICAZ = 101,
-    AM_UBSENSEMSG = 237,
-    TIMER_PERIOD_MILLI = 1000
+    HW_TELOSB = 0xA,
+    HW_MICAZ = 0xB,
+    AM_UBSENSEMSG = 0xE1,
+    TIMER_PERIOD_MILLI = 2000
 };
 
 #define HW_PLATFORM HW_TELOSB
