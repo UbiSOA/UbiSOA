@@ -30,7 +30,7 @@
 					<p>This is a demo application</p>
 				</li>
 				<li>
-					<a class="alert"></a>
+					<a class="alert"></a>
 					<h3>Application Test 4</h3>
 					<p>This is a demo application</p>
 				</li>
