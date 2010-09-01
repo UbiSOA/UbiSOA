@@ -116,3 +116,4 @@ require_once BASEPATH.'codeigniter/CodeIgniter'.EXT;
 
 /* End of file index.php */
 /* Location: ./index.php */
+?>
