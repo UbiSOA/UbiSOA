@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="urn:ubisoa:discovery"
+	xmlns="urn:ubisoa:discovery"
+	elementFormDefault="qualified">
+	
+	<xs:element name="result">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="services" type="servicesType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:complexType name="servicesType">
+		<xs:sequence>
+			<xs:element ref="service" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="service">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="published" minOccurs="0" type="xs:dateTime"/>
+				<xs:element name="updated" minOccurs="0" type="xs:dateTime"/>
+				<xs:element name="source" type="sourceType"/>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="description" type="xs:string"/>
+				<xs:element name="host" type="xs:string"/>
+				<xs:element name="port" type="xs:integer"/>
+				<xs:element name="base_uri" minOccurs="0" type="xs:string"/>
+				<xs:element name="coordinates" minOccurs="0" type="xs:anyType"/>
+				<xs:element name="hub" minOccurs="0" type="xs:string"/>
+				<xs:element name="implements" type="implementsType"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:simpleType name="sourceType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="bonjour"/>
+			<xs:enumeration value="user"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="implementsType">
+		<xs:sequence>
+			<xs:element name="interface" minOccurs="0" maxOccurs="unbounded" type="xs:anyURI"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

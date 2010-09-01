@@ -1,0 +1,9 @@
+ExpiresActive On
+AddOutputFilterByType DEFLATE text/html text/css application/javascript
+ExpiresDefault "access plus 1 weeks"
+ExpiresByType text/html "access plus 1 seconds"
+FileETag none
+
+RewriteEngine on
+RewriteCond $1 !^(index\.php|img|pub|css|js|lib|guide|robots\.txt|info\.php|favicon\.ico|apple-touch.icon\.png)
+RewriteRule ^(.*)$ /index.php/$1 [L]

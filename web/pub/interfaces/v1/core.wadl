@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://wadl.dev.java.net/2009/02"
+	xmlns:ubs="urn:ubisoa:core"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://www.w3.org/Submission/wadl/wadl.xsd">
+
+	<doc title="Core Service Interface" xml:lang="en">
+		This interface does not defines a service but contains a number of common representations and parameters to be used by other service interfaces.</doc>
+
+	<grammars>
+		<include href="http://schemas.ubisoa.net/v1/core.xsd"/>
+	</grammars>
+	
+	<!--General representation formats for the output of services-->
+	
+	<representation mediaType="text/html" id="htmlResult">
+		<doc xml:lang="en">A HTML5/CSS3 representation intented for human interaction.</doc>
+	</representation>
+	
+	<representation mediaType="application/atom+xml" element="atom:feed" id="atomResult">
+		<doc xml:lang="en">An ATOM Web feed augmented with UbiSOA's XML tags.</doc>
+	</representation>
+	
+	<representation mediaType="application/json" id="jsonResult">
+		<doc xml:lang="en">A JSON file with the same contents as the XML representation.</doc>
+	</representation>
+	
+	<representation mediaType="text/xml" element="ubs:error" id="errorResult">
+		<doc xml:lang="en">A XML file with the information of an unsuccessful request.</doc>
+	</representation>
+	
+	<!--Common parameters in requests to services-->
+	
+	<param name="output" style="query" default="html" id="outputParam">
+		<doc xml:lang="en">The format for the output.</doc>
+		<option value="html" mediaType="text/html"/>
+		<option value="xml" mediaType="text/xml"/>
+		<option value="atom" mediaType="application/atom+xml"/>
+		<option value="json" mediaType="application/json"/>
+	</param>
+	
+	<param name="callback" style="query" type="xsd:string" id="callbackParam">
+		<doc xml:lang="en">The name of the callback function to wrap around the JSON data. If the output parameter is different than JSON, this parameter has no effect.</doc>
+	</param>
+	
+</application>
