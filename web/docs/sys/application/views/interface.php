@@ -113,7 +113,7 @@
 						$res .= '<p>'.(string)$tag.'</p>';
 						break;
 					case 'a':
-						$res .= '<p class="url">'.(string)$tag.'</p>';
+						$res .= '<a class="url">'.(string)$tag.'</a>';
 						break;
 					case 'link':
 						switch ($tag['class']) {

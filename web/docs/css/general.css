@@ -72,21 +72,31 @@ article p {
 	margin-bottom: 20px;
 	display: block;
 }
+article p + p {
+	margin-top: -10px;
+}
 article p strong {
 	font-weight: bold;
 }
-article p.url {
+article a.url {
 	color: #555;
 	font-size: 16px;
 	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#fdfdfd));
-	padding: 7px 10px 6px;
+	background-image: -moz-linear-gradient(-90deg, #eee, #fdfdfd);
+	padding: 7px 10px;
+	line-height: 1em;
 	-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 	text-shadow: 0px 2px 0px white;
 	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
 	border: 2px solid white;
+	display: block;
+	margin-bottom: 20px;
 }
 article p.screenshot img {
 	-webkit-box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.25);
 }
 article table {
 	border-collapse: collapse;
@@ -95,6 +105,7 @@ article table {
 	margin-bottom: 18px;
 	font-size: 13px;
 	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 	text-shadow: 0px 1px 0px white;
 }
 article th {
@@ -150,6 +161,7 @@ article h3 {
 	min-height: 38px;
 	max-height: 600px;
 	-webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.35);
+	-moz-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.35);
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
