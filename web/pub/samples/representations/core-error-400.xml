@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<error xmlns="urn:ubisoa:core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:ubisoa:core http://schemas.ubisoa.net/v1/core.xsd">
+	<code>400</code>
+	<message>The service cannot understand the request.</message>
+</error>

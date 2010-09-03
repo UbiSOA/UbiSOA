@@ -42,6 +42,7 @@
 
 $route['default_controller'] = "main";
 $route['scaffolding_trigger'] = "";
+$route['interfaces/(:any)'] = 'interfaces/index/$1';
 
 
 /* End of file routes.php */

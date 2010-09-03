@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result xmlns="urn:ubisoa:discovery"
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:ubisoa:discovery http://schemas.ubisoa.net/v1/discovery.xsd">
+	<services>
+		<service>
+			<published>2010-08-24T07:05:00-07:00</published>
+			<updated>2010-08-24T07:05:00-07:00</updated>
+			<host>localhost</host>
+			<port>8081</port>
+			<baseUri>/api</baseUri>
+			<hub>http://pubsubhubbub.appspot.com/</hub>
+			<name>Alpha Service</name>
+			<description>A Test Service</description>
+			<implements>
+				<interface>http://interfaces.ubisoa.net/v1/sensing.wadl</interface>
+				<interface>http://interfaces.ubisoa.net/v1/push.wadl</interface>
+			</implements>
+			<coordinates>
+				<georss:point>31.835525 -116.616083</georss:point>
+			</coordinates>
+			<source>auto</source>
+		</service>
+		<service>
+			<published>2010-08-24T07:05:00-07:00</published>
+			<updated>2010-08-24T07:05:00-07:00</updated>
+			<name>Bravo Service</name>
+			<description>Another Test Service</description>
+			<host>localhost</host>
+			<port>8082</port>
+			<source>auto</source>
+			<hub>http://pubsubhubbub.appspot.com/</hub>
+			<implements>
+				<interface>http://interfaces.ubisoa.net/v1/autoid.wadl</interface>
+				<interface>http://interfaces.ubisoa.net/v1/push.wadl</interface>
+			</implements>
+			<coordinates>
+				<georss:point>31.835525 -116.616083</georss:point>
+			</coordinates>
+		</service>
+		<service>
+			<published>2010-08-24T07:05:00-07:00</published>
+			<updated>2010-08-24T07:05:00-07:00</updated>
+			<source>user</source>
+			<host>localhost</host>
+			<port>8083</port>
+			<name>Charlie Service</name>
+			<description>And Other Test Service</description>
+			<implements>
+				<interface>http://interfaces.ubisoa.net/v1/control.wadl</interface>
+			</implements>
+		</service>
+	</services>
+</result>

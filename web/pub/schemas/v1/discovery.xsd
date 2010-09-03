@@ -28,7 +28,7 @@
 				<xs:element name="description" type="xs:string"/>
 				<xs:element name="host" type="xs:string"/>
 				<xs:element name="port" type="xs:integer"/>
-				<xs:element name="base_uri" minOccurs="0" type="xs:string"/>
+				<xs:element name="baseUri" minOccurs="0" type="xs:string"/>
 				<xs:element name="coordinates" minOccurs="0" type="xs:anyType"/>
 				<xs:element name="hub" minOccurs="0" type="xs:string"/>
 				<xs:element name="implements" type="implementsType"/>

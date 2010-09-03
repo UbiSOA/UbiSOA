@@ -4,7 +4,7 @@
 	xmlns:atom="http://www.w3.org/2005/Atom"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://www.w3.org/Submission/wadl/wadl.xsd">
+	xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://www.w3.org/Submission/wadl.xsd">
 
 	<doc title="Core Service Interface" xml:lang="en">
 		This interface does not defines a service but contains a number of common representations and parameters to be used by other service interfaces.</doc>
@@ -20,29 +20,41 @@
 	</representation>
 	
 	<representation mediaType="application/atom+xml" element="atom:feed" id="atomResult">
-		<doc xml:lang="en">An ATOM Web feed augmented with UbiSOA's XML tags.</doc>
+		<doc xml:lang="en">An Atom feed with additional XML tags.</doc>
 	</representation>
 	
 	<representation mediaType="application/json" id="jsonResult">
 		<doc xml:lang="en">A JSON file with the same contents as the XML representation.</doc>
 	</representation>
 	
-	<representation mediaType="text/xml" element="ubs:error" id="errorResult">
+	<representation mediaType="application/atom+xml" element="atom:entry" id="atomEntryResult">
+		<doc xml:lang="en">An Atom feed entry with links to new or modified resources.</doc>
+	</representation>
+	
+	<representation mediaType="text/xml" element="ubs:fault" id="faultResult">
 		<doc xml:lang="en">A XML file with the information of an unsuccessful request.</doc>
 	</representation>
 	
 	<!--Common parameters in requests to services-->
 	
 	<param name="output" style="query" default="html" id="outputParam">
-		<doc xml:lang="en">The format for the output.</doc>
-		<option value="html" mediaType="text/html"/>
-		<option value="xml" mediaType="text/xml"/>
-		<option value="atom" mediaType="application/atom+xml"/>
-		<option value="json" mediaType="application/json"/>
+		<doc xml:lang="en">The format of the output.</doc>
+		<option value="html" mediaType="text/html">
+			<doc xml:lang="en">A Web page designed to be used by a human user, featuring all the functionality of the service</doc>
+		</option>
+		<option value="xml" mediaType="text/xml">
+			<doc xml:lang="en">A XML file under a related scheme for the service, see details in the XML Output subsection of this resource</doc>
+		</option>
+		<option value="atom" mediaType="application/atom+xml">
+			<doc xml:lang="en">An Atom feed which items are augmented with XML tags of the related XML scheme</doc>
+		</option>
+		<option value="json" mediaType="application/json">
+			<doc xml:lang="en">A JSON file with the same contents in the XML output format</doc>
+		</option>
 	</param>
 	
 	<param name="callback" style="query" type="xsd:string" id="callbackParam">
-		<doc xml:lang="en">The name of the callback function to wrap around the JSON data. If the output parameter is different than JSON, this parameter has no effect.</doc>
+		<doc xml:lang="en">The name of the callback function to wrap around the JSON data. If the output parameter is different than "json", this parameter has no effect.</doc>
 	</param>
 	
 </application>

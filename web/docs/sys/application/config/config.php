@@ -11,7 +11,7 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://www.ubisoa.net/";
+$config['base_url']	= "http://docs.ubisoa.net/";
 
 /*
 |--------------------------------------------------------------------------
@@ -103,7 +103,7 @@ $config['enable_hooks'] = FALSE;
 | http://codeigniter.com/user_guide/general/creating_libraries.html
 |
 */
-$config['subclass_prefix'] = 'MY_';
+$config['subclass_prefix'] = 'UBS_';
 
 
 /*

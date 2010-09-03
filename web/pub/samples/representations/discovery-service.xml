@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service xmlns="urn:ubisoa:discovery"
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:ubisoa:discovery http://schemas.ubisoa.net/v1/discovery.xsd">
+	<host>127.0.0.1</host>
+	<port>8320</port>
+	<baseUri>/api</baseUri>
+	<hub>http://pubsubhubbub.appspot.com/</hub>
+	<name>Alpha Service</name>
+	<description>A Test Sensing Service</description>
+	<implements>
+		<interface>http://interfaces.ubisoa.net/v1/sensing.wadl</interface>
+		<interface>http://interfaces.ubisoa.net/v1/push.wadl</interface>
+	</implements>
+	<coordinates>
+		<georss:point>31.835525 -116.616083</georss:point>
+	</coordinates>
+	<source>user</source>
+</service>

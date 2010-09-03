@@ -6,44 +6,124 @@
 	xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://www.w3.org/Submission/wadl/wadl.xsd">
 	
 	<doc title="Discovery Service Interface" xml:lang="en">
-		This interfaces defines a discovery service which provides a list of user-defined services and the discovered services on the environment where the service implementation is deployed (by using the low level implementation).</doc>
+		This interface defines a discovery service which provides a list of user-defined services and the discovered services on the environment where the service implementation is deployed (by using the low level implementation).</doc>
 	
 	<grammars>
 		<include href="http://schemas.ubisoa.net/v1/discovery.xsd"/>
 	</grammars>
 		
 	<resources>
-		<resource>
+		<resource path="services">
 			<method name="GET">
+				<doc xml:lang="en">Returns a list with the available services in the directory.</doc>
 				<request>
+					<doc xml:lang="en">&lt;p&gt;The next sample request URL asks for automatically discovered services in JSON format with a wrapped callback to the JavaScript method &quot;foo&quot;:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/?source=auto&amp;output=json&amp;callback=foo&lt;/a&gt;</doc>
+					<param name="source" style="query" default="any">
+						<doc xml:lang="en">Filters the list of registered services by the publication source.</doc>
+						<option value="any">
+							<doc xml:lang="en">Retrieve services from all sources.</doc>
+						</option>
+						<option value="user">
+							<doc xml:lang="en">Retrieve only user-published services.</doc>
+						</option>
+						<option value="auto">
+							<doc xml:lang="en">Retrieve only automatically-discovered services.</doc>
+						</option>
+					</param>
 					<param href="core.wadl#outputParam"/>
 					<param href="core.wadl#callbackParam"/>
 				</request>
 				<response status="200">
-					<representation href="core.wadl#htmlResult"/>
-					<representation href="#xmlResult"/>
-					<representation href="core.wadl#atomResult"/>
-					<representation href="core.wadl#jsonResult"/>
+					<representation href="core.wadl#htmlResult">
+						<doc xml:lang="en">&lt;p&gt;Sample request URL to get a HTML representation:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/&lt;/a&gt;&lt;p&gt;The Web page returned by the request:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;screenshot&quot; href=&quot;http://samples.ubisoa.net/representations/blank.png&quot;/&gt;
+</doc>
+					</representation>
+					<representation href="#xmlResult">
+						<doc xml:lang="en">&lt;p&gt;Sample request URL to get a XML representation:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/?output=xml&lt;/a&gt;&lt;p&gt;The document returned by the request:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/discovery-services.xml&quot;/&gt;
+</doc>
+					</representation>
+					<representation href="core.wadl#atomResult">
+						<doc xml:lang="en">&lt;p&gt;Sample request URL to get an Atom representation:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/?output=atom&lt;/a&gt;&lt;p&gt;The document returned by the request:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/discovery-services.atom&quot;/&gt;
+</doc>
+					</representation>
+					<representation href="core.wadl#jsonResult">
+						<doc xml:lang="en">&lt;p&gt;Sample request URL to get a JSON representation:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/?output=json&lt;/a&gt;&lt;p&gt;The document returned by the request:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/discovery-services.json&quot;/&gt;
+</doc>
+					</representation>
 				</response>
 				<response>
-					<representation href="core.wadl#errorResult"/>
+					<representation href="core.wadl#faultResult">
+						<doc xml:lang="en">&lt;p&gt;By instance, if the output parameter is set to a format that the service does not supports:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/core-error-415.xml&quot;/&gt;</doc>
+					</representation>
+				</response>
+			</method>
+			<method name="POST">
+				<doc xml:lang="en">Adds a new service into the directory.</doc>
+				<request>
+					<doc xml:lang="en">&lt;p&gt;A sample request body to add a new service:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/discovery-service.xml&quot; /&gt;</doc>
+					<representation href="#xmlSingleResult"/>
+				</request>
+				<response status="201">
+					<representation href="core.wadl#atomEntryResult">
+						<doc xml:lang="en">&lt;p&gt;This is the response to the above sample request:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/discovery-service.atom&quot;/&gt;</doc>
+					</representation>
+				</response>
+				<response>
+					<representation href="core.wadl#faultResult">
+						<doc xml:lang="en">&lt;p&gt;By instance, if the request body is not valid:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/core-error-400.xml&quot;/&gt;</doc>
+					</representation>
 				</response>
 			</method>
 		</resource>
-		<resource path="{serviceID}">
+		<resource path="services/{serviceID}">
 			<method name="GET">
+				<doc xml:lang="en">Retrieves the service with the specified ID.</doc>
 				<request>
+					<doc xml:lang="en">&lt;p&gt;The next sample request URL asks for the service with ID 24 in JSON format and a wrapped callback to the JavaScript method &quot;foo&quot;:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/24&amp;output=json&amp;callback=foo&lt;/a&gt;</doc>
 					<param href="core.wadl#outputParam"/>
 					<param href="core.wadl#callbackParam"/>
 				</request>
 				<response status="200">
-					<representation href="core.wadl#htmlResult"/>
-					<representation href="#xmlSingleResult"/>
-					<representation href="core.wadl#atomResult"/>
-					<representation href="core.wadl#jsonResult"/>
+					<representation href="core.wadl#htmlResult">
+						<doc xml:lang="en">&lt;p&gt;Sample request URL to get a HTML representation:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/24&lt;/a&gt;&lt;p&gt;The Web page returned by the request:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;screenshot&quot; href=&quot;http://samples.ubisoa.net/representations/blank.png&quot;/&gt;
+</doc>
+					</representation>
+					<representation href="#xmlSingleResult">
+						<doc xml:lang="en">&lt;p&gt;Sample request URL to get a XML representation:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/24?output=xml&lt;/a&gt;&lt;p&gt;The document returned by the request:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/discovery-service.xml&quot;/&gt;
+</doc>
+					</representation>
+					<representation href="core.wadl#atomResult">
+						<doc xml:lang="en">&lt;p&gt;Sample request URL to get an Atom representation:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/24?output=atom&lt;/a&gt;&lt;p&gt;The document returned by the request:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/discovery-service.atom&quot;/&gt;
+</doc>
+					</representation>
+					<representation href="core.wadl#jsonResult">
+						<doc xml:lang="en">&lt;p&gt;Sample request URL to get a JSON representation:&lt;/p&gt;&lt;a&gt;http://localhost:8080/services/24?output=json&lt;/a&gt;&lt;p&gt;The document returned by the request:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/discovery-service.json&quot;/&gt;
+</doc>
+					</representation>
 				</response>
 				<response>
-					<representation href="core.wadl#errorResult"/>
+					<representation href="core.wadl#faultResult">
+						<doc xml:lang="en">&lt;p&gt;By instance, if the service with the specified ID does not exists:&lt;/p&gt;&lt;link rel=&quot;related&quot; class=&quot;snippet&quot; href=&quot;http://samples.ubisoa.net/representations/core-error-404.xml&quot;/&gt;</doc>
+					</representation>
+				</response>
+			</method>
+			<method name="PUT">
+				<doc xml:lang="en">Updates the information of the service with the specified ID.</doc>
+				<request>
+					<representation href="#xmlSingleResult"/>
+				</request>
+				<response status="200">
+					<representation href="core.wadl#atomEntryResult"/>
+				</response>
+				<response>
+					<representation href="core.wadl#faultResult"/>
+				</response>
+			</method>
+			<method name="DELETE">
+				<doc xml:lang="en">Removes the service with the specified ID.</doc>
+				<response status="200"/>
+				<response>
+					<representation href="core.wadl#faultResult"/>
 				</response>
 			</method>
 		</resource>
