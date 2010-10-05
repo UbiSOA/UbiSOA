@@ -10,10 +10,10 @@
 	"implements": [
 		"http://interfaces.ubisoa.net/v1/sensing.wadl",
 		"http://interfaces.ubisoa.net/v1/push.wadl"
-	],
+	],
 	"coordinates": [
 		31.835525,
 		-116.616083
 	],
 	"source": "auto"
-}
+}

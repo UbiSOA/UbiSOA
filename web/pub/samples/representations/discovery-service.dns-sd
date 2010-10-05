@@ -1,0 +1,7 @@
+Alpha\u20Service._ubisoa._tcp.local.:8081
+
+descr=A Test Service
+baseURI=/api
+implemts=sensing,push
+hub=http://pubsubhubbub.appspot.com/
+coords=31.835525,-116.616083

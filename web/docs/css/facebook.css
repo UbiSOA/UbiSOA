@@ -1,0 +1,38 @@
+div.like, div.like div {
+	display: none;
+}
+div.comment_body {
+	font-family: Arial, Helvetica, sans;
+}
+.gray_box {
+	margin-left: 8px;
+	text-shadow: 0 1px 0 white;
+}
+label {
+	font-weight: normal;
+}
+textarea, .inputtext, .inputpassword {
+	font-family: Arial, Helvetica, sans;
+	font-size: 14px;
+	border-radius: 3px;
+}
+.wallkit_form textarea {
+	width: 99.5%;
+	padding: 5px;
+}
+.uiButton, .uiButtonText, .uiButton input {
+	font-family: Arial, Helvetica, sans;
+}
+h4, h5 {
+	font-size: 12px;
+}
+.wallkit_post .wallkit_postcontent h4 .wall_time {
+	font-size: 10px;
+}
+.wallkit_post .wallkit_postcontent div {
+	font-size: 12px;
+	font-
+}
+.wallkit_post div.wallkit_actionset .delete {
+	font-size: 11px;
+}

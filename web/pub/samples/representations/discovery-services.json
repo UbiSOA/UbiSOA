@@ -11,13 +11,13 @@
 		"implements": [
 			"http://interfaces.ubisoa.net/v1/sensing.wadl",
 			"http://interfaces.ubisoa.net/v1/push.wadl"
-		],
+		],
 		"coordinates": [
 			31.835525,
 			-116.616083
 		],
 		"source": "auto"
-	}, {
+	}, {
 		"published": new Date(2010, 8, 24, 7, 5, 0),
 		"updated": new Date(2010, 8, 24, 7, 5, 0),
 		"host": "localhost",
@@ -30,7 +30,7 @@
 			"http://interfaces.ubisoa.net/v1/push.wadl"
 		],
 		"coordinates": [
-			31.835525,
+			31.835525,
 			-116.616083
 		],
 		"source": "auto"
@@ -40,7 +40,7 @@
 		"host": "localhost",
 		"port": 8083,
 		"name": "Charlie Service",
-		"description": "And Other Test Service",
+		"description": "And Other Test Service",
 		"implements": [
 			"http://interfaces.ubisoa.net/v1/control.wadl"
 		],

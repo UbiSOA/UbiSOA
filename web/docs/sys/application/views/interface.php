@@ -146,11 +146,6 @@
 		}
 	}
 	
-	// SELF el mismo
-	// EDIT modificar o borrar
-	// START lista de recursos
-	// ALTERNATE versiones alternas del mismo
-	
 	function get_mtype_header($repr) {
 		$doc = trim((string)$repr -> doc);
 		return $doc[strlen($doc) - 1] == '.'?
@@ -158,12 +153,14 @@
 	}
 
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
-	<meta charset="utf-8" />
+	<meta charset="utf-8"/>
+	<meta property="fb:app_id" content="151853928166877"/>
+	<meta property="fb:admins" content="541063392"/>
 	<title>UbiSOA Documentation - <?= $title ?></title>
-	<link rel="stylesheet" href="http://yui.yahooapis.com/3.1.1/build/cssreset/reset-min.css" />
-	<link rel="stylesheet" href="/css/general.css" />
+	<link rel="stylesheet" href="http://yui.yahooapis.com/3.1.1/build/cssreset/reset-min.css"/>
+	<link rel="stylesheet" href="/css/general.css"/>
 </head>
 <body>
 
@@ -240,11 +237,17 @@
 			endif;
 		endforeach;
 	endforeach; ?>
+	
+			<h1>Comments</h1>
+			<fb:comments id="facebook-comments" xid="docs-interfaces-discovery" url="http://docs.ubisoa.net/interfaces/discovery" title="UbiSOA Documentation: Discovery Service Interface" width="630" publish_feed="false" css="http://docs.ubisoa.net/css/facebook.css?v=3"></fb:comments>
 
 		</article>
 	</div>
 	
+	<div id="fb-root"></div>
+	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script src="/js/facebook.js"></script>
 	<script src="/js/general.js"></script>
 	
 </body>
