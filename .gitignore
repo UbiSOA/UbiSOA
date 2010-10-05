@@ -83,3 +83,7 @@ web/docs/sys/scaffolding
 web/docs/sys/application/index.html
 web/docs/sys/application/*/index.html
 web/docs/sys/application/*/*/index.html
+web/css
+web/img
+web/js
+web/support
