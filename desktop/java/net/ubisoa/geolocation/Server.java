@@ -1,16 +1,16 @@
 /*
- * Copyright (c) 2010, Edgardo AvilŽs-L—pez <edgardo@ubisoa.net>
+ * Copyright (c) 2010, Edgardo AvilÃ©s-LÃ³pez <edgardo@ubisoa.net>
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
  *
- * Ð Redistributions of source code must retain the above copyright notice, this list of
+ * â€“ Redistributions of source code must retain the above copyright notice, this list of
  *   conditions and the following disclaimer.
- * Ð Redistributions in binary form must reproduce the above copyright notice, this list of
+ * â€“ Redistributions in binary form must reproduce the above copyright notice, this list of
  *   conditions and the following disclaimer in the documentation and/or other materials
  *   provided with the distribution.
- * Ð Neither the name of the CICESE Research Center nor the names of its contributors may
+ * â€“ Neither the name of the CICESE Research Center nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without specific
  *   prior written permission.
  * 
