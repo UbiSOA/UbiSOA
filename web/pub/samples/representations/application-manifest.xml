@@ -1,0 +1,39 @@
+<?xml version="1.0" enconding="UTF-8"?>
+<application xmlns="urn:ubisoa:applications"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:ubisoa:applications http://schemas.ubisoa.net/applications.xsd">
+	
+	<interfaces>
+		<interface id="i1">
+			<url>http://interfaces.ubisoa.net/context-publisher.wadl</url>
+		</interface>
+		<interface id="i2">
+			<url>http://interfaces.ubisoa.net/kml-generator.wadl</url>
+		</interface>
+		<interface id="i3">
+			<url>http://interfaces.ubisoa.net/widget-map.wadl</url>
+		</interface>
+	</interfaces>
+	
+	<services>
+		<service id="s1">
+			<hostname>127.0.0.1</hostname>
+			<port>8081</port>
+			<baseUri>/</baseUri>
+			<implements>l1</implements>
+		</service>
+		<service id="s2">
+			<hostname>127.0.0.1</hostname>
+			<port>8081</port>
+			<implements>l1 l3</implements>
+		</service>
+	</services>
+	
+	<flow>
+		<connection>
+			<from>s1</from>
+			<to>s2</to>
+		</connection>
+	</flow>
+	
+</application>

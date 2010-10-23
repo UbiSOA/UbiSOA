@@ -1,0 +1,34 @@
+{
+	"interfaces": [
+		{ id: 'i01', url: 'http://interfaces.ubisoa.net/directory.wadl' },
+		{ id: 'i02', url: 'http://interfaces.ubisoa.net/app-engine.wadl' },
+		{ id: 'i03', url: 'http://interfaces.ubisoa.net/app-storer.wadl' },
+		{ id: 'i04', url: 'http://interfaces.ubisoa.net/app-cookbook.wadl' },
+		{ id: 'i05', url: 'http://interfaces.ubisoa.net/app-server.wadl' },
+		{ id: 'i06', url: 'http://interfaces.ubisoa.net/push-publisher.wadl' },
+		{ id: 'i07', url: 'http://interfaces.ubisoa.net/push-subscriber.wadl' },
+		{ id: 'i08', url: 'http://interfaces.ubisoa.net/sensing-provider.wadl' },
+		{ id: 'i09', url: 'http://interfaces.ubisoa.net/sensing-storer.wadl' },
+		{ id: 'i10', url: 'http://interfaces.ubisoa.net/sensing-pooler.wadl' },
+		{ id: 'i11', url: 'http://interfaces.ubisoa.net/autoid-provider.wadl' },
+		{ id: 'i12', url: 'http://interfaces.ubisoa.net/geolocation-resolver.wadl' },
+		{ id: 'i13', url: 'http://interfaces.ubisoa.net/geolocation-pooler.wadl' },
+		{ id: 'i14', url: 'http://interfaces.ubisoa.net/kml-generator.wadl' },
+		{ id: 'i15', url: 'http://interfaces.ubisoa.net/widget-generator.wadl' }
+	"services": [
+		{ "id": "s1", "name": "WSN Research Lab",
+			"implements": [ "i3", "i1" ], … },
+		{ "id": "s2", "name": "WSN Tony's Home",
+			"implements": [ "i3", "i1" ], … },
+		{ "id": "s3", "name": "Sensing Map File",
+			"implements": [ "i4", "i2", "i1" ], … },
+		{ "id": "s4", "name": "Sensing Widget",
+			"implements": [ "i6", "i5", "i2", "i1" ], … } ],
+	"outputs": [
+		{ "id": "o1", "name": "Sensing Map", … } ],
+	"flow": [
+		{ "from": [ "s1", "s2" ], "to": [ "s3" ], … },
+		{ "from": [ "s3" ], "to": [ "s4" ], … },
+		{ "from": [ "s5" ], "to": [ "o1" ] } ],
+	…
+}
