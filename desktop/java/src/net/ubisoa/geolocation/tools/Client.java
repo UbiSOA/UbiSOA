@@ -447,7 +447,6 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 		try {
 			System.out.println(InetAddress.getByName(hostName));
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

@@ -1,0 +1,16 @@
+ul {
+	list-style: none;
+}
+ul li {
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#ddd));
+	border: 1px solid #bbb;
+	border-radius: 2px 2px;
+	color: #777;
+	display: block;
+	font-size: 11pt;
+	line-height: 1;
+	margin-bottom: 4px;
+	padding: 8px 10px;
+	text-shadow: white 0px 1px 0px;
+	width: 400px;
+}

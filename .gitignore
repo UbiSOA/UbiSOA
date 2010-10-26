@@ -6,6 +6,8 @@ desktop/java/bin
 desktop/java/dat
 .settings
 .classpath
+.project
+.fatjar
 mobile/tinyos/*/build
 mobile/tinyos/*/*.class
 mobile/tinyos/*/*.java
