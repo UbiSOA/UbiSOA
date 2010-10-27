@@ -48,11 +48,11 @@ import org.restlet.resource.Get;
  */
 public class SubscriberResource extends BaseResource {
 	@Get
-	public StringRepresentation items() {
+	public StringRepresentation items() {		
 		String html = "<h2>Published Items</h2>", items = "";
 		
 		try {
-			HttpGet get = new HttpGet("http://localhost:8311/?output=json");
+			HttpGet get = new HttpGet("http://127.0.0.1:8311/?output=json");
 			HttpResponse response = Defaults.getHttpClient().execute(get);
 			String content = EntityUtils.toString(response.getEntity());
 			

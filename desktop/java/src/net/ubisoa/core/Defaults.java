@@ -40,7 +40,8 @@ import org.restlet.resource.ServerResource;
 public final class Defaults {
 	public static final String AGENT = "UbiSOA-Framework/1.0.1";
 	public static final Boolean USE_LOCAL_FILES = false;
-	public static final int MAX_TOTAL_CONNECTIONS = 100;
+	public static final String MAX_CONNECTIONS = "100";
+	public static final String MAX_THREADS = "20";
 
 	public static void setServerInfo(ServerResource serverResource) {
 		ServerInfo serverInfo = serverResource.getServerInfo();
@@ -59,5 +60,9 @@ public final class Defaults {
 	public static String getDefaultLeaseDateString() {
 		long leaseDate = new Date().getTime() + 1000 * 60 * 60 * 2; // Valid for 2 hours.
 		return dateFormat().format(new Date(leaseDate));
+	}
+	
+	public static String getDateString() {
+		return dateFormat().format(new Date());
 	}
 }

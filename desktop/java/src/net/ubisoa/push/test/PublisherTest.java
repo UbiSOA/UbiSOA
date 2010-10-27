@@ -43,16 +43,14 @@ import org.restlet.routing.Router;
  * @author E. Avilés <edgardo@ubisoa.net>
  */
 public class PublisherTest extends Application {
-	
 	private final List<Item> items = new Vector<Item>();
 
 	public static void main(String[] args) throws Exception {
 		Component component = new Component();
 		Server server = new Server(Protocol.HTTP, 8311);
 		component.getServers().add(server);
-		server.getContext().getParameters().set("maxTotalConnections",
-			Defaults.MAX_TOTAL_CONNECTIONS + "");
-		server.getContext().getParameters().set("maxThreads", Defaults.MAX_TOTAL_CONNECTIONS + "");
+		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
+		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);
 		component.getDefaultHost().attach(new PublisherTest());
 		component.start();
 	}
@@ -67,5 +65,4 @@ public class PublisherTest extends Application {
 	public List<Item> getItems() {
 		return items;
 	}
-	
 }

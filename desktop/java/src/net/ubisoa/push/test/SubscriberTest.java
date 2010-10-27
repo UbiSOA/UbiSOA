@@ -44,16 +44,15 @@ import org.restlet.data.Protocol;
  */
 public class SubscriberTest extends Application implements PushApplication {
 	private final PushInfo pushInfo = new PushInfo(
-		"http://localhost:8310/", "http://localhost:8311/?output=json",
-		"http://localhost:8312/callback", UUID.randomUUID().toString());
+		"http://127.0.0.1:8310/", "http://127.0.0.1:8311/?output=json",
+		"http://127.0.0.1:8312/callback", UUID.randomUUID().toString());
 	
 	public static void main(String[] args) throws Exception {
 		Component component = new Component();
 		Server server = new Server(Protocol.HTTP, 8312);
 		component.getServers().add(server);
-		server.getContext().getParameters().set("maxTotalConnections",
-			Defaults.MAX_TOTAL_CONNECTIONS + "");
-		server.getContext().getParameters().set("maxThreads", Defaults.MAX_TOTAL_CONNECTIONS + "");
+		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
+		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);
 		component.getDefaultHost().attach(new SubscriberTest());
 		component.start();
 	}
@@ -72,4 +71,5 @@ public class SubscriberTest extends Application implements PushApplication {
 	public void pushCallback(String data) {
 		getLogger().info("Received a push message!\n\t" + data);
 	}
+
 }

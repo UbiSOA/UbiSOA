@@ -69,7 +69,6 @@ import org.w3c.dom.Element;
  * @author E. Avilés <edgardo@ubisoa.net>
  */
 public class PublisherResource extends BaseResource {
-	
 	List<Item> items = ((PublisherTest)getApplication()).getItems();
 	
 	@Get("html")
@@ -165,15 +164,14 @@ public class PublisherResource extends BaseResource {
 		String title = form.getFirstValue("title");
 		String content = form.getFirstValue("content");
 		Item item = new Item(title, content);
-		List<Item> items = ((PublisherTest)getApplication()).getItems();
-		items.add(item);
+		((PublisherTest)getApplication()).getItems().add(item);
 		setStatus(Status.REDIRECTION_PERMANENT);
 		setLocationRef("/");
 		
 		try {
 			List<NameValuePair> params = new Vector<NameValuePair>();
 			params.add(new BasicNameValuePair("hub.mode", "publish"));
-			params.add(new BasicNameValuePair("hub.url", "http://localhost:8311/?output=json"));
+			params.add(new BasicNameValuePair("hub.url", "http://127.0.0.1:8311/?output=json"));
 			UrlEncodedFormEntity paramsEntity = new UrlEncodedFormEntity(params, "UTF-8");
 			HttpPost post = new HttpPost("http://localhost:8310/");
 			post.setEntity(paramsEntity);
@@ -187,5 +185,4 @@ public class PublisherResource extends BaseResource {
 			e.printStackTrace();
 		}
 	}
-	
 }

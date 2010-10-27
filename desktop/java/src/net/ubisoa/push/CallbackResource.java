@@ -43,8 +43,18 @@ public class CallbackResource extends BaseResource {
 	private static String lastCallbackData = "{}";
 	
 	@Get("json")
-	public StringRepresentation jsonCallback(Representation entity) {
-		return new StringRepresentation(lastCallbackData, MediaType.APPLICATION_JSON);
+	public synchronized StringRepresentation jsonCallback(Representation entity) {
+		while (getLastCallbackData() == null) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		StringRepresentation representation = new StringRepresentation(
+			lastCallbackData, MediaType.APPLICATION_JSON);
+		setLastCallbackData(null);
+		return representation;
 	}
 	
 	@Get("html")
@@ -73,8 +83,16 @@ public class CallbackResource extends BaseResource {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		lastCallbackData = content;
+		setLastCallbackData(content);
 		((PushApplication)getApplication()).pushCallback(content);
+	}
+	
+	private synchronized String getLastCallbackData() {
+		return lastCallbackData;
+	}
+	
+	private synchronized void setLastCallbackData(String data) {
+		lastCallbackData = data;
 	}
 	
 }
