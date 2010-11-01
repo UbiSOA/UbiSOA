@@ -8,6 +8,7 @@ desktop/java/dat
 .classpath
 .project
 .fatjar
+*.esproj
 mobile/tinyos/*/build
 mobile/tinyos/*/*.class
 mobile/tinyos/*/*.java
