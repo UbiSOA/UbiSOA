@@ -32,7 +32,7 @@ import java.util.Vector;
 import net.ubisoa.core.Defaults;
 
 /**
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class HTMLTemplate {
 	private String title, subtitle, content;

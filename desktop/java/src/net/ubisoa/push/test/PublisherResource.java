@@ -37,10 +37,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import net.ubisoa.common.BaseResource;
 import net.ubisoa.common.HTMLTemplate;
-import net.ubisoa.core.Defaults;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
@@ -66,16 +68,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class PublisherResource extends BaseResource {
 	List<Item> items = ((PublisherTest)getApplication()).getItems();
+	HttpClient client = ((PublisherTest)getApplication()).getClient();
 	
 	@Get("html")
 	public StringRepresentation items() {
 		String html = "<form class=\"column\" method=\"POST\">" +
 			"<h2>Post New Item</h2>" +
-			"<input type=\"text\" name=\"title\" placeholder=\"Title\" required />" +
+			"<input type=\"text\" name=\"title\" placeholder=\"Title\" required autofocus />" +
 			"<textarea name=\"content\" placeholder=\"Content\" required></textarea>" +
 			"<input type=\"submit\" value=\"Post Item\" /></form>" +
 			"<div class=\"column\"><h2>Published Items</h2><ul>";
@@ -140,6 +143,7 @@ public class PublisherResource extends BaseResource {
 	
 	@Get("json")
 	public JsonRepresentation itemsJSON() {
+		String padding = getQuery().getFirstValue("callback");
 		try {
 			JSONObject json = new JSONObject();
 			JSONArray itemsArray = new JSONArray();
@@ -150,7 +154,10 @@ public class PublisherResource extends BaseResource {
 				itemsArray.put(obj);
 			}
 			json.put("items", itemsArray);
-			return new JsonRepresentation(json);
+			String jsonStr = json.toString();
+			if (padding != null)
+				jsonStr = padding + "(" + jsonStr + ")";
+			return new JsonRepresentation(jsonStr);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -175,7 +182,9 @@ public class PublisherResource extends BaseResource {
 			UrlEncodedFormEntity paramsEntity = new UrlEncodedFormEntity(params, "UTF-8");
 			HttpPost post = new HttpPost("http://localhost:8310/");
 			post.setEntity(paramsEntity);
-			Defaults.getHttpClient().execute(post);
+			HttpResponse res = client.execute(post);
+			HttpEntity resEntity = res.getEntity();
+			if (resEntity != null) resEntity.consumeContent();			
 			getLogger().info("The Hubbub ping was sent successfully.");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

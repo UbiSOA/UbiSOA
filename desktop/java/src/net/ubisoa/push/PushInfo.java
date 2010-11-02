@@ -27,7 +27,7 @@
 package net.ubisoa.push;
 
 /**
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class PushInfo {
 	private String hub, topic, callback, token;

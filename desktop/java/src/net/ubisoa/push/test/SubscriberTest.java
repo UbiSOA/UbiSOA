@@ -33,6 +33,7 @@ import net.ubisoa.push.PushApplication;
 import net.ubisoa.push.PushInfo;
 import net.ubisoa.push.PushRouter;
 
+import org.apache.http.client.HttpClient;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
@@ -40,12 +41,13 @@ import org.restlet.Server;
 import org.restlet.data.Protocol;
 
 /**
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class SubscriberTest extends Application implements PushApplication {
 	private final PushInfo pushInfo = new PushInfo(
 		"http://127.0.0.1:8310/", "http://127.0.0.1:8311/?output=json",
 		"http://127.0.0.1:8312/callback", UUID.randomUUID().toString());
+	private HttpClient client = Defaults.getHttpClient();
 	
 	public static void main(String[] args) throws Exception {
 		Component component = new Component();
@@ -70,6 +72,10 @@ public class SubscriberTest extends Application implements PushApplication {
 	@Override
 	public void pushCallback(String data) {
 		getLogger().info("Received a push message!\n\t" + data);
+	}
+	
+	public HttpClient getClient() {
+		return client;
 	}
 
 }

@@ -24,51 +24,65 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.ubisoa.push.test;
+package net.ubisoa.push;
 
-import java.util.List;
-import java.util.Vector;
+import java.io.IOException;
+import java.util.UUID;
+import java.util.logging.Logger;
 
-import net.ubisoa.common.BaseRouter;
-import net.ubisoa.core.Defaults;
-
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.restlet.Application;
-import org.restlet.Component;
-import org.restlet.Restlet;
-import org.restlet.Server;
-import org.restlet.data.Protocol;
-import org.restlet.routing.Router;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.util.EntityUtils;
 
 /**
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
-public class PublisherTest extends Application {
-	private final List<Item> items = new Vector<Item>();
-	private HttpClient client = Defaults.getHttpClient();
-
-	public static void main(String[] args) throws Exception {
-		Component component = new Component();
-		Server server = new Server(Protocol.HTTP, 8311);
-		component.getServers().add(server);
-		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
-		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);
-		component.getDefaultHost().attach(new PublisherTest());
-		component.start();
+public class HubSubVerifier extends Thread {
+	private HttpClient client;
+	private Subscription sub;
+	private Logger logger;
+	
+	public HubSubVerifier(HttpClient client, Subscription sub, Logger logger) {
+		super();
+		this.client = client;
+		this.sub = sub;
+		this.logger = logger;
 	}
 
 	@Override
-	public Restlet createInboundRoot() {
-		Router router = new BaseRouter(getContext());
-		router.attach("/", PublisherResource.class);
-		return router;
-	}
-	
-	public List<Item> getItems() {
-		return items;
-	}
-	
-	public HttpClient getClient() {
-		return client;
+	public void run() {
+		logger.info("Verificating a pending subscription.\n\tTopic: " +	sub.getTopic() +
+			"\n\tCallback: " + sub.getCallback());
+		String challenge = UUID.randomUUID().toString();
+		String callbackURL = sub.getCallback() + "?hub.mode=subscribe&hub.topic=" + sub.getTopic() +
+			"&hub.challenge=" +	challenge + "&hub.verify_token=" + sub.getToken();
+
+		try {
+			// Trying to get an echo of the challenge from the callback.
+			HttpGet get = new HttpGet(callbackURL);
+			HttpResponse response = client.execute(get);
+			HttpEntity entity = response.getEntity();
+			String challengeEcho = "";
+			if (entity != null) {
+				challengeEcho = EntityUtils.toString(entity);
+				entity.consumeContent();
+			}
+			
+			// Challenge successful, subscription is verified.
+			if (challengeEcho.equals(challenge)) {
+				sub.setVerified(true);
+				logger.info("Subscription was successfully verified.");
+				return;
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		logger.info("Subscription wasn't valid.");
 	}
 }

@@ -27,7 +27,7 @@
 package net.ubisoa.push.test;
 
 /**
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class Item {
 	private String title, content;

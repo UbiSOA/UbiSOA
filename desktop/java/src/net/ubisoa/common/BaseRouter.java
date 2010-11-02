@@ -30,7 +30,7 @@ import org.restlet.Context;
 import org.restlet.routing.Router;
 
 /**
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class BaseRouter extends Router {
 

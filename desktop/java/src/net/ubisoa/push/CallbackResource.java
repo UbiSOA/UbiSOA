@@ -44,15 +44,20 @@ public class CallbackResource extends BaseResource {
 	
 	@Get("json")
 	public synchronized StringRepresentation jsonCallback(Representation entity) {
-		while (getLastCallbackData() == null) {
+		String init = getQuery().getFirstValue("init");
+		
+		while (getLastCallbackData() == null && init == null) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		
+		String content = getLastCallbackData();
+		if (content == null) content = "{}";
 		StringRepresentation representation = new StringRepresentation(
-			lastCallbackData, MediaType.APPLICATION_JSON);
+			content, MediaType.APPLICATION_JSON);
 		setLastCallbackData(null);
 		return representation;
 	}

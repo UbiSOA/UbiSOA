@@ -30,10 +30,11 @@ import java.io.IOException;
 
 import net.ubisoa.common.BaseResource;
 import net.ubisoa.common.HTMLTemplate;
-import net.ubisoa.core.Defaults;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -44,17 +45,24 @@ import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
 
 /**
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class SubscriberResource extends BaseResource {
+	private HttpClient client = ((SubscriberTest)getApplication()).getClient();
+	
 	@Get
 	public StringRepresentation items() {		
 		String html = "<h2>Published Items</h2>", items = "";
 		
 		try {
 			HttpGet get = new HttpGet("http://127.0.0.1:8311/?output=json");
-			HttpResponse response = Defaults.getHttpClient().execute(get);
-			String content = EntityUtils.toString(response.getEntity());
+			HttpResponse response = client.execute(get);
+			HttpEntity entity = response.getEntity();
+			String content = "";
+			if (entity != null) {
+				content = EntityUtils.toString(entity);
+				entity.consumeContent();
+			}
 			
 			JSONObject jsonObj = new JSONObject(content);
 			JSONArray jsonArray = jsonObj.getJSONArray("items");

@@ -40,7 +40,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 /** 
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class BaseResource extends ServerResource {
 

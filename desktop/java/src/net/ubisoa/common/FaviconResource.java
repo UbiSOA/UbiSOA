@@ -34,7 +34,7 @@ import org.restlet.representation.*;
 import org.restlet.resource.*;
 
 /**
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class FaviconResource extends ServerResource {
 	@Get

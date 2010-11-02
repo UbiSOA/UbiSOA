@@ -24,51 +24,62 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.ubisoa.push.test;
+package net.ubisoa.push;
 
-import java.util.List;
-import java.util.Vector;
-
-import net.ubisoa.common.BaseRouter;
 import net.ubisoa.core.Defaults;
-
-import org.apache.http.client.HttpClient;
-import org.restlet.Application;
-import org.restlet.Component;
-import org.restlet.Restlet;
-import org.restlet.Server;
-import org.restlet.data.Protocol;
-import org.restlet.routing.Router;
 
 /**
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
-public class PublisherTest extends Application {
-	private final List<Item> items = new Vector<Item>();
-	private HttpClient client = Defaults.getHttpClient();
-
-	public static void main(String[] args) throws Exception {
-		Component component = new Component();
-		Server server = new Server(Protocol.HTTP, 8311);
-		component.getServers().add(server);
-		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
-		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);
-		component.getDefaultHost().attach(new PublisherTest());
-		component.start();
+public class HubHandler extends Thread {
+	private HubServer hubApp;
+	
+	public HubHandler(HubServer hubApp) {
+		this.hubApp = hubApp;
 	}
-
+	
 	@Override
-	public Restlet createInboundRoot() {
-		Router router = new BaseRouter(getContext());
-		router.attach("/", PublisherResource.class);
-		return router;
+	public void run() {
+		for (;;) {
+			try {
+				synchronized (this) {
+					// Looking for subscriptions to verify.
+					hubApp.getLogger().info("Looking for subscriptions to verify…");
+					for (Subscription sub : hubApp.getSubscriptions())
+						if (!sub.getVerified())
+							new HubSubVerifier(
+								hubApp.getDefaultClient(), sub, hubApp.getLogger()).start();
+					
+					// Looking for notifications to send.
+					hubApp.getLogger().info("Looking for notifications to send…");
+					while (hubApp.getNotificationsQueue().peek() != null) {
+						Topic topic = hubApp.getNotificationsQueue().poll();
+						
+						// Updating the topic's statistics.
+						int topicIndex = -1;
+						for (Topic topicObj : hubApp.getTopics())
+							if (topicObj.getTopic().equals(topic.getTopic()))
+								topicIndex = hubApp.getTopics().indexOf(topicObj);
+						if (topicIndex != -1) {
+							topic = hubApp.getTopics().get(topicIndex);
+							topic.setLastPing(Defaults.getDateString());
+						}
+						
+						// Sending notifications to each subscriber.						
+						for (Subscription sub : hubApp.getSubscriptions())
+							if (sub.getTopic().equals(topic.getTopic()) && sub.getVerified())
+								new HubNotifier(
+									hubApp.getDefaultClient(), sub, hubApp.getLogger()).start();
+					}
+				
+					// Waiting until a thread notification arrives.
+					hubApp.getLogger().info("Waiting…");
+					wait();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-	
-	public List<Item> getItems() {
-		return items;
-	}
-	
-	public HttpClient getClient() {
-		return client;
-	}
+
 }

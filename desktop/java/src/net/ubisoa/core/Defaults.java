@@ -30,12 +30,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 import org.restlet.data.ServerInfo;
 import org.restlet.resource.ServerResource;
 
 /**
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public final class Defaults {
 	public static final String AGENT = "UbiSOA-Framework/1.0.1";
@@ -54,7 +61,11 @@ public final class Defaults {
 	}
 	
 	public static HttpClient getHttpClient() {
-		return new DefaultHttpClient();
+		HttpParams params = new BasicHttpParams();
+		SchemeRegistry schemeRegistry = new SchemeRegistry();
+		schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+		ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+		return new DefaultHttpClient(cm, params);
 	}
 	
 	public static String getDefaultLeaseDateString() {

@@ -46,7 +46,7 @@ import org.restlet.Context;
  * TODO: Add support for multiple topic subscriptions.
  * TODO: Implement the synchronized subscription mode.
  * 
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class PushRouter extends BaseRouter {
 	public PushRouter(Context context, Class<SubscriberResource> defaultResource, PushInfo pushInfo) {

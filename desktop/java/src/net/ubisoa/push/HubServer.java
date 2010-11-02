@@ -26,9 +26,14 @@
  */
 package net.ubisoa.push;
 
+import java.util.Vector;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import net.ubisoa.common.BaseRouter;
 import net.ubisoa.core.Defaults;
 
+import org.apache.http.client.HttpClient;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
@@ -41,11 +46,15 @@ import org.restlet.routing.Router;
  * TODO: Implement the option to unsubscribe from topics.
  * TODO: Auto-unsubscribe from topics after lease time has passed. 
  * 
- * @author E. Avilés <edgardo@ubisoa.net>
+ * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class HubServer extends Application {
-	HubData data = HubData.getInstance();
-
+	private Vector<Topic> topics = new Vector<Topic>(20, 5);
+	private Vector<Subscription> subscriptions = new Vector<Subscription>(20, 5);
+	private BlockingQueue<Topic> notificationsQueue = new LinkedBlockingQueue<Topic>();
+	private HubHandler handler;
+	private HttpClient client = Defaults.getHttpClient();
+	
 	public static void main(String[] args) throws Exception {
 		Component component = new Component();
 		Server server = new Server(Protocol.HTTP, 8310);
@@ -58,14 +67,18 @@ public class HubServer extends Application {
 	
 	@Override
 	public Restlet createInboundRoot() {
+		handler = new HubHandler(this);
+		handler.start();
+		
 		Router router = new BaseRouter(getContext());
 		router.attach("/", HubResource.class);
 		return router;
 	}
 	
-	public void handleNewContentNotification(final String topic) {
+	public void handleNewContentNotification(String topic) {
 		getLogger().info("New content notification has arrived.\t\tTopic: " + topic);
-		getTaskService().execute(new HubPingHandler(data, topic, getTaskService(), getLogger()));
+		notificationsQueue.add(new Topic(topic));
+		synchronized (handler) { handler.notify(); }
 	}
 
 	public void handleSubscriptionRequest(String callback,	String topic, String token) {
@@ -73,20 +86,47 @@ public class HubServer extends Application {
 				"\n\tCallback: " + callback);
 		
 		// Deleting past subscriptions to the topic/callback key.
-		data.removeSubsWithTopicAndCallback(topic, callback);
+		Vector<Integer> toRemoveSubs = new Vector<Integer>(10, 5);
+		for (Subscription sub : subscriptions)
+			if (sub.getTopic().equals(topic) && sub.getCallback().equals(callback))
+				toRemoveSubs.add(subscriptions.indexOf(sub));
+		for (int index : toRemoveSubs) subscriptions.remove(index);
 		
 		// Registering the new subscription (pending verification).
-		Subscription sub = new Subscription(topic, callback, token, false);
-		data.addSubscription(sub);
+		subscriptions.add(new Subscription(topic, callback, token, false));
 		
+		// Registering the topic.
+		Boolean isRegistered = false;
+		for (Topic topicObj : topics)
+			if (topicObj.getTopic().equals(topic))
+				isRegistered = true;
+		if (!isRegistered) topics.add(new Topic(topic));
+		
+		synchronized (handler) { handler.notify(); }
 		getLogger().info("The Hubbub subscription was stored but not verified yet.");
+	}
+	
+	public Vector<Subscription> getSubscriptions() {
+		return subscriptions;
+	}
+	
+	public BlockingQueue<Topic> getNotificationsQueue() {
+		return notificationsQueue;
+	}
+	
+	public Vector<Topic> getTopics() {
+		return topics;
+	}
+	
+	public HttpClient getDefaultClient() {
+		return client;
 	}
 	
 	public String getHTMLTableData() {
 		String html = "";
-		for (Topic topic : data.getTopics()) {
+		for (Topic topic : topics) {
 			String subs = "";
-			for (Subscription sub : data.getSubscriptions())
+			for (Subscription sub : subscriptions)
 				if (sub.getTopic().equals(topic.getTopic())) {
 					String verified = sub.getVerified()?
 						" <span class=\"tag\">(VERIFIED)</span>": "";
@@ -95,8 +135,12 @@ public class HubServer extends Application {
 			if (subs.compareTo("<ul>") == 0)
 				subs = "No subscriptors.";
 			else subs += "</ul>";
-			html += "<tr><td>" + topic.getTopic() + "</td><td>" + topic.getLastPing() +
-			"</td><td>" + subs + "</td><td>" + topic.getLastFetch() + "</td></tr>";
+			
+			String topicURL = topic.getTopic(), lastPingStr = topic.getLastPing();
+			if (lastPingStr == null) lastPingStr = "(none)";
+			
+			html += "<tr><td>" + topicURL + "</td><td>" + lastPingStr +
+			"</td><td>" + subs + "</td></tr>";
 		}
 		if (html.compareTo("") == 0)
 			return "<tr><td colspan=\"4\">There are no topics on file.</td></tr>";
