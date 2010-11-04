@@ -4,6 +4,7 @@
 mobile/*/build
 desktop/java/bin
 desktop/java/dat
+desktop/java/pub
 .settings
 .classpath
 .project
