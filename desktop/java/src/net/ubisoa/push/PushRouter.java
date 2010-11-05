@@ -43,20 +43,51 @@ import org.apache.http.message.BasicNameValuePair;
 import org.restlet.Context;
 
 /**
- * TODO: Add support for multiple topic subscriptions.
- * TODO: Implement the synchronized subscription mode.
+ * A router for Restlet applications that handles the resources and methods needed to implement
+ * a hub service subscriber. Contains a method to send subscription requests that will later
+ * be verified by the callback resource. After the subscription is verified, the push messages
+ * will be received by the callback resource and notified through the application.</p>
+ * 
+ * <p>Applications using this router must implement the {@link PushApplication} interface or a
+ * {@link RuntimeException} will be thrown when casting the constructor.</p>
+
+ * <p><strong>Example:</strong> Creating a push router for a Restful application.</p>
+ * <listing>public Restlet createInboundRoot() {
+ *     return new PushRouter(getContext(), SubscriberResource.class);
+ * }</listing>
+ * 
+ * @see PushApplication
+ * @see BaseRouter
  * 
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
-public class PushRouter extends BaseRouter {
-	public PushRouter(Context context, Class<SubscriberResource> defaultResource, PushInfo pushInfo) {
+public class PushRouter extends BaseRouter {	
+	// TODO: Add support for multiple topic subscriptions.
+	// TODO: Implement the synchronized subscription mode.
+	
+	/**
+	 * Creates a Restlet router with the specified resource attached to "/" and the
+	 * {@link CallbackResource} attached to "/callback".
+	 * 
+	 * @param context			Restlet application context.
+	 * @param defaultResource	The resource to attach to "/".
+	 */
+	public PushRouter(Context context, Class<SubscriberResource> defaultResource) {
 		super(context);
-		attach("/", defaultResource);
-		attach("/callback", CallbackResource.class);
-		sendSubscriptionRequest(pushInfo);
+		if (getApplication() instanceof PushApplication) {
+			attach("/", defaultResource);
+			attach("/callback", CallbackResource.class);
+			sendSubscriptionRequest();
+		} else throw new RuntimeException(
+			"Restlet application does not implements the PushApplication interface");
 	}
 	
-	public void sendSubscriptionRequest(final PushInfo pushInfo) {
+	/**
+	 * Sends a subscription request containing the push info retrieved from the Restlet application.
+	 */
+	public void sendSubscriptionRequest() {
+		PushInfo pushInfo = ((PushApplication)getApplication()).getPushInfo();
+		
 		try {
 			List<NameValuePair> params = new Vector<NameValuePair>();
 			params.add(new BasicNameValuePair("hub.callback", pushInfo.getCallback()));

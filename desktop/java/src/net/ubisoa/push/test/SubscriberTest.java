@@ -61,7 +61,7 @@ public class SubscriberTest extends Application implements PushApplication {
 
 	@Override
 	public Restlet createInboundRoot() {
-		return new PushRouter(getContext(), SubscriberResource.class, pushInfo);
+		return new PushRouter(getContext(), SubscriberResource.class);
 	}
 
 	@Override
