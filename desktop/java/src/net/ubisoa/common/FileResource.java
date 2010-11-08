@@ -37,6 +37,7 @@ import org.restlet.resource.ServerResource;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class FileResource extends ServerResource {
+	// TODO: Add documentation.
 	
 	@Get
 	public FileRepresentation representation() {

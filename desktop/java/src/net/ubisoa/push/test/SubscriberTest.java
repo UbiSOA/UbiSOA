@@ -44,6 +44,8 @@ import org.restlet.data.Protocol;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class SubscriberTest extends Application implements PushApplication {
+	// TODO: Add documentation.
+	
 	private final PushInfo pushInfo = new PushInfo(
 		"http://127.0.0.1:8310/", "http://127.0.0.1:8311/?output=json",
 		"http://127.0.0.1:8312/callback", UUID.randomUUID().toString());

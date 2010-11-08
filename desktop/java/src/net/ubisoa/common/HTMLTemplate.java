@@ -35,6 +35,8 @@ import net.ubisoa.core.Defaults;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class HTMLTemplate {
+	// TODO: Add documentation.
+	
 	private String title, subtitle, content;
 	private List<String> stylesheets, scripts;
 

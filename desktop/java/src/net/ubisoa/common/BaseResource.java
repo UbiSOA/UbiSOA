@@ -40,14 +40,31 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 /** 
- * The class.
+ * A specialization of the {@link ServerResource} class that uses the <code>output</code> query
+ * parameter to handle content negotiation.</p>
+ * 
+ * <p>Currently, this class only understands the recommended output representation formats of UbiSOA
+ * which are <code>text/html</code>, <code>text/xml</code>, <code>application/atom+xml</code>, and
+ * <code>application/json</code>. The actual content negotiation is performed by setting the
+ * <code>Accept</code> request header to the content-type of the format specified in the
+ * <code>output</code> query parameter.</p>
+ * 
+ * <p><strong>Example:</strong> A resource extending this class.</p>
+ * <listing>public class PublisherResource extends BaseResource {
+ * 	…<br />}</listing>
  * 
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class BaseResource extends ServerResource {
-
+	
+	/**
+	 * Initializes this resource by setting the <code>Accept</code> request header to the content-type
+	 * specified in the <code>output</code> query parameter. The default representation is
+	 * <code>text/html</code>.
+	 */
 	@Override
 	protected void doInit() throws ResourceException {
+		
 		// Sets the Accept request header, accordingly to the output query parameter.
 		List<Preference<MediaType>> accept = new Vector<Preference<MediaType>>();
 		Parameter output = getQuery().getFirst("output");

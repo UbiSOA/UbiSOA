@@ -30,13 +30,28 @@ import net.ubisoa.core.Defaults;
 
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.representation.*;
-import org.restlet.resource.*;
+import org.restlet.representation.FileRepresentation;
+import org.restlet.resource.Get;
+import org.restlet.resource.ServerResource;
 
 /**
+ * A resource representing the common favicon image for all the services in the project.</p>
+ * 
+ * <p><strong>Example:</strong> Attaching the resource to a Restlet container.</p>
+ * <listing>public BaseRouter(Context context) {
+ *	…
+ *	attach("/favicon.ico", FaviconResource.class);<br />}</listing> 
+ * 
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class FaviconResource extends ServerResource {
+	
+	/**
+	 * Retrieves a {@link FileRepresentation} containing the common favicon image for all
+	 * the services in the project.
+	 * 
+	 * @return The favicon image.
+	 */
 	@Get
 	public FileRepresentation representation() {
 		Defaults.setServerInfo(this);
@@ -48,4 +63,5 @@ public class FaviconResource extends ServerResource {
 		}
 		return representation;
 	}
+	
 }

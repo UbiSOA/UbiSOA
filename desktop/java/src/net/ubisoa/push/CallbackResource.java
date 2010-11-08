@@ -40,6 +40,8 @@ import org.restlet.resource.Post;
  * @author E. Avilés <edgardo@ubisoa.net>
  */
 public class CallbackResource extends BaseResource {
+	// TODO: Add documentation.
+	
 	private static String lastCallbackData = "{}";
 	
 	@Get("json")

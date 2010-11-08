@@ -44,6 +44,8 @@ import org.restlet.routing.Router;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class PublisherTest extends Application {
+	// TODO: Add documentation.	
+	
 	private final List<Item> items = new Vector<Item>();
 	private HttpClient client = Defaults.getHttpClient();
 

@@ -30,6 +30,8 @@ package net.ubisoa.push;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public interface PushApplication {
+	// TODO: Add documentation.
+	
 	public PushInfo getPushInfo();
 	public void pushCallback(String data);
 }

@@ -30,10 +30,28 @@ import org.restlet.Context;
 import org.restlet.routing.Router;
 
 /**
+ * The base router for all UbiSOA's services.</p>
+ * 
+ * <p>Contains a {@link FileResource} attached to <code>/{type}/{filename}</code> and a
+ * {@link FaviconResource} attached to <code>/favicon.ico</code>.
+ * 
+ * <p><strong>Example:</strong> Creating a base router for a Restful application.</p>
+ * <listing>public Restlet createInboundRoot() {
+ * 	Router router = new BaseRouter(getContext());
+ * 	router.attach(…);
+ * 	…
+ *	return router;<br />}</listing>
+ * 
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class BaseRouter extends Router {
 
+	/**
+	 * The main constructor. This is where the {@link FileResource} and {@link FaviconResource}
+	 * are attached respectively to <code>/{type}/{filename}</code> and <code>/favicon.ico</code>.
+	 * 
+	 * @param context	The Restlet context.
+	 */
 	public BaseRouter(Context context) {
 		super(context);
 		attach("/{type}/{filename}", FileResource.class);

@@ -42,13 +42,13 @@ import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 
 /**
- * TODO: Implement the synchronized subscription mode.
- * TODO: Implement the option to unsubscribe from topics.
- * TODO: Auto-unsubscribe from topics after lease time has passed. 
- * 
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class HubServer extends Application {
+	// TODO: Implement the synchronized subscription mode.
+	// TODO: Implement the option to unsubscribe from topics.
+	// TODO: Auto-unsubscribe from topics after lease time has passed.
+	
 	private Vector<Topic> topics = new Vector<Topic>(20, 5);
 	private Vector<Subscription> subscriptions = new Vector<Subscription>(20, 5);
 	private BlockingQueue<Topic> notificationsQueue = new LinkedBlockingQueue<Topic>();
