@@ -42,24 +42,49 @@ import org.restlet.data.ServerInfo;
 import org.restlet.resource.ServerResource;
 
 /**
+ * A final class where all the default object instances and constants are retrieved.
+ * 
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public final class Defaults {
+	
+	/** The default content of the <code>Server</code> response header. */
 	public static final String AGENT = "UbiSOA-Framework/1.0.1";
+	
+	/** Wherever to use local files or the ones at <code>http://api.ubisoa.net/</code>. */
 	public static final Boolean USE_LOCAL_FILES = false;
+	
+	/** Maximum client connections allowed at the same time. */
 	public static final String MAX_CONNECTIONS = "100";
+	
+	/** Maximum processing threads allowed at the same time. */
 	public static final String MAX_THREADS = "20";
 
+	/**
+	 * Sets the <code>Server</code> response header of the specified {@link ServerResource} instance.
+	 * 
+	 * @param serverResource The resource instance where the header will be set.
+	 */
 	public static void setServerInfo(ServerResource serverResource) {
 		ServerInfo serverInfo = serverResource.getServerInfo();
 		serverInfo.setAgent(AGENT);
 		serverResource.setServerInfo(serverInfo);
 	}
 	
+	/**
+	 * Retrieves the common {@link SimpleDateFormat} instance used in the project.
+	 * 
+	 * @return The common {@link SimpleDateFormat} instance in the project.
+	 */
 	public static SimpleDateFormat dateFormat() {
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	}
 	
+	/**
+	 * Creates an {@link HttpClient} instance that allows concurrent HTTP connections.
+	 * 
+	 * @return An {@link HttpClient} instance with thread-safe connections. 
+	 */
 	public static HttpClient getHttpClient() {
 		HttpParams params = new BasicHttpParams();
 		SchemeRegistry schemeRegistry = new SchemeRegistry();
@@ -68,11 +93,21 @@ public final class Defaults {
 		return new DefaultHttpClient(cm, params);
 	}
 	
+	/**
+	 * Retrieves a date in the near future to be used as default lease-time.
+	 * 
+	 * @return A string with the default lease date calculated from now.
+	 */
 	public static String getDefaultLeaseDateString() {
 		long leaseDate = new Date().getTime() + 1000 * 60 * 60 * 2; // Valid for 2 hours.
 		return dateFormat().format(new Date(leaseDate));
 	}
 	
+	/**
+	 * Retrieves the current date in the default {@link SimpleDateFormat}.
+	 * 
+	 * @return A string with the current date in the project's default format.
+	 */
 	public static String getDateString() {
 		return dateFormat().format(new Date());
 	}

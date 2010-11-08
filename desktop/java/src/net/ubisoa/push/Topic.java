@@ -30,6 +30,8 @@ package net.ubisoa.push;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class Topic {
+	// TODO: Add documentation.
+	
 	private String topic, lastPing;
 	
 	public Topic(String topic) {

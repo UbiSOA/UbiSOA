@@ -46,28 +46,31 @@ import org.restlet.Context;
  * A router for Restlet applications that handles the resources and methods needed to implement
  * a hub service subscriber. Contains a method to send subscription requests that will later
  * be verified by the callback resource. After the subscription is verified, the push messages
- * will be received by the callback resource and notified through the application.</p>
+ * will be received by the callback resource and notified to the Restlet application.</p>
  * 
  * <p>Applications using this router must implement the {@link PushApplication} interface or a
- * {@link RuntimeException} will be thrown when casting the constructor.</p>
-
- * <p><strong>Example:</strong> Creating a push router for a Restful application.</p>
+ * {@link RuntimeException} will be thrown when running the constructor.</p>
+ * 
+ * <p><strong>Example:</strong> Creating a push router for a Restful application where
+ * the main resource is handled by the {@link SubscriberResource} class.</p>
  * <listing>public Restlet createInboundRoot() {
- *     return new PushRouter(getContext(), SubscriberResource.class);
- * }</listing>
+ *	return new PushRouter(getContext(), SubscriberResource.class);<br />}</listing>
  * 
  * @see PushApplication
  * @see BaseRouter
  * 
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
-public class PushRouter extends BaseRouter {	
+public class PushRouter extends BaseRouter {
 	// TODO: Add support for multiple topic subscriptions.
 	// TODO: Implement the synchronized subscription mode.
 	
 	/**
-	 * Creates a Restlet router with the specified resource attached to "/" and the
-	 * {@link CallbackResource} attached to "/callback".
+	 * Creates a Restlet router with the specified resource attached to <code>/</code> and the
+	 * {@link CallbackResource} attached to <code>/callback</code>.
+	 * 
+	 * If the Restlet application from where this router is created does not implements the
+	 * {@link PushApplication} interface this constructor will throw an {@link RuntimeException}.
 	 * 
 	 * @param context			Restlet application context.
 	 * @param defaultResource	The resource to attach to "/".
@@ -83,7 +86,11 @@ public class PushRouter extends BaseRouter {
 	}
 	
 	/**
-	 * Sends a subscription request containing the push info retrieved from the Restlet application.
+	 * Sends a subscription request to a hub server.
+	 * 
+	 * The topic to subscribe to, hub service URL, verify token, and other parameters are
+	 * obtained from the {@link PushInfo} instance retrieved from the
+	 * {@link PushApplication#getPushInfo()} method of the Restlet application using this router.
 	 */
 	public void sendSubscriptionRequest() {
 		PushInfo pushInfo = ((PushApplication)getApplication()).getPushInfo();

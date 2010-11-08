@@ -48,6 +48,8 @@ import org.restlet.resource.Get;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class SubscriberResource extends BaseResource {
+	// TODO: Add documentation.
+	
 	private HttpClient client = ((SubscriberTest)getApplication()).getClient();
 	
 	@Get

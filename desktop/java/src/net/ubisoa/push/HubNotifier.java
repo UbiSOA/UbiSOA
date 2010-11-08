@@ -44,6 +44,8 @@ import org.restlet.data.MediaType;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class HubNotifier extends Thread {
+	// TODO: Add documentation.
+	
 	private HttpClient client;
 	private Subscription sub;
 	private Logger logger;

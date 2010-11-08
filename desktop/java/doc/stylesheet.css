@@ -42,10 +42,9 @@ pre, listing, code {
 }
 listing {
 	background-color: #eee;
-	border: 2px solid rgba(255, 255, 255, 0.5);
 	border-radius: 4px;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 1px 3px;
-	padding: 6px 10px;
+	-webkit-box-shadow: inset rgba(0, 0, 0, 0.4) 0 1px 3px;
+	padding: 10px 14px;
 	text-shadow: 0 1px 0 white;
 }
 table {

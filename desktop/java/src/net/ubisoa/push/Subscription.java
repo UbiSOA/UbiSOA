@@ -32,6 +32,8 @@ import net.ubisoa.core.Defaults;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class Subscription {
+	// TODO: Add documentation.
+	
 	private String topic, callback, token, lease;
 	private Boolean verified;
 	

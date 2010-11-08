@@ -30,6 +30,8 @@ package net.ubisoa.push.test;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class Item {
+	// TODO: Add documentation.
+	
 	private String title, content;
 
 	public Item(String title, String content) {

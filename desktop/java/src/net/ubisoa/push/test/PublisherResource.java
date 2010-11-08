@@ -71,6 +71,8 @@ import org.w3c.dom.Element;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class PublisherResource extends BaseResource {
+	// TODO: Add documentation.
+	
 	List<Item> items = ((PublisherTest)getApplication()).getItems();
 	HttpClient client = ((PublisherTest)getApplication()).getClient();
 	

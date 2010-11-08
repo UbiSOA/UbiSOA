@@ -30,6 +30,8 @@ package net.ubisoa.push;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class PushInfo {
+	// TODO: Add documentation.
+	
 	private String hub, topic, callback, token;
 
 	public PushInfo(String hub, String topic, String callback, String token) {

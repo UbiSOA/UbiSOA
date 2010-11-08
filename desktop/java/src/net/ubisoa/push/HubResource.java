@@ -41,6 +41,8 @@ import org.restlet.resource.Post;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class HubResource extends BaseResource {
+	// TODO: Add documentation.
+	
 	HubServer server = (HubServer)getApplication();
 	
 	@Get("html")

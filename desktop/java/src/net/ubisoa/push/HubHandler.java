@@ -32,6 +32,8 @@ import net.ubisoa.core.Defaults;
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class HubHandler extends Thread {
+	// TODO: Add documentation.
+	
 	private HubServer hubApp;
 	
 	public HubHandler(HubServer hubApp) {
