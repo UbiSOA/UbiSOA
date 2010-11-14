@@ -24,23 +24,16 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.ubisoa.argenerator;
+package net.ubisoa.rfidtwitter;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+import java.sql.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.List;
 import java.util.Vector;
 
-import javax.imageio.ImageIO;
-
 import net.ubisoa.common.BaseResource;
 import net.ubisoa.core.Defaults;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -51,54 +44,63 @@ import org.apache.http.message.BasicNameValuePair;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 
 /**
  * @author I. Cruz <icruz@ubisoa.net>
  */
-public class ResourceARGenerator extends BaseResource {
+public class ResourceRFIDTwitter extends BaseResource {
+	String rfid = "1010101111";
+	String user = "";
 	
-	private int grados = 32;
-	
-	@Get("png")
-	public FileRepresentation chartAR()throws Exception {
+	@Get("twitter")
+	public StringRepresentation idTwitter() throws ClassNotFoundException, SQLException {
 		
-		File img = new File("chartAR.png");
-		
-		URL url = new URL("http://chart.apis.google.com/chart?cht=gom&chd=t:" + grados + "&chs=250x150&chl=" + grados + "°C" );
-		java.net.URLConnection con = url.openConnection();
-		con.connect();		
-		java.io.InputStream urlfs = con.getInputStream();
-		
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		int c;
-		while ((c = urlfs.read()) != -1){
-			out.write((byte) c);
-		}		
-		urlfs.close();
-		
-		ByteArrayInputStream outImg = new ByteArrayInputStream(out.toByteArray());
-		BufferedImage bufferedImage = ImageIO.read(outImg);
-		ImageIO.write(bufferedImage, "png", img);
-		
-		FileRepresentation representation = new FileRepresentation(
-				"chartAR.png", MediaType.IMAGE_PNG);
-		if (representation.getSize() == 0) {
+		Class.forName("org.sqlite.JDBC");
+	    Connection conn =
+	      DriverManager.getConnection("jdbc:sqlite:test.db");
+	    Statement stat = conn.createStatement();
+	    stat.executeUpdate("drop table if exists tweet;");
+	    stat.executeUpdate("create table tweet (rfid, user_twitter);");
+	    PreparedStatement prep = conn.prepareStatement(
+	      "insert into tweet values (?, ?);");
+
+	    prep.setString(1, "1010101010");
+	    prep.setString(2, "@ignacio");
+	    prep.addBatch();
+	    prep.setString(1, "1010101011");
+	    prep.setString(2, "@jose");
+	    prep.addBatch();
+	    prep.setString(1, "1010101111");
+	    prep.setString(2, "@juan");
+	    prep.addBatch();
+
+	    conn.setAutoCommit(false);
+	    prep.executeBatch();
+	    conn.setAutoCommit(true);
+	    
+	    ResultSet rs = stat.executeQuery("select * from tweet where rfid='"+ rfid +"';");
+	   
+	    while (rs.next()) {
+	    	user = rs.getString("user_twitter");
+	    }
+	    rs.close();
+	    conn.close();
+	    if (user.equals("")) {
 			setStatus(Status.CLIENT_ERROR_NOT_FOUND);
 			return null;
 		}
-		
-		return representation;
+		return new StringRepresentation(user, MediaType.TEXT_PLAIN);
 	}
 	
 	@Post("form")
-	public void acceptChartAR(Representation entity) {
+	public void acceptIdTwitter(Representation entity) {
 		Form form = new Form(entity);
-		String grd = form.getFirstValue("grados");
-		grados = Integer.parseInt(grd);
+		rfid = form.getFirstValue("rfid");
+		//grados = Integer.parseInt(grd);
 		//String content = form.getFirstValue("content");
 		//Item item = new Item(title, content);
 		//List<Item> items = ((PublisherTest)getApplication()).getItems();
