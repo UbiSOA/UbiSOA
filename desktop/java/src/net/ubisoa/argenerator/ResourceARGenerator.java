@@ -61,14 +61,14 @@ import org.restlet.resource.Post;
  */
 public class ResourceARGenerator extends BaseResource {
 	
-	private double grados = 0;
+	private int grados = 50;
 	
 	@Get("png")
 	public FileRepresentation representation()throws Exception {
 		
-		File img = new File("img/chartAR.png");
+		File img = new File("chartAR.png");
 		
-		URL url = new URL("http://chart.apis.google.com/chart?cht=gom&chd=t:" + grados + "&chs=250x100");
+		URL url = new URL("http://chart.apis.google.com/chart?cht=gom&chd=t:" + grados + "&chs=250x150&chl=" + grados + "°C" );
 		java.net.URLConnection con = url.openConnection();
 		con.connect();		
 		java.io.InputStream urlfs = con.getInputStream();
@@ -85,7 +85,7 @@ public class ResourceARGenerator extends BaseResource {
 		ImageIO.write(bufferedImage, "png", img);
 		
 		FileRepresentation representation = new FileRepresentation(
-				"img/chartAR.png", MediaType.IMAGE_PNG);
+				"chartAR.png", MediaType.IMAGE_PNG);
 		if (representation.getSize() == 0) {
 			setStatus(Status.CLIENT_ERROR_NOT_FOUND);
 			return null;
@@ -98,7 +98,7 @@ public class ResourceARGenerator extends BaseResource {
 	public void acceptItem(Representation entity) {
 		Form form = new Form(entity);
 		String grd = form.getFirstValue("grados");
-		grados = Double.parseDouble(grd);
+		grados = Integer.parseInt(grd);
 		//String content = form.getFirstValue("content");
 		//Item item = new Item(title, content);
 		//List<Item> items = ((PublisherTest)getApplication()).getItems();

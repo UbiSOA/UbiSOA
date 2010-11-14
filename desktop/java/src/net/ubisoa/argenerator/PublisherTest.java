@@ -51,8 +51,8 @@ public class PublisherTest extends Application {
 		Server server = new Server(Protocol.HTTP, 8311);
 		component.getServers().add(server);
 		server.getContext().getParameters().set("maxTotalConnections",
-			Defaults.MAX_TOTAL_CONNECTIONS + "");
-		server.getContext().getParameters().set("maxThreads", Defaults.MAX_TOTAL_CONNECTIONS + "");
+			Defaults.MAX_CONNECTIONS + "");
+		server.getContext().getParameters().set("maxThreads", Defaults.MAX_CONNECTIONS + "");
 		component.getDefaultHost().attach(new PublisherTest());
 		component.start();
 	}
