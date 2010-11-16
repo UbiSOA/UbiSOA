@@ -30,10 +30,16 @@ import java.sql.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.UUID;
 import java.util.Vector;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import net.ubisoa.common.BaseResource;
 import net.ubisoa.core.Defaults;
+import net.ubisoa.push.test.Item;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -41,13 +47,26 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
+import org.restlet.ext.atom.AtomConverter;
+import org.restlet.ext.atom.Content;
+import org.restlet.ext.atom.Entry;
+import org.restlet.ext.atom.Feed;
+import org.restlet.ext.atom.Text;
+import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * @author I. Cruz <icruz@ubisoa.net>
@@ -94,6 +113,74 @@ public class ResourceRFIDTwitter extends BaseResource {
 			return null;
 		}
 		return new StringRepresentation(user, MediaType.TEXT_PLAIN);
+	}
+	
+	@Get("xml")
+	public DomRepresentation itemsXML() {
+		try {
+			Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+			
+			Element root = d.createElement("IdTwitter"), child, subChild;
+			d.appendChild(root);
+			
+			child = d.createElement("Values");
+				
+			subChild = d.createElement("Id");
+			subChild.appendChild(d.createTextNode(rfid));
+			child.appendChild(subChild);
+				
+			subChild = d.createElement("Usuario");
+			subChild.appendChild(d.createTextNode(user));
+			child.appendChild(subChild);
+				
+			root.appendChild(child);
+
+			d.normalizeDocument();
+			return new DomRepresentation(MediaType.TEXT_XML, d);
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+		setStatus(Status.SERVER_ERROR_INTERNAL);
+		return null;
+	}
+	
+	@Get("atom")
+	public Representation itemsAtom() {
+		Feed feed = new Feed();
+		Entry entry = new Entry();
+		entry.setId("urn:uuid:" + UUID.randomUUID());
+		entry.setTitle(new Text(user));
+		Content content = new Content();
+		content.setInlineContent(new StringRepresentation(
+			rfid, MediaType.TEXT_PLAIN));
+		entry.setContent(content);
+		feed.getEntries().add(entry);
+		
+		AtomConverter atomConverter = new AtomConverter();
+		return atomConverter.toRepresentation(feed,
+			new Variant(MediaType.APPLICATION_ATOM), this);
+	}
+	
+	@Get("json")
+	public JsonRepresentation itemsJSON() {
+		String padding = getQuery().getFirstValue("callback");
+			try {
+			JSONObject json = new JSONObject();
+			JSONArray itemsArray = new JSONArray();
+			JSONObject obj = new JSONObject();
+			obj.put("User", user);
+			obj.put("Id", rfid);
+			itemsArray.put(obj);
+			json.put("IdTwitter", itemsArray);
+			String jsonStr = json.toString();
+			if (padding != null)
+				jsonStr = padding + "(" + jsonStr + ")";
+			return new JsonRepresentation(jsonStr);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		setStatus(Status.SERVER_ERROR_INTERNAL);
+		return null;
 	}
 	
 	@Post("form")
