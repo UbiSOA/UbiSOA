@@ -28,6 +28,7 @@ package net.ubisoa.argenerator;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
@@ -70,7 +71,7 @@ import org.w3c.dom.Element;
  */
 public class PublisherResource extends BaseResource {
 	
-	List<Item> items = ((PublisherTest)getApplication()).getItems();
+	ArrayList<Integer> items = ((PublisherTestAR)getApplication()).getItems();
 	
 	@Get("html")
 	public StringRepresentation items() {
@@ -165,7 +166,7 @@ public class PublisherResource extends BaseResource {
 		String title = form.getFirstValue("title");
 		String content = form.getFirstValue("content");
 		Item item = new Item(title, content);
-		List<Item> items = ((PublisherTest)getApplication()).getItems();
+		List<Item> items = ((PublisherTestAR)getApplication()).getItems();
 		items.add(item);
 		setStatus(Status.REDIRECTION_PERMANENT);
 		setLocationRef("/");
