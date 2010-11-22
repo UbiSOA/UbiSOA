@@ -83,14 +83,15 @@ public class ServoPublisherResource extends BaseResource {
 	public StringRepresentation items() {
 		String html = "<form class=\"column\" method=\"POST\">" +
 			"<h2>Post Servo</h2>" +
-			"<input type=\"number\" name=\"position\" step=\"1.0\" min=\"0\" max=\"180\" maxlength=\"7\" placeholder=\"Position\" required />" +
+			"<input type=\"range\" id=\"position\" step=\"1.0\" min=\"0\" max=\"180\" value=\"0\" placeholder=\"Position\" required />" +
 			//"<textarea name=\"content\" placeholder=\"Content\" required></textarea>" +
 			"<input type=\"submit\" value=\"Post Servo\" /></form>" +
+			"</form>" +
 			"<div class=\"column\"><h2>Published Servos</h2><ul>";// +
-			//"<img src=\"..\\..\\..\\..\\img\\gear1_w.gif\" alt=\"servo\"  />";
+			//"<img src=\"img\\gear1_w.gif\" alt=\"servo\"  />";
 		for (Servo serv : servos)
 			html += "<li><strong>" + serv.getDeviceName() + "</strong>. " +
-			"<label>Device ID: </label>" + serv.getDeviceID() +
+			"<label>Device ID: </label>" + serv.getDeviceID() +// "<?php echo '$_POST'; ?>" + 
 			"<label> Position: </label>" + serv.getPositionPost() + "</li>";
 		if (servos == null)
 			html += "<li>No servo posted</li>";

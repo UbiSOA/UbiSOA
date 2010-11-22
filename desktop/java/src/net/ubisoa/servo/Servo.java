@@ -246,7 +246,7 @@ public class Servo {
 	/**
      * Modify the servo position
      **/
-    public void mover(double position) {//GEN-FIRST:event_positionScrlStateChanged
+    public void mover(double position) {
         //A PhidgetException will be thrown if you try to set the position 
         //to any value NOT between -23 and 232 and if a PhidgetServo
         //is not connected
@@ -259,7 +259,7 @@ public class Servo {
         {
         	System.out.println("Phidget Error " + ex.getErrorNumber() + ": " + ex.getDescription());
         }
-    }//GEN-LAST:event_positionScrlStateChanged
+    }
 
   
 }
