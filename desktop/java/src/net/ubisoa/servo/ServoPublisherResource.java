@@ -83,22 +83,22 @@ public class ServoPublisherResource extends BaseResource {
 	public StringRepresentation items() {
 		String html = "<form class=\"column\" method=\"POST\">" +
 			"<h2>Post Servo</h2>" +
-			"<input type=\"range\" id=\"position\" step=\"1.0\" min=\"0\" max=\"180\" value=\"0\" placeholder=\"Position\" required />" +
-			//"<textarea name=\"content\" placeholder=\"Content\" required></textarea>" +
+			"<input type=\"range\" name=\"position\" id=\"position\" min=\"0\" max=\"180\" value=\"0\" required />" +
 			"<input type=\"submit\" value=\"Post Servo\" /></form>" +
 			"</form>" +
-			"<div class=\"column\"><h2>Published Servos</h2><ul>";// +
-			//"<img src=\"img\\gear1_w.gif\" alt=\"servo\"  />";
+			"<div class=\"column\"><h2>Published Servos</h2><ul>";
 		for (Servo serv : servos)
 			html += "<li><strong>" + serv.getDeviceName() + "</strong>. " +
-			"<label>Device ID: </label>" + serv.getDeviceID() +// "<?php echo '$_POST'; ?>" + 
-			"<label> Position: </label>" + serv.getPositionPost() + "</li>";
+			//"<label>Device ID: </label>" + serv.getDeviceID() +// "<?php echo '$_POST'; ?>" + 
+			//"<label> Position: </label>" + serv.getPositionPost() + "</li>";
+			"<img scr=\"http://chart.apis.google.com/chart?chs=250x100&chd=t:60,40&cht=p3&chl=Hello|World\" >";
 		if (servos == null)
 			html += "<li>No servo posted</li>";
 		html += "</ul></div>";
 			
 		HTMLTemplate template = new HTMLTemplate("Publisher Test for Servo", html);
 		template.setSubtitle("This is a test for the push protocol.");
+		template.getScripts().add("http://api.ubisoa.net/js/servo.js");
 		return new StringRepresentation(template.getHTML(), MediaType.TEXT_HTML);
 	}
 	
@@ -228,7 +228,8 @@ public class ServoPublisherResource extends BaseResource {
 		System.out.println("posPost= " + form.getFirstValue("position"));
 		//double position = 0.0;
 		//if (form.getFirstValue("position") != null)
-			double position = Double.valueOf(form.getFirstValue("position"));
+		//System.o
+			double position = Double.parseDouble(form.getFirstValue("position"));
 		servo = new Servo(position);
 		((PublisherTest)getApplication()).getServos().add(servo);
 		setStatus(Status.REDIRECTION_PERMANENT);
