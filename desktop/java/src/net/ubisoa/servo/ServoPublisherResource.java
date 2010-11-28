@@ -28,6 +28,7 @@ package net.ubisoa.servo;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.Math;
 import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
@@ -55,7 +56,7 @@ import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.ext.atom.AtomConverter;
-import org.restlet.ext.atom.Content;
+//import org.restlet.ext.atom.Content;
 import org.restlet.ext.atom.Entry;
 import org.restlet.ext.atom.Feed;
 import org.restlet.ext.atom.Text;
@@ -74,31 +75,30 @@ import org.w3c.dom.Element;
  */
 public class ServoPublisherResource extends BaseResource {
 
-	//Servo servo = new Servo();
 	Servo servo = null;
 	List<Servo> servos = ((PublisherTest)getApplication()).getServos();
 	HttpClient client = ((PublisherTest)getApplication()).getClient();
 	
 	@Get("html")
 	public StringRepresentation items() {
-		String html = "<form class=\"column\" method=\"POST\">" +
+		String html = "<form class=\"column\" name=\"fservo\" method=\"POST\">" +
 			"<h2>Post Servo</h2>" +
-			"<input type=\"range\" name=\"position\" id=\"position\" min=\"0\" max=\"180\" value=\"0\" required />" +
-			"<input type=\"submit\" value=\"Post Servo\" /></form>" +
+			"<img id=\"servo\" name=\"servo\" src=\"/img/gear1_w.gif\" height=\"50\" width=\"50\" />" +
+			"<input type=\"range\" name=\"position\" id=\"position\" min=\"0\" max=\"180\" required />" +
 			"</form>" +
 			"<div class=\"column\"><h2>Published Servos</h2><ul>";
 		for (Servo serv : servos)
 			html += "<li><strong>" + serv.getDeviceName() + "</strong>. " +
-			//"<label>Device ID: </label>" + serv.getDeviceID() +// "<?php echo '$_POST'; ?>" + 
-			//"<label> Position: </label>" + serv.getPositionPost() + "</li>";
-			"<img scr=\"http://chart.apis.google.com/chart?chs=250x100&chd=t:60,40&cht=p3&chl=Hello|World\" >";
+			//"<img scr=\"http://chart.apis.google.com/chart?chs=150x100&chd=t:1,1&chp=" +
+			//Math.toRadians(serv.getPositionPost()) + "&cht=p3\" />";
+			"<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=0&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Primer ejemplo con Google Chart API\" />";
 		if (servos == null)
 			html += "<li>No servo posted</li>";
 		html += "</ul></div>";
 			
 		HTMLTemplate template = new HTMLTemplate("Publisher Test for Servo", html);
 		template.setSubtitle("This is a test for the push protocol.");
-		template.getScripts().add("http://api.ubisoa.net/js/servo.js");
+		template.getScripts().add("/js/servo.js");
 		return new StringRepresentation(template.getHTML(), MediaType.TEXT_HTML);
 	}
 	
@@ -182,20 +182,20 @@ public class ServoPublisherResource extends BaseResource {
 		return null;
 	}
 	
-	/*@Get("atom")
+	@Get("atom")
 	public Representation itemsAtom() {
 		Feed feed = new Feed();
-		//for (Servo servo : servos) {
+		for (Servo servo : servos) {
 			Entry entry = new Entry();
 			entry.setId("urn:uuid:" + UUID.randomUUID());
-			//entry.setTitle(new Text(servo.getName()));
 			entry.setTitle(new Text(servo.getDeviceName()));
-			Content content = new Content();
-			content.setInlineContent(new Representation(
-				String.valueOf(servo.getDeviceClass()), MediaType.TEXT_PLAIN));
-			entry.setContent(content);
+			entry.setTitle(new Text(String.valueOf(servo.getPositionPost())));
+			//Content content = new Content();
+			//content.setInlineContent(new Representation(
+				//String.valueOf(servo.getDeviceClass()), MediaType.TEXT_PLAIN));
+			//entry.setContent(content);
 			feed.getEntries().add(entry);
-		//}
+		}
 		AtomConverter atomConverter = new AtomConverter();
 		return atomConverter.toRepresentation(feed,
 			new Variant(MediaType.APPLICATION_ATOM), this);
@@ -208,8 +208,8 @@ public class ServoPublisherResource extends BaseResource {
 			JSONArray itemsArray = new JSONArray();
 			for (Servo servo : servos) {
 				JSONObject obj = new JSONObject();
-				obj.put("name", servo.getName());
-				obj.put("position", servo.getPosition());
+				obj.put("name", servo.getDeviceName());
+				obj.put("position", servo.getPositionPost());
 				itemsArray.put(obj);
 			}
 			json.put("servos", itemsArray);
@@ -219,18 +219,19 @@ public class ServoPublisherResource extends BaseResource {
 		}
 		setStatus(Status.SERVER_ERROR_INTERNAL);
 		return null;
-	}*/
+	}
 	
 	@Post("form")
 	public void acceptItem(Representation entity) {
-		//System.out.println("servopublisher...form");
+		
 		Form form = new Form(entity);
-		System.out.println("posPost= " + form.getFirstValue("position"));
-		//double position = 0.0;
-		//if (form.getFirstValue("position") != null)
-		//System.o
-			double position = Double.parseDouble(form.getFirstValue("position"));
-		servo = new Servo(position);
+		
+		//double position = Double.parseDouble(form.getFirstValue("position"));
+		if (servo == null)
+			servo = new Servo(Double.parseDouble(form.getFirstValue("position")));
+		if (servo != null)
+			servo.setPositionPost(Double.parseDouble(form.getFirstValue("position")));
+		System.out.println("posPost= " + servo.getPositionPost());
 		((PublisherTest)getApplication()).getServos().add(servo);
 		setStatus(Status.REDIRECTION_PERMANENT);
 		setLocationRef("/");

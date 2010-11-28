@@ -28,8 +28,6 @@ package net.ubisoa.servo;
 
 import com.phidgets.ServoPhidget;
 import com.phidgets.PhidgetException;
-import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
  * @author V. Soto <valeria@ubisoa.net>
@@ -51,10 +49,12 @@ public class Servo {
 	
     private ServoPhidget phiServo;
 	private double positionPost;
+	//private int positionAnt;
 
-	public Servo(double p) {
-		inicializaServo();
-		this.setPositionPost(p);
+	public Servo(double finP) {
+		this.positionPost = finP;
+		inicializaServo();		
+		//this.positionAnt = 0;
 	}
 	
 	/**
@@ -73,6 +73,8 @@ public class Servo {
             	System.out.println(cont + " " + phiServo.toString());
             	cont++;
             }
+            this.phiServo.setPosition(0, this.positionPost);
+            this.phiServo.close();
         }
         catch(PhidgetException ex) {
         	System.out.println("private void inicializaServo()");
