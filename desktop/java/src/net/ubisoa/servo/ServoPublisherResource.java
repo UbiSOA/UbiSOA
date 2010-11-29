@@ -78,28 +78,68 @@ public class ServoPublisherResource extends BaseResource {
 	Servo servo = null;
 	List<Servo> servos = ((PublisherTest)getApplication()).getServos();
 	HttpClient client = ((PublisherTest)getApplication()).getClient();
+	double valor = 0;
+	long redondeo = 0;
 	
 	@Get("html")
 	public StringRepresentation items() {
-		String html = "<form class=\"column\" name=\"fservo\" method=\"POST\">" +
-			"<h2>Post Servo</h2>" +
-			"<img id=\"servo\" name=\"servo\" src=\"/img/gear1_w.gif\" height=\"50\" width=\"50\" />" +
-			"<input type=\"range\" name=\"position\" id=\"position\" min=\"0\" max=\"180\" required />" +
-			"</form>" +
-			"<div class=\"column\"><h2>Published Servos</h2><ul>";
-		for (Servo serv : servos)
-			html += "<li><strong>" + serv.getDeviceName() + "</strong>. " +
-			//"<img scr=\"http://chart.apis.google.com/chart?chs=150x100&chd=t:1,1&chp=" +
-			//Math.toRadians(serv.getPositionPost()) + "&cht=p3\" />";
-			"<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=0&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Primer ejemplo con Google Chart API\" />";
-		if (servos == null)
-			html += "<li>No servo posted</li>";
-		html += "</ul></div>";
-			
-		HTMLTemplate template = new HTMLTemplate("Publisher Test for Servo", html);
-		template.setSubtitle("This is a test for the push protocol.");
-		template.getScripts().add("/js/servo.js");
-		return new StringRepresentation(template.getHTML(), MediaType.TEXT_HTML);
+		
+		try
+		{
+			if (servos != null) {
+				System.out.println("primer if");
+				System.out.println("tamaño: " + servos.size());
+				if (servos.size() != 0) {
+					valor = ((Servo)servos.get(servos.size())).getPositionPost();
+					//valor = (servos.get(1)).getPositionPost();
+					redondeo = Math.round(((Math.PI*valor)/180));
+				}
+			}
+		}
+		catch (ArrayIndexOutOfBoundsException e) {
+			e.printStackTrace();
+			//return new StringRepresentation("");			
+		}
+			String html = "<form class=\"column\" name=\"fservo\" method=\"POST\">" +
+				"<h2>Post Servo</h2>" +
+				"<img id=\"servo\" name=\"servo\" src=\"/img/gear1_w.gif\" height=\"50\" width=\"50\" />" +
+				"<input type=\"range\" name=\"position\" id=\"position\" min=\"0\" max=\"180\" value=\"" + String.valueOf(valor) + "\" required />" +
+				"</form>" +
+				"<div class=\"column\"><h2>Published Servos</h2><ul>";
+				//"<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" + (int)redondeo +"&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Primer ejemplo con Google Chart API\" />";
+			if (servos != null) {
+				//if (servos.size() != 0) {
+				//System.out.println("size en dos: " + servos.size());
+				html += "<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" +(int)redondeo +"&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Ubisoa Servo\" />"; 
+				//String aux = "<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" +(int)redondeo +"&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Ubisoa Servo\" />"; 
+				for (Servo serv : servos) {
+				//int j = servos.size();
+				//System.out.println("valor pa el for: " + j);
+				//for (int i = j; i > 0; i--) {
+					//html += "<li><strong>" + servos.get(i).getDeviceName() + "</strong>. " +
+					//"<label>Position= " + servos.get(i).getPositionPost() + "</label>";
+					html += "<li><strong>" + serv.getDeviceName() + "</strong>. " +
+					"<label>Position= " + serv.getPositionPost() + "</label>";
+					//"<img scr=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" + rendondeo + "&cht=p3&chco=dd0000,dd0000,ffffff\" />";
+					//"\"http://chart.apis.google.com/chart?chs=150x100&chd=t:1,1&chp=" +
+					//rendondeo + "&cht=p3\" />";
+					//"<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" +(int)redondeo +"&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Primer ejemplo con Google Chart API\" />";
+				//}
+				}
+			}
+			if (servos == null)
+				html += "<li>No servo posted</li>";
+			html += "</ul></div>";
+				
+			HTMLTemplate template = new HTMLTemplate("Publisher Test for Servo", html);
+			template.setSubtitle("This is a test for the push protocol.");
+			template.getScripts().add("/js/servo.js");
+			return new StringRepresentation(template.getHTML(), MediaType.TEXT_HTML);
+		//}
+		//catch (ArrayIndexOutOfBoundsException e) {
+			//e.printStackTrace();
+			//return new StringRepresentation("");			
+		//}
 	}
 	
 	@Get("xml")
@@ -227,16 +267,16 @@ public class ServoPublisherResource extends BaseResource {
 		Form form = new Form(entity);
 		
 		//double position = Double.parseDouble(form.getFirstValue("position"));
-		if (servo == null)
-			servo = new Servo(Double.parseDouble(form.getFirstValue("position")));
-		if (servo != null)
-			servo.setPositionPost(Double.parseDouble(form.getFirstValue("position")));
-		System.out.println("posPost= " + servo.getPositionPost());
-		((PublisherTest)getApplication()).getServos().add(servo);
-		setStatus(Status.REDIRECTION_PERMANENT);
-		setLocationRef("/");
-		
 		try {
+			if (servo == null)
+				servo = new Servo(Double.parseDouble(form.getFirstValue("position")));
+			if (servo != null)
+				servo.setPositionPost(Double.parseDouble(form.getFirstValue("position")));
+			System.out.println("posPost= " + servo.getPositionPost());
+			((PublisherTest)getApplication()).getServos().add(servo);
+			setStatus(Status.REDIRECTION_PERMANENT);
+			setLocationRef("/");
+			
 			List<NameValuePair> params = new Vector<NameValuePair>();
 			params.add(new BasicNameValuePair("hub.mode", "publish"));
 			params.add(new BasicNameValuePair("hub.url", "http://127.0.0.1:8315/?output=json"));
