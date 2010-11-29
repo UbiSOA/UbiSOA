@@ -46,8 +46,9 @@ import org.restlet.routing.Router;
  */
 public class PublisherTest extends Application {
 	
-	private final List<Servo> servos = new Vector<Servo>();
+	private final List<Integer> posts = new Vector<Integer>();
 	private HttpClient client = Defaults.getHttpClient();
+	private final Servo motor = new Servo(); 
 	
 	public static void main(String[] args) throws Exception {
 		Component component = new Component();
@@ -68,12 +69,16 @@ public class PublisherTest extends Application {
 		return router;
 	}
 	
-	public List<Servo> getServos() {
+	public List<Integer> getPosts() {
 		//System.out.println(servos.toString());
-		return servos;
+		return posts;
 	}
 	
 	public HttpClient getClient() {
 		return client;
+	}
+	
+	public Servo getServo() {
+		return motor;
 	}
 }

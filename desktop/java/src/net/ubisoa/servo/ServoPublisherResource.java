@@ -75,8 +75,8 @@ import org.w3c.dom.Element;
  */
 public class ServoPublisherResource extends BaseResource {
 
-	Servo servo = null;
-	List<Servo> servos = ((PublisherTest)getApplication()).getServos();
+	Servo servo = ((PublisherTest)getApplication()).getServo();
+	List<Integer> posts = ((PublisherTest)getApplication()).getPosts();
 	HttpClient client = ((PublisherTest)getApplication()).getClient();
 	double valor = 0;
 	long redondeo = 0;
@@ -86,60 +86,37 @@ public class ServoPublisherResource extends BaseResource {
 		
 		try
 		{
-			if (servos != null) {
-				System.out.println("primer if");
-				System.out.println("tamaño: " + servos.size());
-				if (servos.size() != 0) {
-					valor = ((Servo)servos.get(servos.size())).getPositionPost();
-					//valor = (servos.get(1)).getPositionPost();
-					redondeo = Math.round(((Math.PI*valor)/180));
-				}
+			if (posts != null) {
+				valor = posts.get(posts.size() - 1);
+				//redondeo = Math.round(((Math.PI*valor)/180));
+				redondeo = (long)((Math.PI*valor)/180);
 			}
 		}
 		catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
-			//return new StringRepresentation("");			
 		}
-			String html = "<form class=\"column\" name=\"fservo\" method=\"POST\">" +
-				"<h2>Post Servo</h2>" +
-				"<img id=\"servo\" name=\"servo\" src=\"/img/gear1_w.gif\" height=\"50\" width=\"50\" />" +
-				"<input type=\"range\" name=\"position\" id=\"position\" min=\"0\" max=\"180\" value=\"" + String.valueOf(valor) + "\" required />" +
-				"</form>" +
-				"<div class=\"column\"><h2>Published Servos</h2><ul>";
-				//"<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" + (int)redondeo +"&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Primer ejemplo con Google Chart API\" />";
-			if (servos != null) {
-				//if (servos.size() != 0) {
-				//System.out.println("size en dos: " + servos.size());
-				html += "<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" +(int)redondeo +"&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Ubisoa Servo\" />"; 
-				//String aux = "<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" +(int)redondeo +"&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Ubisoa Servo\" />"; 
-				for (Servo serv : servos) {
-				//int j = servos.size();
-				//System.out.println("valor pa el for: " + j);
-				//for (int i = j; i > 0; i--) {
-					//html += "<li><strong>" + servos.get(i).getDeviceName() + "</strong>. " +
-					//"<label>Position= " + servos.get(i).getPositionPost() + "</label>";
-					html += "<li><strong>" + serv.getDeviceName() + "</strong>. " +
-					"<label>Position= " + serv.getPositionPost() + "</label>";
-					//"<img scr=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" + rendondeo + "&cht=p3&chco=dd0000,dd0000,ffffff\" />";
-					//"\"http://chart.apis.google.com/chart?chs=150x100&chd=t:1,1&chp=" +
-					//rendondeo + "&cht=p3\" />";
-					//"<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,1&chp=" +(int)redondeo +"&cht=p3&chco=dd0000,dd0000,ffffff\" alt=\"Primer ejemplo con Google Chart API\" />";
-				//}
-				}
-			}
-			if (servos == null)
-				html += "<li>No servo posted</li>";
-			html += "</ul></div>";
-				
-			HTMLTemplate template = new HTMLTemplate("Publisher Test for Servo", html);
-			template.setSubtitle("This is a test for the push protocol.");
-			template.getScripts().add("/js/servo.js");
-			return new StringRepresentation(template.getHTML(), MediaType.TEXT_HTML);
-		//}
-		//catch (ArrayIndexOutOfBoundsException e) {
-			//e.printStackTrace();
-			//return new StringRepresentation("");			
-		//}
+		String html = "<form class=\"column\" name=\"fservo\" method=\"POST\">" +
+			"<h2>Post Servo</h2>" +
+			"<img id=\"servo\" name=\"servo\" src=\"/img/gear1_w.gif\" height=\"50\" width=\"50\" />" +
+			"<input type=\"range\" name=\"position\" id=\"position\" min=\"0\" max=\"180\" value=\"" + String.valueOf(valor) + "\" required />" +
+			"</form>" +
+			"<div class=\"column\"><h2>Published Servos - Position</h2><ul>";
+		if (posts != null) {
+			html += "<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,100&chp=" +
+			(int)redondeo + "&cht=p3&chco=dd0000,dd0000,ffffff&chl=Actual%20" +
+			String.valueOf(valor) + "\" alt=\"Ubisoa Servo\" />"; 
+			int j = posts.size();
+			for (int i = j - 1; i >= 0; i--)
+				html += "<li><strong>" + posts.get(i) + "</strong>. ";
+		}
+		if (posts == null)
+			html += "<li>No servo posted</li>";
+		html += "</ul></div>";
+			
+		HTMLTemplate template = new HTMLTemplate("Publisher Test for Servo", html);
+		template.setSubtitle("This is a test for the push protocol.");
+		template.getScripts().add("/js/servo.js");
+		return new StringRepresentation(template.getHTML(), MediaType.TEXT_HTML);
 	}
 	
 	@Get("xml")
@@ -155,51 +132,44 @@ public class ServoPublisherResource extends BaseResource {
 				child = d.createElement("servo");
 				
 				subChild = d.createElement("deviceClass");
-				//subChild.appendChild(d.createTextNode("X"));
 				subChild.appendChild(d.createTextNode(String.valueOf(servo.getDeviceClass())));
 				child.appendChild(subChild);
 				
 				subChild = d.createElement("deviceID");
-				//subChild.appendChild(d.createTextNode("X"));
 				subChild.appendChild(d.createTextNode(String.valueOf(servo.getDeviceID())));
 				child.appendChild(subChild);
 				
 				subChild = d.createElement("deviceLabel");
-				//subChild.appendChild(d.createTextNode("X"));
 				subChild.appendChild(d.createTextNode(servo.getDeviceLabel()));
 				child.appendChild(subChild);
 				
 				subChild = d.createElement("deviceName");
-				//subChild.appendChild(d.createTextNode("X"));
 				subChild.appendChild(d.createTextNode(servo.getDeviceName()));
 				child.appendChild(subChild);
 				
 				subChild = d.createElement("deviceType");
-				//subChild.appendChild(d.createTextNode("X"));
 				subChild.appendChild(d.createTextNode(servo.getDeviceType()));
 				child.appendChild(subChild);
 				
 				subChild = d.createElement("deviceVersion");
-				//subChild.appendChild(d.createTextNode("X"));
 				subChild.appendChild(d.createTextNode(String.valueOf(servo.getDeviceVersion())));
 				child.appendChild(subChild);
 				
 				subChild = d.createElement("motorCount");
-				//subChild.appendChild(d.createTextNode("X"));
 				subChild.appendChild(d.createTextNode(String.valueOf(servo.getMotorCount())));
 				child.appendChild(subChild);
 				
-				/*subChild = d.createElement("position");
-				subChild.appendChild(d.createTextNode(String.valueOf(servo.getPosition(servo.getDeviceID()))));
+				subChild = d.createElement("position");
+				subChild.appendChild(d.createTextNode(String.valueOf(servo.getPositionPost())));
 				child.appendChild(subChild);
 				
-				subChild = d.createElement("positionMax");
+				/*subChild = d.createElement("positionMax");
 				subChild.appendChild(d.createTextNode(String.valueOf(servo.getPositionMax(servo.getDeviceID()))));
 				child.appendChild(subChild);
 				
 				subChild = d.createElement("positionMin");
 				subChild.appendChild(d.createTextNode(String.valueOf(servo.getPositionMin(servo.getDeviceID()))));
-				child.appendChild(subChild);*/
+				child.appendChild(subChild);
 				
 				/*subChild = d.createElement("serialNumber");
 				//subChild.appendChild(d.createTextNode("X"));
@@ -225,17 +195,11 @@ public class ServoPublisherResource extends BaseResource {
 	@Get("atom")
 	public Representation itemsAtom() {
 		Feed feed = new Feed();
-		for (Servo servo : servos) {
-			Entry entry = new Entry();
-			entry.setId("urn:uuid:" + UUID.randomUUID());
-			entry.setTitle(new Text(servo.getDeviceName()));
-			entry.setTitle(new Text(String.valueOf(servo.getPositionPost())));
-			//Content content = new Content();
-			//content.setInlineContent(new Representation(
-				//String.valueOf(servo.getDeviceClass()), MediaType.TEXT_PLAIN));
-			//entry.setContent(content);
-			feed.getEntries().add(entry);
-		}
+		Entry entry = new Entry();
+		entry.setId("urn:uuid:" + UUID.randomUUID());
+		entry.setTitle(new Text(servo.getDeviceName()));
+		entry.setTitle(new Text(String.valueOf(servo.getPositionPost())));
+		feed.getEntries().add(entry);
 		AtomConverter atomConverter = new AtomConverter();
 		return atomConverter.toRepresentation(feed,
 			new Variant(MediaType.APPLICATION_ATOM), this);
@@ -246,12 +210,10 @@ public class ServoPublisherResource extends BaseResource {
 		try {
 			JSONObject json = new JSONObject();
 			JSONArray itemsArray = new JSONArray();
-			for (Servo servo : servos) {
-				JSONObject obj = new JSONObject();
-				obj.put("name", servo.getDeviceName());
-				obj.put("position", servo.getPositionPost());
-				itemsArray.put(obj);
-			}
+			JSONObject obj = new JSONObject();
+			obj.put("name", servo.getDeviceName());
+			obj.put("position", servo.getPositionPost());
+			itemsArray.put(obj);
 			json.put("servos", itemsArray);
 			return new JsonRepresentation(json);
 		} catch (JSONException e) {
@@ -266,14 +228,14 @@ public class ServoPublisherResource extends BaseResource {
 		
 		Form form = new Form(entity);
 		
-		//double position = Double.parseDouble(form.getFirstValue("position"));
 		try {
-			if (servo == null)
-				servo = new Servo(Double.parseDouble(form.getFirstValue("position")));
-			if (servo != null)
-				servo.setPositionPost(Double.parseDouble(form.getFirstValue("position")));
-			System.out.println("posPost= " + servo.getPositionPost());
-			((PublisherTest)getApplication()).getServos().add(servo);
+			String t = form.getFirstValue("position");
+			if (t == "null")
+				t = "0";
+			servo.position(Double.parseDouble(t));
+			if (((PublisherTest)getApplication()).getPosts().size() > 10)
+				((PublisherTest)getApplication()).getPosts().remove(0);
+			((PublisherTest)getApplication()).getPosts().add((int)servo.getPositionPost());
 			setStatus(Status.REDIRECTION_PERMANENT);
 			setLocationRef("/");
 			
@@ -281,7 +243,7 @@ public class ServoPublisherResource extends BaseResource {
 			params.add(new BasicNameValuePair("hub.mode", "publish"));
 			params.add(new BasicNameValuePair("hub.url", "http://127.0.0.1:8315/?output=json"));
 			UrlEncodedFormEntity paramsEntity = new UrlEncodedFormEntity(params, "UTF-8");
-			HttpPost post = new HttpPost("http://localhost:8315/");
+			HttpPost post = new HttpPost("http://localhost:8310/");
 			post.setEntity(paramsEntity);
 			Defaults.getHttpClient().execute(post);
 			getLogger().info("The Hubbub ping was sent successfully.");
