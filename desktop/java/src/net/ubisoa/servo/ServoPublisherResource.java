@@ -103,7 +103,7 @@ public class ServoPublisherResource extends BaseResource {
 			"<div class=\"column\"><h2>Published Servos - Position</h2><ul>";
 		if (posts != null) {
 			html += "<img src=\"http://chart.apis.google.com/chart?chs=350x150&chd=t:1,100&chp=" +
-			(int)redondeo + "&cht=p3&chco=dd0000,dd0000,ffffff&chl=Actual%20" +
+			(int)redondeo + "&cht=p3&chco=dd0000,dd0000,ffffff&chl=" +
 			String.valueOf(valor) + "\" alt=\"Ubisoa Servo\" />"; 
 			int j = posts.size();
 			for (int i = j - 1; i >= 0; i--)
@@ -233,7 +233,7 @@ public class ServoPublisherResource extends BaseResource {
 			if (t == "null")
 				t = "0";
 			servo.position(Double.parseDouble(t));
-			if (((PublisherTest)getApplication()).getPosts().size() > 10)
+			if (((PublisherTest)getApplication()).getPosts().size() >= 8)
 				((PublisherTest)getApplication()).getPosts().remove(0);
 			((PublisherTest)getApplication()).getPosts().add((int)servo.getPositionPost());
 			setStatus(Status.REDIRECTION_PERMANENT);
