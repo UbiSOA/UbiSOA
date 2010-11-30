@@ -36,7 +36,9 @@ import java.util.Vector;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import net.ubisoa.argenerator.PublisherTestAR;
 import net.ubisoa.common.BaseResource;
+import net.ubisoa.common.HTMLTemplate;
 import net.ubisoa.core.Defaults;
 import net.ubisoa.push.test.Item;
 
@@ -72,42 +74,78 @@ import org.w3c.dom.Element;
  * @author I. Cruz <icruz@ubisoa.net>
  */
 public class ResourceRFIDTwitter extends BaseResource {
-	String rfid = "1010101111";
+	String rfid = "0011";
 	String user = "";
+	Statement stat = null;
+	Connection conn = null;
 	
-	@Get("twitter")
-	public StringRepresentation idTwitter() throws ClassNotFoundException, SQLException {
-		
+	private void init() throws ClassNotFoundException, SQLException{
 		Class.forName("org.sqlite.JDBC");
-	    Connection conn =
-	      DriverManager.getConnection("jdbc:sqlite:test.db");
-	    Statement stat = conn.createStatement();
+	    conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+	    stat = conn.createStatement();
 	    stat.executeUpdate("drop table if exists tweet;");
 	    stat.executeUpdate("create table tweet (rfid, user_twitter);");
 	    PreparedStatement prep = conn.prepareStatement(
 	      "insert into tweet values (?, ?);");
-
-	    prep.setString(1, "1010101010");
+	    prep.setString(1, "0011");
+	    prep.setString(2, "@joa");
+	    prep.addBatch();
+	    prep.setString(1, "0012");
 	    prep.setString(2, "@ignacio");
 	    prep.addBatch();
-	    prep.setString(1, "1010101011");
+	    prep.setString(1, "0013");
 	    prep.setString(2, "@jose");
 	    prep.addBatch();
-	    prep.setString(1, "1010101111");
+	    prep.setString(1, "0014");
 	    prep.setString(2, "@juan");
 	    prep.addBatch();
 
 	    conn.setAutoCommit(false);
 	    prep.executeBatch();
 	    conn.setAutoCommit(true);
-	    
+	}
+	
+	@Get("html")
+	public StringRepresentation temperatures() throws Exception {
+		String all = "";
+		String html = "<form class=\"column\" method=\"POST\">" +
+			"<h2>Search user</h2>" +
+			"<input type=\"input\" id=\"rfid\" name=\"rfid\" />"+
+			"<input type=\"submit\" value=\" Ok\" /></form>" +
+			"<div class=\"column\"><ul>";
+		
+		init();
+		
+	    user = ((PublisherTestRFID)getApplication()).getUser();
+	    ResultSet rs = stat.executeQuery("select * from tweet;");
+	   
+	    while (rs.next()) {
+	    	all += "<li><strong>" + rs.getString("rfid") + "</strong>. " +
+	    	rs.getString("user_twitter") + "</li>";
+	    }
+	    rs.close();
+	    conn .close();
+		
+		html += "<div id='hist'><h2><a href=\"#\">Result</a></h2></div> <div>"+ user +"</div>"+
+				"<div id='all'><h2><a href=\"#\">All items</a></h2></div> <div>" + all +"</ul></div>" ;
+		HTMLTemplate template = new HTMLTemplate("Publisher Twitter's Users Resource", html);
+		template.getScripts().add("js/rfidsearch.js");
+		template.setSubtitle("This use the Resource RFID for Twitter's users.");
+		return new StringRepresentation(template.getHTML(), MediaType.TEXT_HTML);
+	}
+	
+	
+	@Get("twitter")
+	public StringRepresentation idTwitter() throws ClassNotFoundException, SQLException {
+		init();
+		    
 	    ResultSet rs = stat.executeQuery("select * from tweet where rfid='"+ rfid +"';");
 	   
 	    while (rs.next()) {
 	    	user = rs.getString("user_twitter");
 	    }
 	    rs.close();
-	    conn.close();
+	    conn .close();
 	    if (user.equals("")) {
 			setStatus(Status.CLIENT_ERROR_NOT_FOUND);
 			return null;
@@ -184,21 +222,21 @@ public class ResourceRFIDTwitter extends BaseResource {
 	}
 	
 	@Post("form")
-	public void acceptIdTwitter(Representation entity) {
+	public void acceptIdTwitter(Representation entity) throws ClassNotFoundException, SQLException {
 		Form form = new Form(entity);
 		rfid = form.getFirstValue("rfid");
-		//grados = Integer.parseInt(grd);
-		//String content = form.getFirstValue("content");
-		//Item item = new Item(title, content);
-		//List<Item> items = ((PublisherTest)getApplication()).getItems();
-		//items.add(item);
+		StringRepresentation exist = idTwitter();
+		if(exist == null){
+			user = "No item.";
+		}
+		((PublisherTestRFID)getApplication()).setUser(user);
 		setStatus(Status.REDIRECTION_PERMANENT);
 		setLocationRef("/");
 		
 		try {
 			List<NameValuePair> params = new Vector<NameValuePair>();
 			params.add(new BasicNameValuePair("hub.mode", "publish"));
-			params.add(new BasicNameValuePair("hub.url", "http://localhost:8311/?output=png"));
+			params.add(new BasicNameValuePair("hub.url", "http://localhost:8318/?output=html"));
 			UrlEncodedFormEntity paramsEntity = new UrlEncodedFormEntity(params, "UTF-8");
 			HttpPost post = new HttpPost("http://localhost:8310/");
 			post.setEntity(paramsEntity);

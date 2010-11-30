@@ -34,7 +34,6 @@ import java.util.Vector;
 import net.ubisoa.common.BaseRouter;
 import net.ubisoa.core.Defaults;
 import net.ubisoa.push.test.SubscriberResource;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -52,7 +51,7 @@ import org.restlet.Context;
  * {@link RuntimeException} will be thrown when running the constructor.</p>
  * 
  * <p><strong>Example:</strong> Creating a push router for a Restful application where
- * the main resource is handled by the {@link SubscriberResource} class.</p>
+ * the main resource is handled by the {@link SubscriberResourceAR} class.</p>
  * <listing>public Restlet createInboundRoot() {
  *	return new PushRouter(getContext(), SubscriberResource.class);<br />}</listing>
  * 
