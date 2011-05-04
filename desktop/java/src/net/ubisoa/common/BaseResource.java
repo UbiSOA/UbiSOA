@@ -78,6 +78,8 @@ public class BaseResource extends ServerResource {
 				accept.add(new Preference<MediaType>(MediaType.APPLICATION_ATOM));
 			else if (outputChoice.compareTo("json") == 0)
 				accept.add(new Preference<MediaType>(MediaType.APPLICATION_JSON));
+			else if (outputChoice.compareTo("png") == 0)
+				accept.add(new Preference<MediaType>(MediaType.IMAGE_PNG));
 			else setStatus(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
 		} else accept.add(new Preference<MediaType>(MediaType.TEXT_HTML));
 		

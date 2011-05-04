@@ -34,7 +34,6 @@ import java.util.Vector;
 import net.ubisoa.common.BaseRouter;
 import net.ubisoa.core.Defaults;
 import net.ubisoa.push.test.SubscriberResource;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
