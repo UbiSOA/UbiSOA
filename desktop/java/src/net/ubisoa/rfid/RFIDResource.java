@@ -37,7 +37,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import net.ubisoa.common.BaseResource;
 import net.ubisoa.common.HTMLTemplate;
-//import net.ubisoa.push.test.*;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -67,24 +66,9 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-///
 
-import com.phidgets.Phidget;
 import com.phidgets.PhidgetException;
 import com.phidgets.RFIDPhidget;
-import com.phidgets.event.AttachEvent;
-import com.phidgets.event.AttachListener;
-import com.phidgets.event.DetachEvent;
-import com.phidgets.event.DetachListener;
-import com.phidgets.event.ErrorEvent;
-import com.phidgets.event.ErrorListener;
-import com.phidgets.event.OutputChangeEvent;
-import com.phidgets.event.OutputChangeListener;
-import com.phidgets.event.TagGainEvent;
-import com.phidgets.event.TagGainListener;
-import com.phidgets.event.TagLossEvent;
-import com.phidgets.event.TagLossListener;
-///
 
 /**
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>

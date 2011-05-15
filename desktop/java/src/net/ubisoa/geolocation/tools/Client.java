@@ -71,12 +71,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 
-import org.restlet.data.Form;
-import org.restlet.data.Method;
-import org.restlet.data.Protocol;
-import org.restlet.data.Request;
-import org.restlet.data.Response;
-
 import net.ubisoa.geolocation.data.Location;
 
 import com.apple.dnssd.BrowseListener;
@@ -86,7 +80,6 @@ import com.apple.dnssd.DNSSDService;
 import com.apple.dnssd.ResolveListener;
 import com.apple.dnssd.TXTRecord;
 
-@SuppressWarnings("restriction")
 public class Client extends JFrame implements ActionListener, AdjustmentListener, MouseListener,
 	MouseMotionListener, BrowseListener, ResolveListener {
 	private static final long serialVersionUID = 1343780925922938227L;
@@ -99,7 +92,7 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 	private int mode = MODE_NO_SERVICE;
 	private Point lastMouseDragPoint;
 	private boolean beingDragged, busy;
-	private WiFiSpotter spotter = new WiFiSpotter(true);
+//	private WiFiSpotter spotter = new WiFiSpotter(true);
 	private HashMap<String, String> serviceHostNames = new HashMap<String, String>();
 	private HashMap<String, Integer> servicePorts = new HashMap<String, Integer>();
 	private JMenu servicesMenu;
@@ -271,7 +264,7 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 			rbMenuItem = new JRadioButtonMenuItem(key);
 			if (first) {
 				rbMenuItem.setSelected(true);
-				selectedService = key;
+				setSelectedService(key);
 				stumbling();
 				first = !first;
 			}
@@ -282,6 +275,7 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private Location xyToNorm(Point point) {
 		return new Location(point.x / (map.getSize().getWidth() - 1.0),
 				point.y / (map.getSize().getHeight() - 1.0));
@@ -378,38 +372,38 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 		map.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		busy = true;
 		
-		Location location = map.normToLatLong(xyToNorm(e.getPoint()));
+//		Location location = map.normToLatLong(xyToNorm(e.getPoint()));
 		
-		Request request = new Request();
-		request.setResourceRef("http://" + serviceHostNames.get(selectedService) + ":" +
-				servicePorts.get(selectedService));
-		request.setMethod(Method.POST);
-		
-		String os = System.getProperty("os.name");
-		String osWords[] = os.split(" ");
-		String platform = osWords[0];
-		
-		Form form = new Form();
-		form.add("signalData", spotter.getSignalData());
-		form.add("latitude", location.getLatitude() + "");
-		form.add("longitude", location.getLongitude() + "");
-		form.add("platform", platform);
-		request.setEntity(form.getWebRepresentation());
-		
-		org.restlet.Client client = new org.restlet.Client(Protocol.HTTP);
-		Response response = client.handle(request);
-		
-		if (response.getStatus().isSuccess()) {
-			try {
-				response.getEntity().write(System.out);
-			} catch (IOException err) {
-				err.printStackTrace();
-			}
-			System.out.println("\nLocation successfuly stumbled.");
-		} else {
-			System.out.println("Failure!");
-			System.out.println(response.getStatus().getDescription());
-		}
+//		Request request = new Request();
+//		request.setResourceRef("http://" + serviceHostNames.get(selectedService) + ":" +
+//				servicePorts.get(selectedService));
+//		request.setMethod(Method.POST);
+//		
+//		String os = System.getProperty("os.name");
+//		String osWords[] = os.split(" ");
+//		String platform = osWords[0];
+//		
+//		Form form = new Form();
+//		form.add("signalData", spotter.getSignalData());
+//		form.add("latitude", location.getLatitude() + "");
+//		form.add("longitude", location.getLongitude() + "");
+//		form.add("platform", platform);
+//		request.setEntity(form.getWebRepresentation());
+//		
+//		org.restlet.Client client = new org.restlet.Client(Protocol.HTTP);
+//		Response response = client.handle(request);
+//		
+//		if (response.getStatus().isSuccess()) {
+//			try {
+//				response.getEntity().write(System.out);
+//			} catch (IOException err) {
+//				err.printStackTrace();
+//			}
+//			System.out.println("\nLocation successfuly stumbled.");
+//		} else {
+//			System.out.println("Failure!");
+//			System.out.println(response.getStatus().getDescription());
+//		}
 		
 		map.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		busy = false;
@@ -459,6 +453,14 @@ public class Client extends JFrame implements ActionListener, AdjustmentListener
 		}
 	}
 	
+	public void setSelectedService(String selectedService) {
+		this.selectedService = selectedService;
+	}
+
+	public String getSelectedService() {
+		return selectedService;
+	}
+
 	private class CoordsDialog extends JDialog {
 		private static final long serialVersionUID = -369094238050302571L;
 		private JFormattedTextField tfNELat, tfNELon, tfSELat, tfSELon, tfSWLat, tfSWLon,

@@ -24,7 +24,7 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.ubisoa.rfid;
+package net.ubisoa.argenerator;
 
 import java.util.List;
 import java.util.Vector;
@@ -41,33 +41,28 @@ import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 
 /**
- * @author Edgardo Avilés-López <edgardo@ubisoa.net>
+ * @author E. Avilés <edgardo@ubisoa.net>
  */
-public class RFIDPublisher extends Application {
+public class PublisherTestAR extends Application {
+	
 	private final List<Item> items = new Vector<Item>();
 	private HttpClient client = Defaults.getHttpClient();
-	RFIDReader rfid2 = new RFIDReader();
-	
 
 	public static void main(String[] args) throws Exception {
-		
-		//RFID.main(null);
 		Component component = new Component();
-		Server server = new Server(Protocol.HTTP, 8411);
+		Server server = new Server(Protocol.HTTP, 8311);
 		component.getServers().add(server);
-		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
-		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);
-		component.getDefaultHost().attach(new RFIDPublisher());
+		server.getContext().getParameters().set("maxTotalConnections",
+			Defaults.MAX_CONNECTIONS + "");
+		server.getContext().getParameters().set("maxThreads", Defaults.MAX_CONNECTIONS + "");
+		component.getDefaultHost().attach(new PublisherTestAR());
 		component.start();
-		RFIDReader.main(null);
-		
-	
 	}
 
 	@Override
 	public Restlet createInboundRoot() {
 		Router router = new BaseRouter(getContext());
-		router.attach("/", RFIDResource.class);
+		router.attach("/", ResourceARGenerator.class);		
 		return router;
 	}
 	
@@ -78,4 +73,5 @@ public class RFIDPublisher extends Application {
 	public HttpClient getClient() {
 		return client;
 	}
+	
 }

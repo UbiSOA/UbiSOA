@@ -44,7 +44,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import net.ubisoa.common.BaseResource;
 import net.ubisoa.common.HTMLTemplate;
 import net.ubisoa.core.Defaults;
-import net.ubisoa.push.test.Item;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;

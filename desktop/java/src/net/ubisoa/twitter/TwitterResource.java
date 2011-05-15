@@ -28,7 +28,6 @@ package net.ubisoa.twitter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
@@ -70,12 +69,10 @@ import org.w3c.dom.Element;
 
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.http.AccessToken;
+import twitter4j.auth.AccessToken;
 
 import com.phidgets.PhidgetException;
 import com.phidgets.RFIDPhidget;
-
-import net.unto.twitter.Api;
 
 /**
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>

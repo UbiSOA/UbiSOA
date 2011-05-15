@@ -26,9 +26,14 @@
  */
 package net.ubisoa.rfidtwitter;
 
-import java.sql.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
@@ -36,19 +41,15 @@ import java.util.Vector;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import net.ubisoa.argenerator.PublisherTestAR;
 import net.ubisoa.common.BaseResource;
 import net.ubisoa.common.HTMLTemplate;
 import net.ubisoa.core.Defaults;
-import net.ubisoa.push.test.Item;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

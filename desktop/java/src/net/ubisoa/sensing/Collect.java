@@ -32,7 +32,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import net.tinyos.message.*;
+import net.tinyos.message.Message;
+import net.tinyos.message.MessageListener;
+import net.tinyos.message.MoteIF;
 import net.tinyos.packet.BuildSource;
 import net.tinyos.util.PrintStreamMessenger;
 
@@ -89,6 +91,7 @@ public class Collect implements MessageListener {
 			res = true;
 		}
 		catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return res;
 	}
@@ -110,9 +113,8 @@ public class Collect implements MessageListener {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		if (args.length > 2)
-			if (args[0].compareTo("-comm") != 0) usage();
-		else usage();
+		if (args.length < 2) { usage(); return; }
+		else if (args[0].compareTo("-comm") != 0) usage();
 		
 		Collect collect = new Collect(args[1]);
 		collect.addMsgType(new SensingMessage());

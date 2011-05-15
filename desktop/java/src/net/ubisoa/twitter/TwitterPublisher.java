@@ -31,7 +31,6 @@ import java.util.Vector;
 
 import net.ubisoa.common.BaseRouter;
 import net.ubisoa.core.Defaults;
-import net.ubisoa.push.test.*;
 
 import org.apache.http.client.HttpClient;
 import org.restlet.Application;

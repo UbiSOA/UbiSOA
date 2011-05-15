@@ -24,13 +24,14 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.ubisoa.push.test;
+package net.ubisoa.rfidtwitter;
 
 import java.util.List;
 import java.util.Vector;
 
 import net.ubisoa.common.BaseRouter;
 import net.ubisoa.core.Defaults;
+import net.ubisoa.twitter.Item;
 
 import org.apache.http.client.HttpClient;
 import org.restlet.Application;
@@ -43,7 +44,7 @@ import org.restlet.routing.Router;
 /**
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
-public class PublisherTest extends Application {
+public class PublisherTestRFID extends Application {
 	private final List<Item> items = new Vector<Item>();
 	private HttpClient client = Defaults.getHttpClient();
 
@@ -53,14 +54,14 @@ public class PublisherTest extends Application {
 		component.getServers().add(server);
 		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
 		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);
-		component.getDefaultHost().attach(new PublisherTest());
+		component.getDefaultHost().attach(new PublisherTestRFID());
 		component.start();
 	}
 
 	@Override
 	public Restlet createInboundRoot() {
 		Router router = new BaseRouter(getContext());
-		router.attach("/", PublisherResource.class);
+		router.attach("/", ResourceRFIDTwitter.class);
 		return router;
 	}
 	
@@ -70,5 +71,15 @@ public class PublisherTest extends Application {
 	
 	public HttpClient getClient() {
 		return client;
+	}
+	
+	private String user;
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getUser() {
+		return user;
 	}
 }

@@ -1,30 +1,16 @@
 package net.ubisoa.twitter;
 
 import java.io.BufferedReader;
-
 import java.io.DataOutputStream;
-
 import java.io.IOException;
-
 import java.io.InputStreamReader;
-
 import java.io.UnsupportedEncodingException;
-
 import java.net.MalformedURLException;
-
 import java.net.URL;
-
 import java.net.URLConnection;
-
 import java.net.URLEncoder;
-
-import java.util.HashMap;
-
 import java.util.logging.Level;
-
 import java.util.logging.Logger;
-
-// http://commons.apache.org/codec/
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -74,9 +60,9 @@ public class Twitter {
 
     /**
 057
-     * Se encarga de la conexión con Twitter.
+     * Se encarga de la conexiï¿½n con Twitter.
 058
-     * Necesita tener precargada los datos de autentificación (constructor), la url y los parámetros
+     * Necesita tener precargada los datos de autentificaciï¿½n (constructor), la url y los parï¿½metros
 059
      */
 
@@ -86,7 +72,7 @@ public class Twitter {
 
         try {
 
-            // Creamos una conexión
+            // Creamos una conexiï¿½n
 
             URLConnection conn;
 
@@ -96,29 +82,29 @@ public class Twitter {
 
             conn.setDoOutput(true);
 
-            // Configuramos la autentificación (sencilla basada en HTTP)
+            // Configuramos la autentificaciï¿½n (sencilla basada en HTTP)
 
             conn.setRequestProperty("Authorization", "Basic " + getBasicCredentials());
 
  
 
-            // Preparamos la conexión con el servidor (vamos a mandar un formulario por post)
+            // Preparamos la conexiï¿½n con el servidor (vamos a mandar un formulario por post)
 
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-            // Abrimos el canal de comunicación de envío
+            // Abrimos el canal de comunicaciï¿½n de envï¿½o
 
             DataOutputStream out = new DataOutputStream(conn.getOutputStream());
 
-            // Mandamos los parámetros de la acción que (los ha tenido que precargar el método correspondiente)
+            // Mandamos los parï¿½metros de la acciï¿½n que (los ha tenido que precargar el mï¿½todo correspondiente)
 
             out.writeBytes(parametros.toString());
 
-            // Nos aseguramos de que todo se envíe
+            // Nos aseguramos de que todo se envï¿½e
 
             out.flush();
 
-            // Ya hemos dicho lo que teníamos que decir, así que cerramos la conexión de envio
+            // Ya hemos dicho lo que tenï¿½amos que decir, asï¿½ que cerramos la conexiï¿½n de envio
 
             out.close();
 

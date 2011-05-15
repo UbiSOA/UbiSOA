@@ -1,37 +1,11 @@
 package net.ubisoa.rfid;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.List;
-import java.util.Vector;
-
-import net.ubisoa.common.BaseResource;
-import org.apache.commons.*;
-import org.apache.commons.httpclient.methods.PostMethod;
-
-import net.ubisoa.push.test.*;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.restlet.data.Status;
-import org.springframework.http.*;
 
 import com.phidgets.Phidget;
 import com.phidgets.PhidgetException;
@@ -48,9 +22,6 @@ import com.phidgets.event.TagGainEvent;
 import com.phidgets.event.TagGainListener;
 import com.phidgets.event.TagLossEvent;
 import com.phidgets.event.TagLossListener;
-
-import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.methods.*;
 
 
 public class RFIDReader
@@ -110,10 +81,9 @@ public class RFIDReader
 			        // Get the response
 			        
 			        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			        String line;
 			        int i=0;
 			        
-			        while ((line = rd.readLine()) != null) {
+			        while ((rd.readLine()) != null) {
 			            // Process line...
 			        //	System.out.println("linea"+i+""+line);
 			        	i++;
@@ -159,9 +129,5 @@ public class RFIDReader
 		rfid.close();
 		rfid = null;
 		System.out.println(" ok");
-		if (false) {
-			System.out.println("wait for finalization...");
-			System.gc();
-		}
 	}
 }
