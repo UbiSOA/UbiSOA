@@ -49,16 +49,16 @@ import org.restlet.resource.ServerResource;
 public final class Defaults {
 	
 	/** The default content of the <code>Server</code> response header. */
-	public static final String AGENT = "UbiSOA-Framework/1.0.1";
+	public static final String AGENT = "UbiSOA-Framework/1.1.0";
 	
 	/** Wherever to use local files or the ones at <code>http://api.ubisoa.net/</code>. */
 	public static final Boolean USE_LOCAL_FILES = false;
 	
 	/** Maximum client connections allowed at the same time. */
-	public static final String MAX_CONNECTIONS = "100";
+	public static final String MAX_CONNECTIONS = "1024";
 	
 	/** Maximum processing threads allowed at the same time. */
-	public static final String MAX_THREADS = "20";
+	public static final String MAX_THREADS = "512";
 
 	/**
 	 * Sets the <code>Server</code> response header of the specified {@link ServerResource} instance.

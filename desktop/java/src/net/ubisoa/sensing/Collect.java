@@ -26,17 +26,31 @@
  */
 package net.ubisoa.sensing;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.Vector;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
 
 import net.tinyos.message.Message;
 import net.tinyos.message.MessageListener;
 import net.tinyos.message.MoteIF;
 import net.tinyos.packet.BuildSource;
 import net.tinyos.util.PrintStreamMessenger;
+import net.ubisoa.core.Defaults;
 
 public class Collect implements MessageListener {
 	private MoteIF moteIF;
@@ -87,11 +101,22 @@ public class Collect implements MessageListener {
 			connection.setAutoCommit(false);
 			p.executeBatch();
 			connection.setAutoCommit(true);
+			s.close();
+			p.close();
+			connection.close();
+			connection = null;
 			
 			res = true;
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
+			try {
+				connection.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			} finally {
+				connection = null;
+			}
 		}
 		return res;
 	}
@@ -105,8 +130,40 @@ public class Collect implements MessageListener {
 		boolean res = dbStore(reading);
 		System.out.print(reading.toStringLine() + "\t");
 		System.out.println(res? "[OK]": "[NOT STORED]");
+		pingHub();
 	}
 	
+	private boolean isBusy = false;
+	
+	private void pingHub() {
+		if (isBusy) {
+			System.out.println("Hubbub ping cancelled.");
+			return;
+		}
+		isBusy = true;
+		HttpClient client = Defaults.getHttpClient();
+		try {
+			List<NameValuePair> params = new Vector<NameValuePair>();
+			params.add(new BasicNameValuePair("hub.mode", "publish"));
+			params.add(new BasicNameValuePair("hub.url", "http://127.0.0.1:8340/?output=json"));
+			UrlEncodedFormEntity paramsEntity;
+			paramsEntity = new UrlEncodedFormEntity(params, "UTF-8");
+			HttpPost post = new HttpPost("http://localhost:8310/");
+			post.setEntity(paramsEntity);
+			HttpResponse res = client.execute(post);
+			HttpEntity resEntity = res.getEntity();
+			if (resEntity != null) resEntity.consumeContent();			
+			System.out.println("The Hubbub ping was sent successfully.");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		isBusy = false;
+	}
+
 	private static void usage() {
 		System.err.println("usage: Collect -comm <source>");
 		System.exit(1);

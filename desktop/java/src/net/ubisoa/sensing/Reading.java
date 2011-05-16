@@ -42,6 +42,9 @@ public class Reading {
 		setMessage(message);
 	}
 	
+	public Reading() {
+	}
+
 	public SensingMessage getMessage() {
 		return message;
 	}
@@ -195,6 +198,10 @@ public class Reading {
 		return dateTime;
 	}
 	
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
+	
 	public String toStringLine() {
 		NumberFormat nf = new DecimalFormat("0.00");
 		return dateTime + "\t" + nid + "\t" + platform + "\t" +
@@ -212,12 +219,12 @@ public class Reading {
 			"  Light: " + light + "\n" +
 			"  Temperature: " + nf.format(temperature) + "\n";
 		
-		if (message.get_platform() == 0xA)
+		if (message == null || (message != null && message.get_platform() == 0xA))
 			s += "  Visible Light: " + lightVisible + "\n" +
 				"  Internal Temperature: " + nf.format(temperatureInternal) + "\n" +
 				"  Humidity: " + nf.format(humidity) + "%\n";
 		
-		if (message.get_platform() == 0xB)
+		if (message != null && message.get_platform() == 0xB)
 			s += "  Microphone: " + microphone + "\n";
 		
 		return s;
