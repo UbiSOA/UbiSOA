@@ -26,56 +26,39 @@
  */
 package net.ubisoa.rfid;
 
-import java.util.List;
-import java.util.Vector;
-
-import net.ubisoa.common.BaseRouter;
-import net.ubisoa.core.Defaults;
-
-import org.apache.http.client.HttpClient;
-import org.restlet.Application;
-import org.restlet.Component;
-import org.restlet.Restlet;
-import org.restlet.Server;
-import org.restlet.data.Protocol;
-import org.restlet.routing.Router;
-
 /**
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
-public class RFIDPublisher extends Application {
-	private final List<Item> items = new Vector<Item>();
-	private HttpClient client = Defaults.getHttpClient();
-	RFIDReader rfid2 = new RFIDReader();
-	
+public class RFIDEvent {
+	private String timestamp, id, action;
 
-	public static void main(String[] args) throws Exception {
-		
-		//RFID.main(null);
-		Component component = new Component();
-		Server server = new Server(Protocol.HTTP, 8411);
-		component.getServers().add(server);
-		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
-		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);
-		component.getDefaultHost().attach(new RFIDPublisher());
-		component.start();
-		RFIDReader.main(null);
-		
+	public RFIDEvent(String timestamp, String id, String action) {
+		this.timestamp = timestamp;
+		this.id = id;
+		this.action = action;
+	}
 	
+	public String getTimestamp() {
+		return timestamp;
 	}
 
-	@Override
-	public Restlet createInboundRoot() {
-		Router router = new BaseRouter(getContext());
-		router.attach("/", RFIDResource.class);
-		return router;
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
 	}
-	
-	public List<Item> getItems() {
-		return items;
+
+	public String getId() {
+		return id;
 	}
-	
-	public HttpClient getClient() {
-		return client;
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
 	}
 }

@@ -68,33 +68,32 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.phidgets.PhidgetException;
-import com.phidgets.RFIDPhidget;
 
 /**
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
 public class RFIDResource extends BaseResource {
-	List<Item> items = ((RFIDPublisher)getApplication()).getItems();
-	HttpClient client = ((RFIDPublisher)getApplication()).getClient();
-	///
-	RFIDPhidget rfid;
-	///
+	List<RFIDEvent> events = ((RFIDServer)getApplication()).getEvents();
+	HttpClient client = ((RFIDServer)getApplication()).getClient();
+
 	@Get("html")
-	public StringRepresentation items() {
+	public StringRepresentation events() {
 		String html = "<form class=\"column\" method=\"POST\">" +
 			"<h2>Post New RFID Value</h2>" +
-			"<input type=\"text\" name=\"title\" placeholder=\"Title\" required autofocus />" +
-			"<textarea name=\"content\" placeholder=\"Value\" required></textarea>" +
-			"<input type=\"submit\" value=\"Post RFID\" /></form>" +
-			"<div class=\"column\"><h2>Published Items</h2><ul>";
-		for (Item item : items)
-			html += "<li><strong>" + item.getTitle() + "</strong>. " +
-				item.getContent() + "</li>";
-		if (items.size() == 0) html += "<li>No items</li>";
+			"<input type=\"text\" name=\"timestamp\" placeholder=\"Timestamp\" required autofocus />" +
+			"<input type=\"text\" name=\"id\" placeholder=\"ID\" required />" +
+			"<select name=\"action\" required><option value=\"gained\">Gained</option>" +
+			"<option value=\"lost\">Lost</option></select><br />" +
+			"<input type=\"submit\" value=\"Post Event\" /></form>" +
+			"<div class=\"column\"><h2>RFID Events</h2><ul>";
+		for (RFIDEvent event : events)
+			html += "<li><strong>" + event.getId() + "</strong> @ " +
+				event.getTimestamp() + " (" + event.getAction() + ")</li>";
+		if (events.size() == 0) html += "<li>No events</li>";
 		html += "</ul></div>";
 			
-		HTMLTemplate template = new HTMLTemplate("RFID Publisher", html);
-		template.setSubtitle("This is a test for the push protocol.");
+		HTMLTemplate template = new HTMLTemplate("RFID Server", html);
+		template.setSubtitle("This is an RFID reading events server.");
 		return new StringRepresentation(template.getHTML(), MediaType.TEXT_HTML);
 	}
 	
@@ -103,18 +102,22 @@ public class RFIDResource extends BaseResource {
 		try {
 			Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 			
-			Element root = d.createElement("items"), child, subChild;
+			Element root = d.createElement("events"), child, subChild;
 			d.appendChild(root);
 			
-			for (Item item : items) {
-				child = d.createElement("item");
+			for (RFIDEvent event : events) {
+				child = d.createElement("event");
 				
-				subChild = d.createElement("title");
-				subChild.appendChild(d.createTextNode(item.getTitle()));
+				subChild = d.createElement("timestamp");
+				subChild.appendChild(d.createTextNode(event.getTimestamp()));
 				child.appendChild(subChild);
 				
-				subChild = d.createElement("content");
-				subChild.appendChild(d.createTextNode(item.getContent()));
+				subChild = d.createElement("id");
+				subChild.appendChild(d.createTextNode(event.getId()));
+				child.appendChild(subChild);
+				
+				subChild = d.createElement("action");
+				subChild.appendChild(d.createTextNode(event.getAction()));
 				child.appendChild(subChild);
 				
 				root.appendChild(child);
@@ -131,13 +134,13 @@ public class RFIDResource extends BaseResource {
 	@Get("atom")
 	public Representation itemsAtom() {
 		Feed feed = new Feed();
-		for (Item item : items) {
+		for (RFIDEvent event : events) {
 			Entry entry = new Entry();
 			entry.setId("urn:uuid:" + UUID.randomUUID());
-			entry.setTitle(new Text(item.getTitle()));
+			entry.setTitle(new Text(event.getId()));
 			Content content = new Content();
 			content.setInlineContent(new StringRepresentation(
-				item.getContent(), MediaType.TEXT_PLAIN));
+				event.getAction() + " @ " + event.getTimestamp(), MediaType.TEXT_PLAIN));
 			entry.setContent(content);
 			feed.getEntries().add(entry);
 		}
@@ -152,13 +155,14 @@ public class RFIDResource extends BaseResource {
 		try {
 			JSONObject json = new JSONObject();
 			JSONArray itemsArray = new JSONArray();
-			for (Item item : items) {
+			for (RFIDEvent event : events) {
 				JSONObject obj = new JSONObject();
-				obj.put("title", item.getTitle());
-				obj.put("content", item.getContent());
+				obj.put("timestamp", event.getTimestamp());
+				obj.put("id", event.getId());
+				obj.put("action", event.getAction());
 				itemsArray.put(obj);
 			}
-			json.put("items", itemsArray);
+			json.put("events", itemsArray);
 			String jsonStr = json.toString();
 			if (padding != null)
 				jsonStr = padding + "(" + jsonStr + ")";
@@ -173,18 +177,19 @@ public class RFIDResource extends BaseResource {
 	@Post("form")
 	public void acceptItem(Representation entity) throws PhidgetException, IOException {
 		Form form = new Form(entity);
-		String title = form.getFirstValue("title");
-		String content = form.getFirstValue("content");
-		Item item = new Item(title, content);
+		String timestamp = form.getFirstValue("timestamp");
+		String id = form.getFirstValue("id");
+		String action = form.getFirstValue("action");
+		RFIDEvent event = new RFIDEvent(timestamp, id, action);
 		
-		((RFIDPublisher)getApplication()).getItems().add(item);
+		((RFIDServer)getApplication()).getEvents().add(event);
 		setStatus(Status.REDIRECTION_PERMANENT);
 		setLocationRef("/");
 		
 		try {
 			List<NameValuePair> params = new Vector<NameValuePair>();
 			params.add(new BasicNameValuePair("hub.mode", "publish"));
-			params.add(new BasicNameValuePair("hub.url", "http://127.0.0.1:8411/?output=json"));
+			params.add(new BasicNameValuePair("hub.url", "http://127.0.0.1:8350/?output=json"));
 			UrlEncodedFormEntity paramsEntity = new UrlEncodedFormEntity(params, "UTF-8");
 			HttpPost post = new HttpPost("http://localhost:8310/");
 			post.setEntity(paramsEntity);

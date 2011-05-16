@@ -128,13 +128,13 @@ public class SensingResource extends BaseResource {
 		
 		Feed feed = new Feed();
 		
-			Entry entry = new Entry();
-			entry.setId("urn:uuid:" + UUID.randomUUID());
-			entry.setTitle(new Text(reading.getDateTime()));
-			Content content = new Content();
-			content.setInlineContent(new StringRepresentation(html, MediaType.TEXT_HTML));
-			entry.setContent(content);
-			feed.getEntries().add(entry);
+		Entry entry = new Entry();
+		entry.setId("urn:uuid:" + UUID.randomUUID());
+		entry.setTitle(new Text(reading.getDateTime()));
+		Content content = new Content();
+		content.setInlineContent(new StringRepresentation(html, MediaType.TEXT_HTML));
+		entry.setContent(content);
+		feed.getEntries().add(entry);
 		
 		AtomConverter atomConverter = new AtomConverter();
 		return atomConverter.toRepresentation(feed,

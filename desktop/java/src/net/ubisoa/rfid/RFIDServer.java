@@ -26,31 +26,49 @@
  */
 package net.ubisoa.rfid;
 
+import java.util.List;
+import java.util.Vector;
+
+import net.ubisoa.common.BaseRouter;
+import net.ubisoa.core.Defaults;
+
+import org.apache.http.client.HttpClient;
+import org.restlet.Application;
+import org.restlet.Component;
+import org.restlet.Restlet;
+import org.restlet.Server;
+import org.restlet.data.Protocol;
+import org.restlet.routing.Router;
+
 /**
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
-public class Item {
-	private String title, content;
+public class RFIDServer extends Application {
+	private final Vector<RFIDEvent> events = new Vector<RFIDEvent>();
+	private HttpClient client = Defaults.getHttpClient();
 
-	public Item(String title, String content) {
-		this.title = title;
-		this.content = content;
+	public static void main(String[] args) throws Exception {
+		Component component = new Component();
+		Server server = new Server(Protocol.HTTP, 8350);
+		component.getServers().add(server);
+		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
+		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);
+		component.getDefaultHost().attach(new RFIDServer());
+		component.start();
+	}
+
+	@Override
+	public Restlet createInboundRoot() {
+		Router router = new BaseRouter(getContext());
+		router.attach("/", RFIDResource.class);
+		return router;
 	}
 	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
+	public List<RFIDEvent> getEvents() {
+		return events;
 	}
 	
+	public HttpClient getClient() {
+		return client;
+	}
 }
