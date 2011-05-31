@@ -26,31 +26,34 @@
  */
 package net.ubisoa.twitter;
 
+import net.ubisoa.common.BaseRouter;
+import net.ubisoa.core.Defaults;
+
+import org.restlet.Application;
+import org.restlet.Component;
+import org.restlet.Restlet;
+import org.restlet.Server;
+import org.restlet.data.Protocol;
+import org.restlet.routing.Router;
+
 /**
  * @author Edgardo Avilés-López <edgardo@ubisoa.net>
  */
-public class Item {
-	private String title, content;
-
-	public Item(String title, String content) {
-		this.title = title;
-		this.content = content;
-	}
-	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
+public class TwitterServer extends Application {
+	public static void main(String[] args) throws Exception {
+		Component component = new Component();
+		Server server = new Server(Protocol.HTTP, 8411);
+		component.getServers().add(server);
+		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
+		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);
+		component.getDefaultHost().attach(new TwitterServer());
+		component.start();
 	}
 
-	public String getContent() {
-		return content;
+	@Override
+	public Restlet createInboundRoot() {
+		Router router = new BaseRouter(getContext());
+		router.attach("/", TwitterResource.class);
+		return router;
 	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
 }
