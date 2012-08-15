@@ -42,7 +42,7 @@ import org.restlet.routing.Router;
 public class TwitterServer extends Application {
 	public static void main(String[] args) throws Exception {
 		Component component = new Component();
-		Server server = new Server(Protocol.HTTP, 8411);
+		Server server = new Server(Protocol.HTTP, 8370);
 		component.getServers().add(server);
 		server.getContext().getParameters().set("maxTotalConnections", Defaults.MAX_CONNECTIONS);
 		server.getContext().getParameters().set("maxThreads", Defaults.MAX_THREADS);

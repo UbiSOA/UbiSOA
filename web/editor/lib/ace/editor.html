@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Editor</title>
+  <style type="text/css" media="screen">
+    body {
+        overflow: hidden;
+    }
+    
+    #editor { 
+        margin: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+  </style>
+</head>
+<body>
+
+<pre id="editor">function foo(items) {
+function Accounts() {
+	$uri = explode('?', $_SERVER['REQUEST_URI']);
+	$_SERVER['REQUEST_URI'] = $uri[0];
+	parse_str($uri[1], $_GET);
+
+	parent :: Controller();
+	$this -> load -> helper('url');
+	$this -> load -> helper('inflector');
+	$this -> load -> helper('misc');
+	$this -> load -> model('news_m');
+	$this -> load -> model('accounts_m');
+	$this -> load -> library('email');
+	$this -> load -> library('session');
+	$this -> load -> database();
+}
+
+function activate($id, $hash) {
+	$r = $this -> accounts_m -> get_by_id($id);
+	if (md5($r -> email) != $hash)
+		show_error('The activation link is invalid.');
+	$this -> accounts_m -> activate($id);
+	redirect('/accounts/signin/activated');
+}
+
+function _auth_zend($r) {
+	$url = 'http://support.ubilogix.com/login';
+	$token = 'TPUtLrZnxYTdbQASDoLSuCFR8v5HvyNLPuNJyRi45Siwr0rZ';
+	$name = $r -> first_name.' '.$r -> last_name;
+	$email = $r -> email;
+	$timestamp = time();
+	$external_id = $r -> id;
+	$organization = $r -> company;
+	$hash = md5($name.$email.$external_id.$organization.$token.$timestamp);
+	redirect("$url?name=$name&email=$email&timestamp=$timestamp&external_id=$external_id&organization=$organization&hash=$hash");
+	exit();
+}</pre>
+    
+<script src="src/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="src/theme-espresso.js" type="text/javascript" charset="utf-8"></script>
+<script src="src/mode-php.js" type="text/javascript" charset="utf-8"></script>
+<script>
+window.onload = function() {
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/espresso");
+    
+    var PhpMode = require("ace/mode/php").Mode;
+    editor.getSession().setMode(new PhpMode());
+};
+</script>
+
+</body>
+</html>

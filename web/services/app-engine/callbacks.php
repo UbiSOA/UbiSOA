@@ -1,5 +1,7 @@
 <?php
 
+$data = json_decode(file_get_contents('../../editor/dat/apps.json'));
+
 	function print_line($line, $category) {
 		echo $category.' '.$line."\n";
 	}
@@ -93,7 +95,20 @@
 			system('curl -s '.$retrieve.' > /tmp/request.txt');
 			$value = file_get_contents('/tmp/request.txt');
 			if (strpos($retrieve, 'json') !== false)
-				$value = print_r(json_decode($value), true);
-			print_value($value, '*');
+				$value = json_decode($value);
+				
+			$data = json_decode(file_get_contents('../../editor/dat/apps.json'));
+			$updated = false;
+			foreach ($data -> apps as $apps)
+				foreach ($apps -> services as $service)
+					if ($service -> subscribedTo == $retrieve) {
+						$service -> data = $value;
+						echo "Updated data for service: ".$service -> name."\n";
+						$updated = true;
+					}
+			if ($updated) {
+				file_put_contents('../../editor/dat/apps.json', json_encode($data));
+				system('php handler.php');
+			}
 		}
 	}
